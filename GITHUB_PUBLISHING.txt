@@ -3,9 +3,9 @@ PONYHAVEN - PUBLISH THE PHONE COMPANION
 
 Firebase project: mlp4kt
 GitHub account: fowlong
-Planned repository: https://github.com/fowlong/ponyhaven
-Planned companion: https://fowlong.github.io/ponyhaven/
-These URLs become live only after the publisher and GitHub Actions succeed.
+Repository: https://github.com/fowlong/ponyhaven
+Companion: https://fowlong.github.io/ponyhaven/
+The source and companion are published. Updates go live after GitHub Actions succeeds.
 
 Run Publish-Ponyhaven.cmd by double-clicking it in the project folder.
 Or, in an ordinary PowerShell terminal:
@@ -45,8 +45,9 @@ in the rebuilt desktop app. Wait for Cloud saved before switching devices.
 
 For future edits, rerun the publisher from the main MLPKT folder. The
 generated Git checkout is in tmp/github-publish; keep it if you want to
-publish updates from this workspace. If someone changes the repository
-on GitHub, the publisher stops rather than overwriting that history.
+publish updates from this workspace. Updates made through the connected
+GitHub app are merged with the generated checkout, preserving both histories.
+If a merge conflicts, publication stops for review; it never force-pushes.
 
 If pushing the workflow says the token lacks workflow scope, run the
 GitHub CLI's auth refresh --hostname github.com --scopes workflow,
