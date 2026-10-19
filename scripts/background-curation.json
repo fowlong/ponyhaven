@@ -1,0 +1,1327 @@
+{
+  "review": "Desktop 1440x1000 and phone 390x844, with a standing Rarity sprite. Source coordinates project through bottom-aligned cover cropping.",
+  "backgrounds": {
+    "ponyville-meadow": {
+      "name": "Ponyville Meadow",
+      "originalIndex": 0,
+      "include": true,
+      "stage": {
+        "width": 1440,
+        "height": 760,
+        "floor": 0.82,
+        "ponyHeight": 0.24,
+        "walk": [
+          0.12,
+          0.55
+        ],
+        "focusX": 0.36
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "airship_harbor-2bf3be": {
+      "name": "Canterlot Airship Harbor",
+      "originalIndex": 1,
+      "include": false,
+      "reason": "No continuous standing surface."
+    },
+    "canterlot_cafe-6699f1": {
+      "name": "Canterlot Café",
+      "originalIndex": 2,
+      "include": false,
+      "reason": "Distant, raised or tightly cropped ground gives an unsuitable pony scale."
+    },
+    "canterlot_plaza-14e394": {
+      "name": "Canterlot Plaza",
+      "originalIndex": 3,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.22,
+        "walk": [
+          0.12,
+          0.88
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "canterlot_throne_room-c64bfd": {
+      "name": "Royal Throne Room",
+      "originalIndex": 4,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "canterlot_train_station-f1bbc1": {
+      "name": "Canterlot train station",
+      "originalIndex": 5,
+      "include": false,
+      "reason": "Distant, raised or tightly cropped ground gives an unsuitable pony scale."
+    },
+    "castle_guest_room-0a3aaa": {
+      "name": "Castle Guest Room",
+      "originalIndex": 6,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "celestia_bedroom-eff012": {
+      "name": "Princess Celestia's Chambers",
+      "originalIndex": 7,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "donut_joe_shop-09ca31": {
+      "name": "Donut Joe's",
+      "originalIndex": 8,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.27,
+        "walk": [
+          0.15,
+          0.85
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "luna_bedroom-e48e30": {
+      "name": "Princess Luna's Chambers",
+      "originalIndex": 9,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "royal_garden-6e5d89": {
+      "name": "Royal Gardens",
+      "originalIndex": 10,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.86,
+        "ponyHeight": 0.23,
+        "walk": [
+          0.32,
+          0.73
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Floor and scale reviewed with a pet; walking endpoints narrowed after pet/NPC desktop and phone review to avoid foreground obstacles."
+    },
+    "shopping_alley-9641e2": {
+      "name": "Shopping District",
+      "originalIndex": 11,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.22,
+        "walk": [
+          0.12,
+          0.88
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "apple_family_farm_bathtub-109e13": {
+      "name": "Sweet Apple Acres - Farmhouse - Bathtub",
+      "originalIndex": 12,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "apple_family_room-e866a2": {
+      "name": "Sweet Apple Acres - Farmhouse - Kitchen",
+      "originalIndex": 13,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "applejack_bedroom-13a9da": {
+      "name": "Sweet Apple Acres - Farmhouse - Applejack's Bedroom",
+      "originalIndex": 14,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "barn-7a3de0": {
+      "name": "Sweet Apple Acres - Farmhouse - Barn",
+      "originalIndex": 15,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.85,
+        "ponyHeight": 0.26,
+        "walk": [
+          0.14,
+          0.85
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "bowling_alley-0d0ebb": {
+      "name": "Bowling Alley - Bowling Lanes",
+      "originalIndex": 16,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "carousel_boutique-d3580e": {
+      "name": "Carousel Boutique - Showroom",
+      "originalIndex": 17,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.87,
+        "ponyHeight": 0.25,
+        "walk": [
+          0.12,
+          0.8
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "cmc_clubhouse-6e487d": {
+      "name": "CMC Clubhouse",
+      "originalIndex": 18,
+      "include": false,
+      "reason": "Foreground stump blocks the centre of the walking lane after correcting the floor."
+    },
+    "cmc_clubhouse_inside-597888": {
+      "name": "CMC Clubhouse - Interior",
+      "originalIndex": 19,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.86,
+        "ponyHeight": 0.27,
+        "walk": [
+          0.26,
+          0.72
+        ],
+        "focusX": 0.49
+      },
+      "reason": "Floor and scale reviewed with a pet; walking endpoints narrowed after pet/NPC desktop and phone review to avoid foreground obstacles."
+    },
+    "cmc_clubhouse_inside-d17948": {
+      "name": "CMC Clubhouse - Interior",
+      "originalIndex": 20,
+      "include": false,
+      "reason": "Near-duplicate interior."
+    },
+    "evening_sky_front_of_cloudominium-b18a21": {
+      "name": "Cloudominium - Evening Sky View",
+      "originalIndex": 21,
+      "include": false,
+      "reason": "No continuous standing surface."
+    },
+    "everfree_forest-68a02a": {
+      "name": "Everfree Forest",
+      "originalIndex": 22,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.84,
+        "ponyHeight": 0.25,
+        "walk": [
+          0.12,
+          0.88
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "flower_shop-bda886": {
+      "name": "Flower Shop",
+      "originalIndex": 23,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.91,
+        "ponyHeight": 0.21,
+        "walk": [
+          0.15,
+          0.85
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "fluttershy_bathroom-354d42": {
+      "name": "Fluttershy's Cottage - Bathroom",
+      "originalIndex": 24,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "fluttershy_bedroom-f755dd": {
+      "name": "Fluttershy's Cottage - Fluttershy's Bedroom",
+      "originalIndex": 25,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "fluttershy_cottage-38832a": {
+      "name": "Fluttershy's Cottage - Backyard",
+      "originalIndex": 26,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.86,
+        "ponyHeight": 0.25,
+        "walk": [
+          0.15,
+          0.82
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "fluttershy_cottage_inside-5d5f4a": {
+      "name": "Fluttershy's Cottage - Living Room",
+      "originalIndex": 27,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "golden_oak_bathtub-a926c1": {
+      "name": "Golden Oak Library - Bathtub",
+      "originalIndex": 28,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "golden_oak_guestroom-b25b5c": {
+      "name": "Golden Oak Library - Guest Room",
+      "originalIndex": 29,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.89,
+        "ponyHeight": 0.25,
+        "walk": [
+          0.18,
+          0.78
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "golden_oak_library-b99973": {
+      "name": "Golden Oak Library - Library",
+      "originalIndex": 30,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.89,
+        "ponyHeight": 0.25,
+        "walk": [
+          0.15,
+          0.75
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "hay_burger-cad3f6": {
+      "name": "Hay Burger - Seating",
+      "originalIndex": 31,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "hot_air_balloon_flying-51c57c": {
+      "name": "Hot Air Balloon",
+      "originalIndex": 32,
+      "include": false,
+      "reason": "No continuous standing surface."
+    },
+    "lake-132f58": {
+      "name": "Saddle Lake",
+      "originalIndex": 33,
+      "include": false,
+      "reason": "Water or a bridge interrupts the horizontal walking lane."
+    },
+    "picnic_area-0e8daa": {
+      "name": "Picnic Area",
+      "originalIndex": 34,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.88,
+        "ponyHeight": 0.23,
+        "walk": [
+          0.21,
+          0.7
+        ],
+        "focusX": 0.45
+      },
+      "reason": "Floor and scale reviewed with a pet; walking endpoints narrowed after pet/NPC desktop and phone review to avoid foreground obstacles."
+    },
+    "pinkie_pie_bathroom-76b558": {
+      "name": "Sugarcube Corner - Pinkie Pie's Bathroom",
+      "originalIndex": 35,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "pinkie_pie_bedroom-817481": {
+      "name": "Sugarcube Corner - Pinkie Pie's Bedroom",
+      "originalIndex": 36,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "ponyville_horsepital-c540df": {
+      "name": "Ponyville Horsepital",
+      "originalIndex": 37,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.88,
+        "ponyHeight": 0.22,
+        "walk": [
+          0.35,
+          0.8
+        ],
+        "focusX": 0.57
+      },
+      "reason": "Floor and scale reviewed with a pet; walking endpoints narrowed after pet/NPC desktop and phone review to avoid foreground obstacles."
+    },
+    "ponyville_main_square-0941a2": {
+      "name": "Ponyville Main Square - Fountain",
+      "originalIndex": 38,
+      "include": true,
+      "stage": {
+        "width": 1599,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.24,
+        "walk": [
+          0.15,
+          0.85
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "ponyville_market-647b13": {
+      "name": "Ponyville Market",
+      "originalIndex": 39,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.87,
+        "ponyHeight": 0.23,
+        "walk": [
+          0.16,
+          0.73
+        ],
+        "focusX": 0.46
+      },
+      "reason": "Floor and scale reviewed with a pet; walking endpoints narrowed after pet/NPC desktop and phone review to avoid foreground obstacles."
+    },
+    "ponyville_outskirts-db3390": {
+      "name": "Ponyville Outskirts",
+      "originalIndex": 40,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.86,
+        "ponyHeight": 0.25,
+        "walk": [
+          0.28,
+          0.82
+        ],
+        "focusX": 0.53
+      },
+      "reason": "Floor and scale reviewed with a pet; walking endpoints narrowed after pet/NPC desktop and phone review to avoid foreground obstacles."
+    },
+    "ponyville_post_office-0e320f": {
+      "name": "Ponyville Post Office - Counter",
+      "originalIndex": 41,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.29,
+        "walk": [
+          0.18,
+          0.68
+        ],
+        "focusX": 0.43
+      },
+      "reason": "Floor and scale reviewed with a pet; walking endpoints narrowed after pet/NPC desktop and phone review to avoid foreground obstacles."
+    },
+    "ponyville_spa-5d8c2a": {
+      "name": "Ponyville Day Spa",
+      "originalIndex": 42,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "ponyville_town_hall-6f1132": {
+      "name": "Ponyville Town Hall",
+      "originalIndex": 43,
+      "include": false,
+      "reason": "Distant, raised or tightly cropped ground gives an unsuitable pony scale."
+    },
+    "rainbow_dash_bedroom-5a149b": {
+      "name": "Cloudominium - Rainbow Dash's Bedroom",
+      "originalIndex": 44,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "rainbow_dash_living_room-097aa6": {
+      "name": "Cloudominium - Living Room",
+      "originalIndex": 45,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.27,
+        "walk": [
+          0.2,
+          0.61
+        ],
+        "focusX": 0.4
+      },
+      "reason": "Floor and scale reviewed with a pet; walking endpoints narrowed after pet/NPC desktop and phone review to avoid foreground obstacles."
+    },
+    "rarity_bathroom-d1913a": {
+      "name": "Carousel Boutique - Rarity's Bathroom",
+      "originalIndex": 46,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "rarity_bedroom-f44838": {
+      "name": "Carousel Boutique - Rarity's Bedroom",
+      "originalIndex": 47,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "row_of_apple_trees-15e6b3": {
+      "name": "Sweet Apple Acres - Path Near Apple Orchard",
+      "originalIndex": 48,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "schoolhouse-17a961": {
+      "name": "Ponyville Schoolhouse - Exterior",
+      "originalIndex": 49,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.89,
+        "ponyHeight": 0.23,
+        "walk": [
+          0.45,
+          0.85
+        ],
+        "focusX": 0.62
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "schoolhouse_inside-113981": {
+      "name": "Ponyville Schoolhouse - Classroom - Facing Chalkboard",
+      "originalIndex": 50,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "sugarcube_corner-98cd53": {
+      "name": "Sugarcube Corner - Counter",
+      "originalIndex": 51,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.28,
+        "walk": [
+          0.32,
+          0.73
+        ],
+        "focusX": 0.53
+      },
+      "reason": "Floor and scale reviewed with a pet; walking endpoints narrowed after pet/NPC desktop and phone review to avoid foreground obstacles."
+    },
+    "sweet_apple_acres-e20849": {
+      "name": "Sweet Apple Acres",
+      "originalIndex": 52,
+      "include": false,
+      "reason": "Distant, raised or tightly cropped ground gives an unsuitable pony scale."
+    },
+    "tea_shop-130403": {
+      "name": "Jasmine's Tea Shop",
+      "originalIndex": 53,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 893,
+        "floor": 0.9,
+        "ponyHeight": 0.28,
+        "walk": [
+          0.14,
+          0.64
+        ],
+        "focusX": 0.4
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "train_station-3a9baa": {
+      "name": "Ponyville Train Station",
+      "originalIndex": 54,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.86,
+        "ponyHeight": 0.25,
+        "walk": [
+          0.14,
+          0.72
+        ],
+        "focusX": 0.43
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "trixie_wagon-39d62e": {
+      "name": "Trixie's Wagon - Exterior",
+      "originalIndex": 55,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.88,
+        "ponyHeight": 0.24,
+        "walk": [
+          0.34,
+          0.72
+        ],
+        "focusX": 0.52
+      },
+      "reason": "Floor and scale reviewed with a pet; walking endpoints narrowed after pet/NPC desktop and phone review to avoid foreground obstacles."
+    },
+    "trixie_wagon_inside-ab8db8": {
+      "name": "Trixie's Wagon - Interior",
+      "originalIndex": 56,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "twilight_bedroom-5e2a74": {
+      "name": "Golden Oak Library - Twilight Sparkle's Bedroom",
+      "originalIndex": 57,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.25,
+        "walk": [
+          0.27,
+          0.8
+        ],
+        "focusX": 0.53
+      },
+      "reason": "Floor and scale reviewed with a pet; walking endpoints narrowed after pet/NPC desktop and phone review to avoid foreground obstacles."
+    },
+    "user_house-a636d3": {
+      "name": "Your house",
+      "originalIndex": 58,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "zecora_hut-f3dc27": {
+      "name": "Zecora's Hut - Interior",
+      "originalIndex": 59,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "dream-ca4f1c": {
+      "name": "Dream",
+      "originalIndex": 60,
+      "include": false,
+      "reason": "No continuous standing surface."
+    },
+    "train-6d7d13": {
+      "name": "Train",
+      "originalIndex": 61,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "cloudeseum-4b5e28": {
+      "name": "Cloudeseum",
+      "originalIndex": 62,
+      "include": false,
+      "reason": "No continuous standing surface."
+    },
+    "cloudsdale_market-732e5d": {
+      "name": "Cloudsdale Market",
+      "originalIndex": 63,
+      "include": false,
+      "reason": "Distant, raised or tightly cropped ground gives an unsuitable pony scale."
+    },
+    "cloudsdale_player_home-2cdb95": {
+      "name": "Your Cloudsdale Home",
+      "originalIndex": 64,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "cloudsdale_race_track-8085fe": {
+      "name": "Cloudsdale Race Track",
+      "originalIndex": 65,
+      "include": false,
+      "reason": "No continuous standing surface."
+    },
+    "cloudsdale_street-7010c5": {
+      "name": "Cloudsdale Street",
+      "originalIndex": 66,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.86,
+        "ponyHeight": 0.25,
+        "walk": [
+          0.15,
+          0.85
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "cloudsdale_weather_factory-1176cf": {
+      "name": "Cloudsdale Weather Factory",
+      "originalIndex": 67,
+      "include": false,
+      "reason": "Distant, raised or tightly cropped ground gives an unsuitable pony scale."
+    },
+    "fluttershy_parents_home-289dd8": {
+      "name": "Fluttershy's Parents' Home",
+      "originalIndex": 68,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "rainbow_dash_parents_home-df2f13": {
+      "name": "Rainbow Dash's Parents' Home",
+      "originalIndex": 69,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "wonderbolts_office-46ed6e": {
+      "name": "Wonderbolts Office",
+      "originalIndex": 70,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.88,
+        "ponyHeight": 0.27,
+        "walk": [
+          0.2,
+          0.8
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "apple_bloom_bedroom-f45d67": {
+      "name": "Sweet Apple Acres - Farmhouse - Apple Bloom's Bedroom",
+      "originalIndex": 71,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.89,
+        "ponyHeight": 0.27,
+        "walk": [
+          0.4,
+          0.83
+        ],
+        "focusX": 0.62
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "apple_family_den-f8dfdb": {
+      "name": "Sweet Apple Acres - Farmhouse - Den",
+      "originalIndex": 72,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.89,
+        "ponyHeight": 0.3,
+        "walk": [
+          0.2,
+          0.83
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "autumn_path-2046c4": {
+      "name": "Running of the Leaves - Autumn Path",
+      "originalIndex": 73,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.88,
+        "ponyHeight": 0.26,
+        "walk": [
+          0.24,
+          0.62
+        ],
+        "focusX": 0.43
+      },
+      "reason": "Floor and scale reviewed with a pet; walking endpoints narrowed after pet/NPC desktop and phone review to avoid foreground obstacles."
+    },
+    "barnyard_bargains_counter-1d91e3": {
+      "name": "Filthy Rich's Barnyard Bargains - Counter",
+      "originalIndex": 74,
+      "include": false,
+      "reason": "Distant, raised or tightly cropped ground gives an unsuitable pony scale."
+    },
+    "barnyard_bargains_exterior-bac695": {
+      "name": "Filthy Rich's Barnyard Bargains - Exterior",
+      "originalIndex": 75,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.24,
+        "walk": [
+          0.2,
+          0.85
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "bowling_alley_exterior-4a0d23": {
+      "name": "Bowling Alley - Exterior",
+      "originalIndex": 76,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.88,
+        "ponyHeight": 0.25,
+        "walk": [
+          0.15,
+          0.85
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "carousel_boutique_exterior-1d126a": {
+      "name": "Carousel Boutique - Exterior",
+      "originalIndex": 77,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.24,
+        "walk": [
+          0.15,
+          0.85
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "carousel_boutique_guest_room-bd9b09": {
+      "name": "Carousel Boutique - Guest Room",
+      "originalIndex": 78,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.28,
+        "walk": [
+          0.43,
+          0.85
+        ],
+        "focusX": 0.63
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "carousel_boutique_kitchen-eed2a0": {
+      "name": "Carousel Boutique - Kitchen",
+      "originalIndex": 79,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "carousel_boutique_salon_entrance-d2fc6b": {
+      "name": "Carousel Boutique - Salon - Entryway",
+      "originalIndex": 80,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.3,
+        "walk": [
+          0.2,
+          0.8
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "clover_cafe_exterior-cb7df4": {
+      "name": "The Clover Cafe",
+      "originalIndex": 81,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "cranky_cottage_exterior-5b6ccc": {
+      "name": "Cranky Doodle Donkey's Cottage - Exterior",
+      "originalIndex": 82,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "cranky_cottage_living_room-a6bd71": {
+      "name": "Cranky Doodle Donkey's Cottage - Living Room",
+      "originalIndex": 83,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.88,
+        "ponyHeight": 0.3,
+        "walk": [
+          0.18,
+          0.54
+        ],
+        "focusX": 0.35
+      },
+      "reason": "Floor and scale reviewed with a pet; walking endpoints narrowed after pet/NPC desktop and phone review to avoid foreground obstacles."
+    },
+    "doctor_office-925292": {
+      "name": "Doctor's Office",
+      "originalIndex": 84,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "fluttershy_chicken_coop-d5ab78": {
+      "name": "Fluttershy's Cottage - Backyard - Chicken Coop",
+      "originalIndex": 85,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "fluttershy_cottage_front_exterior-6ffa91": {
+      "name": "Fluttershy's Cottage - Exterior",
+      "originalIndex": 86,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "fortune_teller_tent_exterior-6803fb": {
+      "name": "Fortune Teller's Tent - Exterior",
+      "originalIndex": 87,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "fortune_teller_tent_inside-c81709": {
+      "name": "Fortune Teller's Tent - Interior",
+      "originalIndex": 88,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "gem_quarry-d75893": {
+      "name": "Gemstone Quarry",
+      "originalIndex": 89,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.85,
+        "ponyHeight": 0.24,
+        "walk": [
+          0.12,
+          0.88
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "golden_oak_exterior-6077b5": {
+      "name": "Golden Oak Library - Exterior",
+      "originalIndex": 90,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.91,
+        "ponyHeight": 0.23,
+        "walk": [
+          0.34,
+          0.65
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Floor and scale reviewed with a pet; walking endpoints narrowed after pet/NPC desktop and phone review to avoid foreground obstacles."
+    },
+    "hay_burger_exterior-94a9f9": {
+      "name": "Hay Burger - Exterior",
+      "originalIndex": 91,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.26,
+        "walk": [
+          0.15,
+          0.85
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "horsepital_hallway-771e8b": {
+      "name": "Ponyville General Horsepital - Hallway",
+      "originalIndex": 92,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.86,
+        "ponyHeight": 0.28,
+        "walk": [
+          0.25,
+          0.75
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "horsepital_operating_room-fb9dca": {
+      "name": "Ponyville General Horsepital - Operating Room",
+      "originalIndex": 93,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "horsepital_patient_room-bcae77": {
+      "name": "Ponyville General Horsepital - Patient Room",
+      "originalIndex": 94,
+      "include": false,
+      "reason": "Bed projects into the usable foreground; too little unobstructed horizontal walking space."
+    },
+    "horsepital_waiting_room-f7d11c": {
+      "name": "Ponyville General Horsepital - Waiting Room",
+      "originalIndex": 95,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "musician_house_exterior-3ac854": {
+      "name": "Eccentric Musicians' House - Exterior",
+      "originalIndex": 96,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.25,
+        "walk": [
+          0.25,
+          0.85
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "musician_house_inside-ff186b": {
+      "name": "Essentric Musicians' House - Inside",
+      "originalIndex": 97,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "pinkie_pie_party_planning_cave-602100": {
+      "name": "Pinkie Pie's Secret Party Planning Cave",
+      "originalIndex": 98,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.27,
+        "walk": [
+          0.18,
+          0.55
+        ],
+        "focusX": 0.36
+      },
+      "reason": "Floor and scale reviewed with a pet; walking endpoints narrowed after pet/NPC desktop and phone review to avoid foreground obstacles."
+    },
+    "ponyville_back_street-b03899": {
+      "name": "Ponyville Back Street",
+      "originalIndex": 99,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.87,
+        "ponyHeight": 0.25,
+        "walk": [
+          0.17,
+          0.74
+        ],
+        "focusX": 0.46
+      },
+      "reason": "Floor and scale reviewed with a pet; walking endpoints narrowed after pet/NPC desktop and phone review to avoid foreground obstacles."
+    },
+    "ponyville_bridge-03db52": {
+      "name": "Ponyville River Bridge",
+      "originalIndex": 100,
+      "include": false,
+      "reason": "Water or a bridge interrupts the horizontal walking lane."
+    },
+    "ponyville_cafe_exterior-a639d9": {
+      "name": "Ponyville Parfait Cafe",
+      "originalIndex": 101,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "ponyville_main_square_alt-56e3fa": {
+      "name": "Ponyville Main Square - Alternate View",
+      "originalIndex": 102,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.25,
+        "walk": [
+          0.15,
+          0.85
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "ponyville_park_bench-6d4630": {
+      "name": "Park - Bench Area",
+      "originalIndex": 103,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "ponyville_park_fountain-ec6dd3": {
+      "name": "Park - Fountain Area",
+      "originalIndex": 104,
+      "include": false,
+      "reason": "Foreground flower beds interrupt the walking lane after correcting the floor."
+    },
+    "ponyville_spa_exterior-bdc979": {
+      "name": "Ponyville Day Spa - Exterior",
+      "originalIndex": 105,
+      "include": false,
+      "reason": "Distant, raised or tightly cropped ground gives an unsuitable pony scale."
+    },
+    "ponyville_streets-76bb6c": {
+      "name": "Ponyville Streets",
+      "originalIndex": 106,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.24,
+        "walk": [
+          0.15,
+          0.85
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "quills_sofas_inside-8a6d13": {
+      "name": "Quills and Sofas - Showroom",
+      "originalIndex": 107,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.29,
+        "walk": [
+          0.18,
+          0.85
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "riverside_houses-c8bad6": {
+      "name": "Riverside Residential Area",
+      "originalIndex": 108,
+      "include": false,
+      "reason": "Water or a bridge interrupts the horizontal walking lane."
+    },
+    "schoolhouse_foal_free_press-54982e": {
+      "name": "Schoolhouse Basement - Foal Free Press",
+      "originalIndex": 109,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "schoolhouse_inside_facing_class-08eb4c": {
+      "name": "Ponyville Schoolhouse - Classroom - Facing Class",
+      "originalIndex": 110,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "schoolhouse_playground-a36dc0": {
+      "name": "Ponyville Schoolhouse - Playground",
+      "originalIndex": 111,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.86,
+        "ponyHeight": 0.25,
+        "walk": [
+          0.18,
+          0.76
+        ],
+        "focusX": 0.47
+      },
+      "reason": "Floor and scale reviewed with a pet; walking endpoints narrowed after pet/NPC desktop and phone review to avoid foreground obstacles."
+    },
+    "spunky_filly_bedroom-2c552b": {
+      "name": "Spunky Filly's Bedroom",
+      "originalIndex": 112,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "sugarcube_corner_exterior-2b7945": {
+      "name": "Sugarcube Corner - Exterior",
+      "originalIndex": 113,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.26,
+        "walk": [
+          0.15,
+          0.85
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "sugarcube_corner_foal_room-da8ba9": {
+      "name": "Sugarcube Corner - Pound and Pumpkin's Room",
+      "originalIndex": 114,
+      "include": false,
+      "reason": "Oversized foreground toys make adult pony scale and the walking lane unconvincing."
+    },
+    "sugarcube_corner_kitchen-0e2f4a": {
+      "name": "Sugarcube Corner - Kitchen",
+      "originalIndex": 115,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "sweetie_belle_house_bedroom-f98261": {
+      "name": "Sweetie Belle's House - Sweetie Belle's Bedroom",
+      "originalIndex": 116,
+      "include": false,
+      "reason": "Bedroom furniture or sloping scenery leaves too little clear floor."
+    },
+    "sweetie_belle_house_inside-e767a7": {
+      "name": "Sweetie Belle's House - Commons",
+      "originalIndex": 117,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.9,
+        "ponyHeight": 0.28,
+        "walk": [
+          0.15,
+          0.83
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "sweetie_belle_house_living_room-c80049": {
+      "name": "Sweetie Belle's House - Commons - Living Room",
+      "originalIndex": 118,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "townhall_inside-decb9a": {
+      "name": "Town Hall - Atrium",
+      "originalIndex": 119,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "trixie_stage-0d0fc1": {
+      "name": "The Great and Powerful Trixie's Stage",
+      "originalIndex": 120,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.86,
+        "ponyHeight": 0.3,
+        "walk": [
+          0.15,
+          0.85
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "user_house_exterior-e1e4fd": {
+      "name": "House - Exterior",
+      "originalIndex": 121,
+      "include": true,
+      "stage": {
+        "width": 1600,
+        "height": 900,
+        "floor": 0.88,
+        "ponyHeight": 0.25,
+        "walk": [
+          0.15,
+          0.85
+        ],
+        "focusX": 0.5
+      },
+      "reason": "Clear foreground lane; floor, scale and phone framing reviewed with a pet."
+    },
+    "veterinarian_exam_room-2e2628": {
+      "name": "Dr. Fauna's Veterinary - Exam Room",
+      "originalIndex": 122,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "veterinarian_exterior-29909a": {
+      "name": "Dr. Fauna's Veterinary - Exterior",
+      "originalIndex": 123,
+      "include": false,
+      "reason": "Furniture, fences, steps or foreground objects obstruct a continuous walk."
+    },
+    "zecora_hut_outside-05b1d1": {
+      "name": "Zecora's Hut - Exterior",
+      "originalIndex": 124,
+      "include": false,
+      "reason": "Distant, raised or tightly cropped ground gives an unsuitable pony scale."
+    }
+  }
+}

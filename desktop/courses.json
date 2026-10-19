@@ -1,0 +1,322 @@
+{
+  "adventure": [
+    [
+      1,
+      "Greenflower - 1"
+    ],
+    [
+      2,
+      "Greenflower - 2"
+    ],
+    [
+      4,
+      "Techno Hill - 1"
+    ],
+    [
+      5,
+      "Techno Hill - 2"
+    ],
+    [
+      7,
+      "Deep Sea - 1"
+    ],
+    [
+      8,
+      "Deep Sea - 2"
+    ],
+    [
+      10,
+      "Castle Everfree - 1"
+    ],
+    [
+      11,
+      "Castle Everfree - 2"
+    ],
+    [
+      13,
+      "Arid Canyon - 1"
+    ],
+    [
+      14,
+      "Arid Canyon - 2"
+    ],
+    [
+      16,
+      "Red Volcano - 1"
+    ],
+    [
+      22,
+      "Cloud Rock - 1"
+    ],
+    [
+      23,
+      "Cloud Rock - 2"
+    ],
+    [
+      30,
+      "Frozen Hillside"
+    ],
+    [
+      32,
+      "Forest Fortress"
+    ],
+    [
+      33,
+      "Final Demo"
+    ],
+    [
+      40,
+      "Haunted Heights"
+    ],
+    [
+      41,
+      "Aerial Garden"
+    ],
+    [
+      42,
+      "Azure Temple"
+    ]
+  ],
+  "ponykart": [
+    [
+      1,
+      "Green Hills"
+    ],
+    [
+      2,
+      "Dark Race"
+    ],
+    [
+      3,
+      "Northern District"
+    ],
+    [
+      4,
+      "Darkvile Garden"
+    ],
+    [
+      5,
+      "Daytona Speedway"
+    ],
+    [
+      6,
+      "Cloud Zeppelin"
+    ],
+    [
+      7,
+      "Rainbow Speedway"
+    ],
+    [
+      8,
+      "Hill Top"
+    ],
+    [
+      9,
+      "Misty Maze"
+    ],
+    [
+      10,
+      "Grand Metropolis"
+    ],
+    [
+      11,
+      "Sunbeam Paradise"
+    ],
+    [
+      12,
+      "Diamond Square"
+    ],
+    [
+      13,
+      "Midnight Meadow"
+    ],
+    [
+      14,
+      "Twinkle Cart"
+    ],
+    [
+      15,
+      "Pleasure Castle"
+    ],
+    [
+      16,
+      "Paradise Hill"
+    ],
+    [
+      17,
+      "Sub-Zero Peak"
+    ],
+    [
+      18,
+      "Sapphire Coast"
+    ],
+    [
+      19,
+      "Sand Valley"
+    ],
+    [
+      20,
+      "Megablock Castle"
+    ],
+    [
+      21,
+      "Canyon Rush"
+    ],
+    [
+      22,
+      "Casino Resort"
+    ],
+    [
+      23,
+      "Silvercloud Island"
+    ],
+    [
+      24,
+      "Blue Mountain"
+    ],
+    [
+      25,
+      "Petroleum Refinery"
+    ],
+    [
+      26,
+      "Desert Palace"
+    ],
+    [
+      27,
+      "Aurora Atoll"
+    ],
+    [
+      28,
+      "Barren Badlands"
+    ],
+    [
+      29,
+      "Red Barrage"
+    ],
+    [
+      30,
+      "Midnight Channel"
+    ],
+    [
+      31,
+      "Vanilla Hotel"
+    ],
+    [
+      32,
+      "Toxic Palace"
+    ],
+    [
+      33,
+      "Ancient Tomb"
+    ],
+    [
+      34,
+      "Cloud Cradle"
+    ],
+    [
+      35,
+      "Volcanic Valley"
+    ],
+    [
+      36,
+      "Kodachrome Void"
+    ],
+    [
+      37,
+      "Boiling Bedrock"
+    ],
+    [
+      38,
+      "Cloud Quarters"
+    ],
+    [
+      39,
+      "Virtual Highway"
+    ],
+    [
+      40,
+      "Everfree's Nightclub"
+    ],
+    [
+      41,
+      "KKR Ganbare"
+    ],
+    [
+      42,
+      "CK Chao"
+    ],
+    [
+      43,
+      "CK Chao"
+    ],
+    [
+      44,
+      "CK Cloud"
+    ],
+    [
+      45,
+      "CK Regal"
+    ],
+    [
+      46,
+      "SD2 Balloon"
+    ],
+    [
+      47,
+      "SM Special"
+    ],
+    [
+      48,
+      "MKSC Sky"
+    ],
+    [
+      49,
+      "MKDS Peach"
+    ],
+    [
+      50,
+      "MKSC Rainbow"
+    ],
+    [
+      51,
+      "SMK Donut"
+    ],
+    [
+      52,
+      "SMK Mario"
+    ],
+    [
+      53,
+      "SMK Ghost"
+    ],
+    [
+      54,
+      "SMK Bowser"
+    ],
+    [
+      55,
+      "SMK Vanilla"
+    ],
+    [
+      56,
+      "Lake Margorite"
+    ],
+    [
+      57,
+      "Coastal Temple"
+    ],
+    [
+      58,
+      "Kart Airlines"
+    ],
+    [
+      59,
+      "Opulence"
+    ],
+    [
+      60,
+      "Crimson Core"
+    ]
+  ]
+}

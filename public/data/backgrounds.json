@@ -1,0 +1,886 @@
+[
+  {
+    "id": "ponyville-meadow",
+    "name": "Ponyville Meadow",
+    "file": "assets/meadow.svg",
+    "source": "Original Ponyhaven illustration",
+    "stage": {
+      "width": 1440,
+      "height": 760,
+      "floor": 0.82,
+      "ponyHeight": 0.24,
+      "walk": [
+        0.12,
+        0.55
+      ],
+      "focusX": 0.36
+    }
+  },
+  {
+    "id": "canterlot_plaza-14e394",
+    "name": "Canterlot Plaza",
+    "file": "assets/backgrounds/canterlot_plaza-14e394.webp",
+    "source": "PonyPonyParadise/data/locations/core/Canterlot/canterlot_plaza/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.22,
+      "walk": [
+        0.12,
+        0.88
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "donut_joe_shop-09ca31",
+    "name": "Donut Joe's",
+    "file": "assets/backgrounds/donut_joe_shop-09ca31.webp",
+    "source": "PonyPonyParadise/data/locations/core/Canterlot/donut_joe_shop/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.27,
+      "walk": [
+        0.15,
+        0.85
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "royal_garden-6e5d89",
+    "name": "Royal Gardens",
+    "file": "assets/backgrounds/royal_garden-6e5d89.webp",
+    "source": "PonyPonyParadise/data/locations/core/Canterlot/royal_garden/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.86,
+      "ponyHeight": 0.23,
+      "walk": [
+        0.32,
+        0.73
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "shopping_alley-9641e2",
+    "name": "Shopping District",
+    "file": "assets/backgrounds/shopping_alley-9641e2.webp",
+    "source": "PonyPonyParadise/data/locations/core/Canterlot/shopping_alley/background.jpg",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.22,
+      "walk": [
+        0.12,
+        0.88
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "barn-7a3de0",
+    "name": "Sweet Apple Acres - Farmhouse - Barn",
+    "file": "assets/backgrounds/barn-7a3de0.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/barn/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.85,
+      "ponyHeight": 0.26,
+      "walk": [
+        0.14,
+        0.85
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "carousel_boutique-d3580e",
+    "name": "Carousel Boutique - Showroom",
+    "file": "assets/backgrounds/carousel_boutique-d3580e.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/carousel_boutique/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.87,
+      "ponyHeight": 0.25,
+      "walk": [
+        0.12,
+        0.8
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "cmc_clubhouse_inside-597888",
+    "name": "CMC Clubhouse - Interior",
+    "file": "assets/backgrounds/cmc_clubhouse_inside-597888.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/cmc_clubhouse_inside/background.jpg",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.86,
+      "ponyHeight": 0.27,
+      "walk": [
+        0.26,
+        0.72
+      ],
+      "focusX": 0.49
+    }
+  },
+  {
+    "id": "everfree_forest-68a02a",
+    "name": "Everfree Forest",
+    "file": "assets/backgrounds/everfree_forest-68a02a.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/everfree_forest/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.84,
+      "ponyHeight": 0.25,
+      "walk": [
+        0.12,
+        0.88
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "flower_shop-bda886",
+    "name": "Flower Shop",
+    "file": "assets/backgrounds/flower_shop-bda886.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/flower_shop/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.91,
+      "ponyHeight": 0.21,
+      "walk": [
+        0.15,
+        0.85
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "fluttershy_cottage-38832a",
+    "name": "Fluttershy's Cottage - Backyard",
+    "file": "assets/backgrounds/fluttershy_cottage-38832a.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/fluttershy_cottage/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.86,
+      "ponyHeight": 0.25,
+      "walk": [
+        0.15,
+        0.82
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "golden_oak_guestroom-b25b5c",
+    "name": "Golden Oak Library - Guest Room",
+    "file": "assets/backgrounds/golden_oak_guestroom-b25b5c.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/golden_oak_guestroom/background.jpg",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.89,
+      "ponyHeight": 0.25,
+      "walk": [
+        0.18,
+        0.78
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "golden_oak_library-b99973",
+    "name": "Golden Oak Library - Library",
+    "file": "assets/backgrounds/golden_oak_library-b99973.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/golden_oak_library/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.89,
+      "ponyHeight": 0.25,
+      "walk": [
+        0.15,
+        0.75
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "picnic_area-0e8daa",
+    "name": "Picnic Area",
+    "file": "assets/backgrounds/picnic_area-0e8daa.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/picnic_area/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.88,
+      "ponyHeight": 0.23,
+      "walk": [
+        0.21,
+        0.7
+      ],
+      "focusX": 0.45
+    }
+  },
+  {
+    "id": "ponyville_horsepital-c540df",
+    "name": "Ponyville Horsepital",
+    "file": "assets/backgrounds/ponyville_horsepital-c540df.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/ponyville_horsepital/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.88,
+      "ponyHeight": 0.22,
+      "walk": [
+        0.35,
+        0.8
+      ],
+      "focusX": 0.57
+    }
+  },
+  {
+    "id": "ponyville_main_square-0941a2",
+    "name": "Ponyville Main Square - Fountain",
+    "file": "assets/backgrounds/ponyville_main_square-0941a2.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/ponyville_main_square/background.png",
+    "stage": {
+      "width": 1599,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.24,
+      "walk": [
+        0.15,
+        0.85
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "ponyville_market-647b13",
+    "name": "Ponyville Market",
+    "file": "assets/backgrounds/ponyville_market-647b13.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/ponyville_market/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.87,
+      "ponyHeight": 0.23,
+      "walk": [
+        0.16,
+        0.73
+      ],
+      "focusX": 0.46
+    }
+  },
+  {
+    "id": "ponyville_outskirts-db3390",
+    "name": "Ponyville Outskirts",
+    "file": "assets/backgrounds/ponyville_outskirts-db3390.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/ponyville_outskirts/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.86,
+      "ponyHeight": 0.25,
+      "walk": [
+        0.28,
+        0.82
+      ],
+      "focusX": 0.53
+    }
+  },
+  {
+    "id": "ponyville_post_office-0e320f",
+    "name": "Ponyville Post Office - Counter",
+    "file": "assets/backgrounds/ponyville_post_office-0e320f.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/ponyville_post_office/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.29,
+      "walk": [
+        0.18,
+        0.68
+      ],
+      "focusX": 0.43
+    }
+  },
+  {
+    "id": "rainbow_dash_living_room-097aa6",
+    "name": "Cloudominium - Living Room",
+    "file": "assets/backgrounds/rainbow_dash_living_room-097aa6.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/rainbow_dash_living_room/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.27,
+      "walk": [
+        0.2,
+        0.61
+      ],
+      "focusX": 0.4
+    }
+  },
+  {
+    "id": "schoolhouse-17a961",
+    "name": "Ponyville Schoolhouse - Exterior",
+    "file": "assets/backgrounds/schoolhouse-17a961.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/schoolhouse/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.89,
+      "ponyHeight": 0.23,
+      "walk": [
+        0.45,
+        0.85
+      ],
+      "focusX": 0.62
+    }
+  },
+  {
+    "id": "sugarcube_corner-98cd53",
+    "name": "Sugarcube Corner - Counter",
+    "file": "assets/backgrounds/sugarcube_corner-98cd53.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/sugarcube_corner/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.28,
+      "walk": [
+        0.32,
+        0.73
+      ],
+      "focusX": 0.53
+    }
+  },
+  {
+    "id": "tea_shop-130403",
+    "name": "Jasmine's Tea Shop",
+    "file": "assets/backgrounds/tea_shop-130403.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/tea_shop/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 893,
+      "floor": 0.9,
+      "ponyHeight": 0.28,
+      "walk": [
+        0.14,
+        0.64
+      ],
+      "focusX": 0.4
+    }
+  },
+  {
+    "id": "train_station-3a9baa",
+    "name": "Ponyville Train Station",
+    "file": "assets/backgrounds/train_station-3a9baa.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/train_station/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.86,
+      "ponyHeight": 0.25,
+      "walk": [
+        0.14,
+        0.72
+      ],
+      "focusX": 0.43
+    }
+  },
+  {
+    "id": "trixie_wagon-39d62e",
+    "name": "Trixie's Wagon - Exterior",
+    "file": "assets/backgrounds/trixie_wagon-39d62e.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/trixie_wagon/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.88,
+      "ponyHeight": 0.24,
+      "walk": [
+        0.34,
+        0.72
+      ],
+      "focusX": 0.52
+    }
+  },
+  {
+    "id": "twilight_bedroom-5e2a74",
+    "name": "Golden Oak Library - Twilight Sparkle's Bedroom",
+    "file": "assets/backgrounds/twilight_bedroom-5e2a74.webp",
+    "source": "PonyPonyParadise/data/locations/core/Ponyville/twilight_bedroom/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.25,
+      "walk": [
+        0.27,
+        0.8
+      ],
+      "focusX": 0.53
+    }
+  },
+  {
+    "id": "cloudsdale_street-7010c5",
+    "name": "Cloudsdale Street",
+    "file": "assets/backgrounds/cloudsdale_street-7010c5.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Cloudsdale/cloudsdale_street/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.86,
+      "ponyHeight": 0.25,
+      "walk": [
+        0.15,
+        0.85
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "wonderbolts_office-46ed6e",
+    "name": "Wonderbolts Office",
+    "file": "assets/backgrounds/wonderbolts_office-46ed6e.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Cloudsdale/wonderbolts_office/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.88,
+      "ponyHeight": 0.27,
+      "walk": [
+        0.2,
+        0.8
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "apple_bloom_bedroom-f45d67",
+    "name": "Sweet Apple Acres - Farmhouse - Apple Bloom's Bedroom",
+    "file": "assets/backgrounds/apple_bloom_bedroom-f45d67.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/apple_bloom_bedroom/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.89,
+      "ponyHeight": 0.27,
+      "walk": [
+        0.4,
+        0.83
+      ],
+      "focusX": 0.62
+    }
+  },
+  {
+    "id": "apple_family_den-f8dfdb",
+    "name": "Sweet Apple Acres - Farmhouse - Den",
+    "file": "assets/backgrounds/apple_family_den-f8dfdb.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/apple_family_den/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.89,
+      "ponyHeight": 0.3,
+      "walk": [
+        0.2,
+        0.83
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "autumn_path-2046c4",
+    "name": "Running of the Leaves - Autumn Path",
+    "file": "assets/backgrounds/autumn_path-2046c4.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/autumn_path/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.88,
+      "ponyHeight": 0.26,
+      "walk": [
+        0.24,
+        0.62
+      ],
+      "focusX": 0.43
+    }
+  },
+  {
+    "id": "barnyard_bargains_exterior-bac695",
+    "name": "Filthy Rich's Barnyard Bargains - Exterior",
+    "file": "assets/backgrounds/barnyard_bargains_exterior-bac695.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/barnyard_bargains_exterior/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.24,
+      "walk": [
+        0.2,
+        0.85
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "bowling_alley_exterior-4a0d23",
+    "name": "Bowling Alley - Exterior",
+    "file": "assets/backgrounds/bowling_alley_exterior-4a0d23.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/bowling_alley_exterior/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.88,
+      "ponyHeight": 0.25,
+      "walk": [
+        0.15,
+        0.85
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "carousel_boutique_exterior-1d126a",
+    "name": "Carousel Boutique - Exterior",
+    "file": "assets/backgrounds/carousel_boutique_exterior-1d126a.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/carousel_boutique_exterior/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.24,
+      "walk": [
+        0.15,
+        0.85
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "carousel_boutique_guest_room-bd9b09",
+    "name": "Carousel Boutique - Guest Room",
+    "file": "assets/backgrounds/carousel_boutique_guest_room-bd9b09.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/carousel_boutique_guest_room/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.28,
+      "walk": [
+        0.43,
+        0.85
+      ],
+      "focusX": 0.63
+    }
+  },
+  {
+    "id": "carousel_boutique_salon_entrance-d2fc6b",
+    "name": "Carousel Boutique - Salon - Entryway",
+    "file": "assets/backgrounds/carousel_boutique_salon_entrance-d2fc6b.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/carousel_boutique_salon_entrance/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.3,
+      "walk": [
+        0.2,
+        0.8
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "cranky_cottage_living_room-a6bd71",
+    "name": "Cranky Doodle Donkey's Cottage - Living Room",
+    "file": "assets/backgrounds/cranky_cottage_living_room-a6bd71.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/cranky_cottage_living_room/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.88,
+      "ponyHeight": 0.3,
+      "walk": [
+        0.18,
+        0.54
+      ],
+      "focusX": 0.35
+    }
+  },
+  {
+    "id": "gem_quarry-d75893",
+    "name": "Gemstone Quarry",
+    "file": "assets/backgrounds/gem_quarry-d75893.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/gem_quarry/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.85,
+      "ponyHeight": 0.24,
+      "walk": [
+        0.12,
+        0.88
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "golden_oak_exterior-6077b5",
+    "name": "Golden Oak Library - Exterior",
+    "file": "assets/backgrounds/golden_oak_exterior-6077b5.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/golden_oak_exterior/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.91,
+      "ponyHeight": 0.23,
+      "walk": [
+        0.34,
+        0.65
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "hay_burger_exterior-94a9f9",
+    "name": "Hay Burger - Exterior",
+    "file": "assets/backgrounds/hay_burger_exterior-94a9f9.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/hay_burger_exterior/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.26,
+      "walk": [
+        0.15,
+        0.85
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "horsepital_hallway-771e8b",
+    "name": "Ponyville General Horsepital - Hallway",
+    "file": "assets/backgrounds/horsepital_hallway-771e8b.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/horsepital_hallway/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.86,
+      "ponyHeight": 0.28,
+      "walk": [
+        0.25,
+        0.75
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "musician_house_exterior-3ac854",
+    "name": "Eccentric Musicians' House - Exterior",
+    "file": "assets/backgrounds/musician_house_exterior-3ac854.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/musician_house_exterior/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.25,
+      "walk": [
+        0.25,
+        0.85
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "pinkie_pie_party_planning_cave-602100",
+    "name": "Pinkie Pie's Secret Party Planning Cave",
+    "file": "assets/backgrounds/pinkie_pie_party_planning_cave-602100.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/pinkie_pie_party_planning_cave/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.27,
+      "walk": [
+        0.18,
+        0.55
+      ],
+      "focusX": 0.36
+    }
+  },
+  {
+    "id": "ponyville_back_street-b03899",
+    "name": "Ponyville Back Street",
+    "file": "assets/backgrounds/ponyville_back_street-b03899.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/ponyville_back_street/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.87,
+      "ponyHeight": 0.25,
+      "walk": [
+        0.17,
+        0.74
+      ],
+      "focusX": 0.46
+    }
+  },
+  {
+    "id": "ponyville_main_square_alt-56e3fa",
+    "name": "Ponyville Main Square - Alternate View",
+    "file": "assets/backgrounds/ponyville_main_square_alt-56e3fa.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/ponyville_main_square_alt/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.25,
+      "walk": [
+        0.15,
+        0.85
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "ponyville_streets-76bb6c",
+    "name": "Ponyville Streets",
+    "file": "assets/backgrounds/ponyville_streets-76bb6c.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/ponyville_streets/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.24,
+      "walk": [
+        0.15,
+        0.85
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "quills_sofas_inside-8a6d13",
+    "name": "Quills and Sofas - Showroom",
+    "file": "assets/backgrounds/quills_sofas_inside-8a6d13.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/quills_sofas_inside/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.29,
+      "walk": [
+        0.18,
+        0.85
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "schoolhouse_playground-a36dc0",
+    "name": "Ponyville Schoolhouse - Playground",
+    "file": "assets/backgrounds/schoolhouse_playground-a36dc0.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/schoolhouse_playground/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.86,
+      "ponyHeight": 0.25,
+      "walk": [
+        0.18,
+        0.76
+      ],
+      "focusX": 0.47
+    }
+  },
+  {
+    "id": "sugarcube_corner_exterior-2b7945",
+    "name": "Sugarcube Corner - Exterior",
+    "file": "assets/backgrounds/sugarcube_corner_exterior-2b7945.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/sugarcube_corner_exterior/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.26,
+      "walk": [
+        0.15,
+        0.85
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "sweetie_belle_house_inside-e767a7",
+    "name": "Sweetie Belle's House - Commons",
+    "file": "assets/backgrounds/sweetie_belle_house_inside-e767a7.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/sweetie_belle_house_inside/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.9,
+      "ponyHeight": 0.28,
+      "walk": [
+        0.15,
+        0.83
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "trixie_stage-0d0fc1",
+    "name": "The Great and Powerful Trixie's Stage",
+    "file": "assets/backgrounds/trixie_stage-0d0fc1.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/trixie_stage/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.86,
+      "ponyHeight": 0.3,
+      "walk": [
+        0.15,
+        0.85
+      ],
+      "focusX": 0.5
+    }
+  },
+  {
+    "id": "user_house_exterior-e1e4fd",
+    "name": "House - Exterior",
+    "file": "assets/backgrounds/user_house_exterior-e1e4fd.webp",
+    "source": "PonyPonyParadise/data/locations/custom/Ponyville/user_house_exterior/background.png",
+    "stage": {
+      "width": 1600,
+      "height": 900,
+      "floor": 0.88,
+      "ponyHeight": 0.25,
+      "walk": [
+        0.15,
+        0.85
+      ],
+      "focusX": 0.5
+    }
+  }
+]

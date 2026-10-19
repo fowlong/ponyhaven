@@ -1,0 +1,13 @@
+node_modules/
+dist/
+tmp/
+.env
+.env.local
+.env.*.local
+*.log
+allowed-emails.local.json
+private/
+native/
+release/
+*service-account*.json
+*admin.local.json

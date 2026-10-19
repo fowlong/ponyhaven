@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="760" viewBox="0 0 1440 760">
+<defs>
+ <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#c7e3df"/><stop offset="1" stop-color="#f8f2d8"/></linearGradient>
+ <linearGradient id="grass" x2="0" y2="1"><stop stop-color="#acd294"/><stop offset="1" stop-color="#75b28e"/></linearGradient>
+ <linearGradient id="river" x2="1" y2="1"><stop stop-color="#c7e4df"/><stop offset="1" stop-color="#a9d2ce"/></linearGradient>
+ <radialGradient id="sun"><stop stop-color="#fff8d8"/><stop offset="1" stop-color="#fff8d8" stop-opacity="0"/></radialGradient>
+ <pattern id="grain" width="150" height="150" patternUnits="userSpaceOnUse"><circle cx="10" cy="13" r="1" fill="#fff" opacity=".08"/><circle cx="55" cy="83" r="1" fill="#41664e" opacity=".05"/><circle cx="113" cy="43" r="1" fill="#fff" opacity=".1"/></pattern>
+ <g id="cloud" fill="#fffdf0" opacity=".8"><path d="M0 30C-5 14 16 8 27 15 30-7 65-2 68 16 84 3 104 15 100 30Z"/></g>
+ <g id="flower"><path d="M0 0v10m0-4 5-3" stroke="#638d63" stroke-width="2"/><circle cy="-2" r="5" fill="#f9efca"/><circle cy="-2" r="2" fill="#d9b463"/></g>
+ <g id="pinkflower"><path d="M0 0v11" stroke="#689867" stroke-width="2"/><circle cy="-2" r="5" fill="#e9bbcb"/><circle cy="-2" r="1.7" fill="#fff2d2"/></g>
+ <g id="grassblade" fill="none" stroke="#5d9e78" stroke-width="2" stroke-linecap="round" opacity=".5"><path d="m0 0-3-7m3 7 4-5"/></g>
+ <g id="tree"><path d="m-8 0 3-118h12l10 118Z" fill="#a58b70"/><path d="m2-53-32-36m37 15 27-29" fill="none" stroke="#a58b70" stroke-width="9"/><path d="M-62-91c-36-10-20-49-4-53-20-30 9-58 33-53-4-37 51-47 62-18 37-12 63 20 47 46 30 20 18 51-2 57-2 31-47 40-66 25-25 22-61 15-70-4Z" fill="#8bbb90"/><path d="M-66-145c-20-26 12-58 33-52-5-31 47-46 62-18 25-8 51 5 49 28-35 4-35 27-65 25-24 7-44 32-79 17Z" fill="#a6cda0"/><path d="M-58-109c15 15 36 15 52 3m26-66c11 7 23 6 31 0" fill="none" stroke="#b5d5a6" stroke-width="6" stroke-linecap="round"/></g>
+ <g id="cottage"><path d="M0 0v-65l43-35 43 35V0Z" fill="#fff3d6"/><path d="M-10-58 43-111 96-58 82-53 43-88 4-52Z" fill="#c494a9"/><path d="M10-58 43-89 78-58" fill="none" stroke="#b68197" stroke-width="4"/><rect x="33" y="-35" width="22" height="35" rx="11" fill="#b89884"/><rect x="10" y="-41" width="14" height="17" rx="5" fill="#a0c6c2"/><rect x="63" y="-41" width="14" height="17" rx="5" fill="#a0c6c2"/><path d="M17-41v17m-7-9h14m46-8v17m-7-9h14" stroke="#fff5db" stroke-width="2"/><circle cx="49" cy="-16" r="2" fill="#e8cf8f"/><rect x="64" y="-100" width="12" height="29" fill="#d6b3a4"/></g>
+</defs>
+<rect width="1440" height="760" fill="url(#sky)"/>
+<circle cx="1050" cy="100" r="190" fill="url(#sun)"/><circle cx="1050" cy="100" r="42" fill="#fff8de"/>
+<use href="#cloud" transform="translate(160 102) scale(1.6)"/><use href="#cloud" transform="translate(600 65) scale(.9)"/><use href="#cloud" transform="translate(1180 168) scale(1.3)"/>
+<path d="M0 317 148 248 215 278 338 190 439 269 520 227 643 313 760 201 877 292 1005 221 1148 310 1270 239 1440 304V600H0Z" fill="#a9c7c0" opacity=".65"/>
+<path d="m304 215 34-25 37 30-24-7-14 8-12-8Zm418 17 38-31 38 32-24-8-12 10-15-10Z" fill="#e3ead7" opacity=".8"/>
+<g fill="#d7ded4"><path d="M753 287v-66l15-19 16 19v66Z"/><path d="M782 287v-104l14-21 14 21v104Z"/><path d="M811 287v-80l12-18 12 18v80Z"/><path d="M740 280h104v32H740Z"/></g><g fill="#a6abbc"><path d="m751 221 17-31 18 31Zm29-38 16-33 16 33Zm29 24 14-29 14 29Z"/></g>
+<path d="M0 385C160 284 290 317 443 355S704 279 857 327s307-41 583-13V760H0Z" fill="#b6cea0"/>
+<path d="M0 430C170 350 305 423 485 390S816 354 982 389s300-43 458-27V760H0Z" fill="#9bc394"/>
+<g opacity=".8" transform="translate(850 362) scale(.6)"><use href="#cottage"/><use href="#cottage" transform="translate(135 -9) scale(.75)"/><use href="#tree" transform="translate(-25 5) scale(.5)"/><use href="#tree" transform="translate(239 4) scale(.7)"/></g>
+<path d="M1000 389C900 429 835 418 817 451c-36 36 97 33 140 60s-49 66-117 89l93 160h324c-54-136-178-154-159-195s-125-69-186-85c-45-14 10-40 36-52Z" fill="url(#river)"/>
+<path d="M0 499c189-44 291-72 476-29s250 24 335 9c93-19 160 32 111 72-38 35-11 58 25 93 14 15 27 56 35 116H0Z" fill="url(#grass)"/>
+<path d="M1120 493c112-45 235-37 320-8v275h-263c39-95-118-175-57-267Z" fill="#8bbd91"/>
+<path d="M-5 608c155 7 211-72 341-62s159 46 261 35 119-51 222-41" fill="none" stroke="#bad59b" stroke-width="24" opacity=".55"/>
+<path d="M0 696c204-66 339-23 482-33 166-9 292-31 461 30v67H0Z" fill="#7eb38a" opacity=".6"/>
+<g transform="translate(158 513) scale(1.55)"><use href="#tree"/></g><g transform="translate(44 533) scale(1.05)"><use href="#tree"/></g>
+<g transform="translate(1230 521) scale(1.5)"><use href="#cottage"/><path d="M30 0c-1 30-34 42-55 55" fill="none" stroke="#d6c6a1" stroke-width="20"/></g>
+<g transform="translate(1390 532) scale(1.15)"><use href="#tree"/></g>
+<g fill="#8eba88"><ellipse cx="157" cy="521" rx="106" ry="20"/><ellipse cx="1390" cy="538" rx="67" ry="19"/></g>
+<g fill="#709f75"><ellipse cx="32" cy="566" rx="57" ry="26"/><ellipse cx="73" cy="571" rx="43" ry="21"/><ellipse cx="1387" cy="589" rx="62" ry="27"/><ellipse cx="1445" cy="575" rx="61" ry="27"/></g>
+<g stroke="#e7e4c6" stroke-width="8" stroke-linecap="round"><path d="M1066 515v49m35-36v48m35-34v48m-78-62 88 32m-88-14 88 32"/></g>
+<g opacity=".65" stroke="#eef6dc" stroke-width="3" stroke-linecap="round"><path d="M920 440h28m-58 8h16m67 65h37m8 58h40m46 81h54m-69 11h25"/></g>
+<g><use href="#flower" x="285" y="588"/><use href="#flower" x="302" y="598"/><use href="#pinkflower" x="269" y="605"/><use href="#pinkflower" x="711" y="658"/><use href="#flower" x="730" y="646"/><use href="#flower" x="744" y="660"/><use href="#pinkflower" x="419" y="715"/><use href="#pinkflower" x="435" y="710"/><use href="#flower" x="454" y="726"/><use href="#flower" x="1260" y="652"/><use href="#pinkflower" x="1280" y="646"/><use href="#flower" x="1300" y="657"/><use href="#flower" x="89" y="691"/><use href="#pinkflower" x="111" y="701"/><use href="#flower" x="847" y="591"/><use href="#pinkflower" x="861" y="603"/></g>
+<g><use href="#grassblade" x="380" y="610"/><use href="#grassblade" x="423" y="553"/><use href="#grassblade" x="560" y="670"/><use href="#grassblade" x="632" y="596"/><use href="#grassblade" x="180" y="656"/><use href="#grassblade" x="779" y="713"/><use href="#grassblade" x="1245" y="709"/><use href="#grassblade" x="1332" y="609"/><use href="#grassblade" x="325" y="738"/><use href="#grassblade" x="588" y="744"/></g>
+<g fill="#f7edc7" opacity=".7"><ellipse cx="478" cy="510" rx="4" ry="2"/><ellipse cx="680" cy="410" rx="4" ry="2"/><ellipse cx="342" cy="445" rx="3" ry="2"/></g>
+<rect width="1440" height="760" fill="url(#grain)"/>
+</svg>

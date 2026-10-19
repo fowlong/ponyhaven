@@ -1,0 +1,77 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function invited() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/allowedUsers/$(request.auth.uid))
+        && get(/databases/$(database)/documents/allowedUsers/$(request.auth.uid)).data.enabled == true;
+    }
+    // Only the project owner/Admin SDK can create or edit invitations to the game.
+    match /allowedUsers/{uid} {
+      allow get: if request.auth != null && request.auth.uid == uid;
+      allow list, create, update, delete: if false;
+    }
+    function validSave() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['save','revision','updatedAt'])
+        && d.save is map && d.save.version == 1
+        && d.save.coins is number && d.save.coins >= 0
+        && d.save.collection is map && d.save.ponyProgress is map && d.save.petUnlocks is list
+        && d.save.name is string && d.save.name.size() > 0 && d.save.name.size() <= 24
+        && d.revision is int && d.updatedAt == request.time;
+    }
+    match /players/{uid} {
+      allow get: if invited() && request.auth.uid == uid;
+      allow list, delete: if false;
+      allow create: if invited() && request.auth.uid == uid && validSave() && request.resource.data.revision == 1;
+      allow update: if invited() && request.auth.uid == uid && validSave() && request.resource.data.revision == resource.data.revision + 1;
+    }
+    match /meadow/{uid} {
+      allow read: if invited();
+      allow create, update: if invited() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['name','ponyId','rarity','tier','x','roomCode','hostedRoom','updatedAt'])
+        && request.resource.data.name is string && request.resource.data.name.size() <= 24
+        && request.resource.data.ponyId is string && request.resource.data.ponyId.size() < 100
+        && request.resource.data.rarity is string && request.resource.data.rarity.size() < 10
+        && request.resource.data.tier is number && request.resource.data.tier >= 0 && request.resource.data.tier <= 7
+        && request.resource.data.x is number && request.resource.data.x >= 5 && request.resource.data.x <= 95
+        && request.resource.data.roomCode is string && request.resource.data.roomCode.size() <= 8
+        && request.resource.data.hostedRoom is string && request.resource.data.hostedRoom.size() <= 8
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if invited() && request.auth.uid == uid;
+    }
+    function validRoom() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['hostUid','hostName','background','customBackground','time','updatedAt','expiresAt'])
+        && d.hostUid == request.auth.uid
+        && d.hostName is string && d.hostName.size() <= 24
+        && d.background is string && d.background.size() < 160
+        && d.customBackground is string && d.customBackground.size() < 480000
+        && (d.customBackground == '' || d.customBackground.matches('^data:image/webp;base64,[A-Za-z0-9+/=]+$'))
+        && d.time in ['day','night'] && d.updatedAt == request.time
+        && d.expiresAt is number && d.expiresAt > request.time.toMillis()
+        && d.expiresAt <= request.time.toMillis() + 28860000;
+    }
+    match /rooms/{code} {
+      allow get: if invited();
+      allow list: if false;
+      allow create: if invited() && code.matches('^[A-Z2-9]{8}$') && validRoom();
+      allow update: if invited() && resource.data.hostUid == request.auth.uid && validRoom();
+      allow delete: if invited() && resource.data.hostUid == request.auth.uid;
+    }
+    match /invitations/{uid} {
+      allow get, delete: if invited() && request.auth.uid == uid;
+      allow list: if false;
+      allow create, update: if invited()
+        && request.resource.data.keys().hasOnly(['fromUid','fromName','code','expiresAt'])
+        && request.resource.data.fromUid == request.auth.uid
+        && request.resource.data.fromName is string && request.resource.data.fromName.size() <= 24
+        && request.resource.data.code is string && request.resource.data.code.matches('^[A-Z2-9]{8}$')
+        && exists(/databases/$(database)/documents/rooms/$(request.resource.data.code))
+        && request.resource.data.expiresAt is number
+        && request.resource.data.expiresAt > request.time.toMillis()
+        && request.resource.data.expiresAt <= request.time.toMillis() + 360000;
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

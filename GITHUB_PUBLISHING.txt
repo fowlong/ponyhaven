@@ -1,0 +1,63 @@
+PONYHAVEN - PUBLISH THE PHONE COMPANION
+======================================
+
+Firebase project: mlp4kt
+GitHub account: fowlong
+Planned repository: https://github.com/fowlong/ponyhaven
+Planned companion: https://fowlong.github.io/ponyhaven/
+These URLs become live only after the publisher and GitHub Actions succeed.
+
+Run Publish-Ponyhaven.cmd by double-clicking it in the project folder.
+Or, in an ordinary PowerShell terminal:
+
+  cd C:\Users\calla\Desktop\MLPKT
+  npm run publish:github
+
+The publisher:
+  - prepares an audited source/art snapshot, excluding private/local files;
+  - downloads the official portable GitHub CLI if it is not installed,
+    checking the release's SHA-256 checksum before extraction;
+  - prompts for GitHub's normal browser sign-in if needed;
+  - creates the public fowlong/ponyhaven source repository;
+  - reads only the four public Firebase values from .env.local and sets
+    them as repository Actions variables;
+  - commits and pushes source from tmp/github-publish, enables Pages,
+    and starts the included mobile companion deployment workflow.
+
+Use the fowlong account for the GitHub sign-in. Do not send tokens or
+passwords in chat. The publisher does not copy the .env.local file,
+private account files, progress saves, native engine files, or the
+desktop release into the repository. It never force-pushes or changes
+an existing repository from private to public.
+
+The app and card art are about 343 MB of source assets. Initial upload
+can take several minutes. Keep the terminal open until it prints the
+repository and companion URLs. Then check the repository's Actions tab
+for a green "Publish Ponyhaven to GitHub Pages" deployment.
+
+Firebase Authentication > Settings > Authorized domains should include:
+
+  fowlong.github.io
+
+After deployment, open the companion URL and sign in with an invited
+Firebase account. The same account links through Connect mobile sync
+in the rebuilt desktop app. Wait for Cloud saved before switching devices.
+
+For future edits, rerun the publisher from the main MLPKT folder. The
+generated Git checkout is in tmp/github-publish; keep it if you want to
+publish updates from this workspace. If someone changes the repository
+on GitHub, the publisher stops rather than overwriting that history.
+
+If pushing the workflow says the token lacks workflow scope, run the
+GitHub CLI's auth refresh --hostname github.com --scopes workflow,
+then rerun the publisher. The downloaded CLI is tmp/github-cli/bin/gh.exe.
+
+Local preparation without network or publishing:
+
+  node scripts/publish-github.mjs --prepare-only
+
+The development agent cannot create a repository through the connected
+GitHub plugin, and its restricted terminal cannot access GitHub or the
+Windows credential store. Running the publisher in your ordinary terminal
+provides that missing authenticated connection; it needs no Firebase
+Admin key and no private GitHub repository for credentials.

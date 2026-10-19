@@ -1,0 +1,174 @@
+# Ponyhaven desktop setup
+
+Ponyhaven is a free personal fan game. Electron keeps the existing meadow, cards,
+shop and Magic Blocks interface, and launches Adventure and Ponykart in their own
+native Windows game windows. Local solo play needs no backend after activation.
+Optional Firebase sync connects a GitHub Pages phone companion; see
+[MOBILE_SYNC_SETUP.md](MOBILE_SYNC_SETUP.md). Supabase is not used.
+
+## For friends
+
+1. Extract the entire `Ponyhaven-win32-x64` folder somewhere writable, such as
+   `Documents/Ponyhaven`. Keep its `resources` folder and DLLs beside the app.
+2. Run `Ponyhaven.exe`. Enter your chosen username and the invitation license key
+   supplied by your host. An internet connection is required for this activation.
+3. Choose your first pony. Later launches use your saved activation and profile;
+   solo play works offline. No key is stored in the renderer or sent to friends.
+4. Use Settings → Export save regularly. Import save restores that progress into
+   the current local profile. A backup does not carry the license activation.
+
+Progress is saved under `%APPDATA%/Ponyhaven/Ponyhaven/profiles/<profile-id>/`.
+Windows may retain the package name `ponyhaven` as the first directory; Windows
+paths are case insensitive. Profile names are display names, while a stable ID
+keeps progress intact when you rename a profile.
+
+Settings → Manage local profiles creates or selects another independent local
+profile. This is convenient for a shared computer, not separate licensing for
+each name. Settings → Start this profile again requires typing `RESET`, creates
+a recovery backup, and clears cards, unlocked pets, bits and game records. It
+keeps activation. Imported scenery/preferences and level files are local settings.
+Close a native game before resetting or switching profiles.
+
+## Owner: issue free invitations
+
+The app verifies keys for your existing [MLP4KT Gumroad product](https://phishwatcher.gumroad.com/l/smbxq).
+The public product ID and permalink are in `desktop/product.json`; neither is a
+secret. License keys must be enabled in the product settings. Issue your friends
+valid keys for this product through your Gumroad account, using your free access
+arrangement. The game has no checkout, purchase prompt, paid currency or ads.
+
+See [Gumroad's license-key guide](https://gumroad.com/help/article/76-license-keys)
+for the seller workflow. The app uses the documented license verification endpoint,
+validates the product and rejection/refund/chargeback status, and does not increment
+the key's use count on retries. No seller API token is needed or bundled.
+
+The activation receipt is encrypted by Electron's Windows `safeStorage`; the raw
+license key is discarded. This is intentionally one-time access control. Revoking
+a key prevents a new activation but does not remotely revoke an already activated,
+offline installation. A new computer needs its own initial verification.
+
+The first real key activation remains a manual acceptance check: no real key was
+provided during development. Tests inject provider responses only into test code.
+
+## Native games and controls
+
+Adventure uses SRB2 2.2.15 with the supplied older pony artwork converted to the
+current sprite format and palette. Ponykart uses SRB2Kart 1.6 and the supplied
+Mane Six pack. Character choices are available in the launcher. Native menus use
+Ponyhaven's simple pause/return screen. Source credits remain in the distribution.
+
+| Game | Controls | Rewards |
+| --- | --- | --- |
+| Adventure | WASD move, left/right arrows turn, Space jump/ability, X spin | 10 bits per newly collected ring; 100 on finishing |
+| Ponykart | W/up accelerate, S/down brake, A/D or arrows steer, Space drift, X item | 50 bits per lap, up to 3; 200 on finishing |
+| Both | Esc opens the pause menu; Enter/Esc resumes; Q exits from that menu; Alt+Enter toggles fullscreen | Progress is saved as it arrives |
+
+SRB2Kart 1.6 has no collectible rings, so races reward laps and completion instead.
+Dropped Adventure rings do not pay again when picked up. Rewards use cumulative
+session counters so reading the same update twice does not pay twice. Individual
+course runs return to the launcher; hosted games let friends finish before the
+host closes the game. Best scores and race times appear in Leaderboard.
+
+The native engines are Windows desktop games. Their mobile touchscreen ports are
+not included. The meadow, collection, shop and Magic Blocks retain their responsive
+browser layout. Fullscreen is available for the app and each native game.
+
+## Pastel scenery and custom levels
+
+Each game has an **A softer world** setting: original, gentle, pastel or extra soft.
+It transforms the private wall, floor and sky texture caches when loaded, rather
+than modifying the shared palette. Pony sprites, object sprites and HUD artwork
+are excluded. This also means scenery made from decorative object sprites keeps
+its original colours. Lighting and normal gameplay effects remain active.
+
+Adventure's old pony sprites use a different palette from SRB2 2.2. They are
+converted once using the legacy RGB values, preserving their character colours
+within the new engine's available palette. This conversion is separate from the
+optional scenery treatment. Ponykart uses each supplied skin's preferred colour.
+
+Use **Import a level pack** on the appropriate game tab. Supported inputs are
+standalone SRB2 2.2 Adventure or SRB2Kart 1.6 map packs, `.wad` or `.pk3`, up to
+128 MB. The importer reads map identifiers and level titles, then copies the pack
+into the current profile. The original file is untouched. Imported packs can be
+removed from the expandable list on the same screen.
+
+Maps with textures and ordinary level headers are supported. Scripted mods, Lua,
+replacement characters, palette replacements and total conversions are rejected;
+they require a separate compatibility review. An importer cannot make a level
+from another engine/version compatible. Scenery treatment automatically covers
+new compatible maps. An imported pack's checksum separates its race records from
+built-in courses with the same map number.
+
+For a custom multiplayer map, each friend imports the identical file into the
+same game first. The invite checks its checksum. Packs are not downloaded from
+other players automatically.
+
+## Shared meadow and game invites
+
+Open the friends button and host a meadow, then share the eight-character code
+with your friends. They choose Join and enter the code. The host chooses the
+shared background. Connected friends and their current ponies appear in the
+party list. The app does not maintain an always-online directory of all licensed
+users; an offline installation cannot discover those users without a central
+account/presence service.
+
+The same party can host Adventure or Ponykart from its game tab. Guests select
+Join when the host starts. Keep Ponyhaven open behind the game: it carries the
+native game packets over the party's WebRTC connection. Native game sockets bind
+to loopback and do not advertise a public server. Leave the native game before
+changing party hosts. The code closes when the host leaves or closes the app.
+
+PeerJS's public signaling service introduces peers; WebRTC carries their data.
+There is no paid service or account setup for the owner. Signaling requires an
+internet connection and that public service's availability. Some restrictive
+routers/firewalls block direct WebRTC connections; no TURN relay is bundled.
+This means invite play cannot yet be promised across every pair of home networks.
+The native engines themselves are not run inside the web page.
+
+Leaderboards store personal records locally. Party members exchange their latest
+records and remember them on that computer. These are friendly shared records,
+not a centrally verified global leaderboard.
+
+## Build from this workspace
+
+Requires Node.js 22+, Python with Pillow, CMake, Visual Studio 2022's C++ tools
+and ClangCL for native builds. The existing `native` directory already contains
+locally prepared engines. Do not commit the large runtime files to the source repo.
+
+```powershell
+npm install
+npm run desktop
+```
+
+For a fresh native build, set `PONYHAVEN_MODS` to the folder containing `pony wads`
+and `ponykart mod`, then run the preparation script. Source/release downloads are
+pinned in `engines/downloads.json` and checked against SHA-256 hashes.
+
+```powershell
+$env:PONYHAVEN_MODS = 'C:\path\to\your\pony-assets'
+python scripts/prepare-native.py
+npm run desktop:package
+```
+
+The portable folder is `release/Ponyhaven-win32-x64`. Keep its accompanying
+`engine-sources.zip`, licenses and attribution files when sharing it. That source
+archive includes the upstream source archives and the exact modification/build
+scripts for the native engines. `engines/README.md` describes their changes.
+
+Useful checks:
+
+```powershell
+npm test
+node --test tests/desktop.test.mjs
+python scripts/qa-native.py --roster
+node scripts/qa-desktop.mjs
+```
+
+`qa-desktop.mjs` uses an isolated workspace profile and a simulated Gumroad response.
+It never activates the real user profile. If an agent/sandbox environment prevents
+Electron's child processes from reading the installed runtime, run this check from
+an ordinary local terminal. Keep the production Electron renderer sandbox enabled.
+
+The browser desktop integration harness also exercises the real filesystem and
+native-process modules. Its `--network` mode runs a local PeerServer for repeatable
+WebRTC tests; this is a test dependency, not a required production service.

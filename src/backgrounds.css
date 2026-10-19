@@ -1,0 +1,65 @@
+/* Feet, floor and pony size share the source image's cover projection. */
+.meadow-scene {
+  background-position: var(--scene-focus, 50%) bottom;
+  --floor: 79%;
+  --sprite-scale: 1.35;
+}
+.meadow-scene .pet-wrap,
+.meadow-scene .friend-pony {
+  bottom: calc(100% - var(--floor));
+  min-height: 0;
+  min-width: 0;
+  padding: 0;
+}
+.meadow-scene .pet-wrap > img,
+.meadow-scene .friend-pony > img {
+  display: block;
+  width: calc(var(--native-width, 92px) * var(--sprite-scale));
+  height: auto;
+  max-width: min(70vw, 420px);
+  max-height: min(calc(var(--floor) - 48px), 280px);
+  transform: none;
+  margin: 0;
+  object-fit: contain;
+  object-position: bottom;
+  filter: drop-shadow(0 3px 2px #263f3c40);
+}
+.meadow-scene .pet-name,
+.meadow-scene .friend-label {
+  position: absolute;
+  top: calc(100% + 8px);
+  margin: 0;
+  white-space: nowrap;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.meadow-scene .pet-wrap .pet-aura,
+.meadow-scene .friend-pony .pet-aura {
+  bottom: -5px;
+  width: 90%;
+  min-width: 40px;
+  height: 16px;
+}
+.meadow-scene .pony-sparkles {
+  width: calc(100% + 22px);
+  height: calc(100% + 10px);
+  bottom: 0;
+}
+.meadow-scene .care-prop {
+  bottom: calc(100% - var(--floor) + 40px * var(--sprite-scale));
+}
+.meadow-scene .care-play {
+  bottom: calc(100% - var(--floor) + 6px);
+}
+.meadow-scene .care-rest {
+  bottom: calc(100% - var(--floor) + 64px * var(--sprite-scale));
+}
+.meadow-scene .pet-wrap.rarity-4 > img,
+.meadow-scene .pet-wrap.rarity-5 > img {
+  filter: drop-shadow(0 0 2px #f9d99485) drop-shadow(0 3px 2px #263f3c40);
+}
+.meadow-scene .pet-wrap.rarity-6 > img,
+.meadow-scene .pet-wrap.rarity-7 > img {
+  filter: drop-shadow(0 0 3px #edb8ef90) drop-shadow(0 3px 2px #263f3c40);
+}

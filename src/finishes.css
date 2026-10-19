@@ -1,0 +1,389 @@
+/* A narrow highlight and an edge finish preserve the underlying card artwork. */
+.rarity-0 {
+  --rarity-color: #a4b5ad;
+  --finish-strength: 0.13;
+  --glint-opacity: 0;
+}
+.rarity-1 {
+  --rarity-color: #b5c9c5;
+  --finish-strength: 0.18;
+  --glint-opacity: 0.25;
+}
+.rarity-2 {
+  --rarity-color: #a6c9e9;
+  --finish-strength: 0.22;
+  --glint-opacity: 0.42;
+}
+.rarity-3 {
+  --rarity-color: #c6a3ef;
+  --finish-strength: 0.25;
+  --glint-opacity: 0.58;
+}
+.rarity-4 {
+  --rarity-color: #e5bf70;
+  --finish-strength: 0.28;
+  --glint-opacity: 0.68;
+}
+.rarity-5 {
+  --rarity-color: #f3cf7e;
+  --finish-strength: 0.3;
+  --glint-opacity: 0.78;
+}
+.rarity-6 {
+  --rarity-color: #e9a6cd;
+  --finish-strength: 0.31;
+  --glint-opacity: 0.82;
+}
+.rarity-7 {
+  --rarity-color: #c9b3ff;
+  --finish-strength: 0.33;
+  --glint-opacity: 0.9;
+}
+.card-image {
+  isolation: isolate;
+  box-shadow:
+    0 0 0 1.5px color-mix(in srgb, var(--rarity-color) 75%, transparent),
+    0 5px 15px #30263c15;
+}
+.card-image .foil {
+  display: block;
+  z-index: 1;
+  opacity: var(--finish-strength);
+  mix-blend-mode: screen;
+  background: linear-gradient(115deg, transparent 32%, #fff 45%, #fff 48%, transparent 58%);
+  background-size: 250% 180%;
+  background-position: 52% 50%;
+  animation: card-sheen 6s ease-in-out infinite;
+}
+.card-image.rarity-0 .foil,
+.card-image.rarity-1 .foil {
+  animation-duration: 9s;
+}
+.card-image.rarity-3 .foil {
+  background-image: linear-gradient(
+    115deg,
+    transparent 32%,
+    #b9bfff 42%,
+    #fff 47%,
+    #e3a8f3 51%,
+    transparent 58%
+  );
+}
+.card-image.rarity-4 .foil,
+.card-image.rarity-5 .foil {
+  background-image: linear-gradient(
+    115deg,
+    transparent 32%,
+    #ffc96b 42%,
+    #fff5d4 47%,
+    #ffe5a8 51%,
+    transparent 58%
+  );
+}
+.card-image.rarity-6 .foil,
+.card-image.rarity-7 .foil {
+  background-image: linear-gradient(
+    115deg,
+    transparent 30%,
+    #8ee4ff 38%,
+    #ddb0ff 43%,
+    #fff 47%,
+    #ffbbd4 51%,
+    #ffedaa 55%,
+    transparent 62%
+  );
+  animation-duration: 5.5s;
+}
+.card-image:after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border: 1px solid color-mix(in srgb, var(--rarity-color) 65%, transparent);
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+}
+.card-glints {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: var(--glint-opacity);
+}
+.card-glints i {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  background: #fff9e9;
+  filter: drop-shadow(0 0 3px var(--rarity-color));
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+  animation: edge-glint 3.8s ease-in-out infinite;
+}
+.card-glints i:nth-child(1) {
+  top: 8%;
+  left: 1%;
+  animation-delay: -1s;
+}
+.card-glints i:nth-child(2) {
+  top: 61%;
+  right: 1%;
+  width: 9px;
+  height: 9px;
+  animation-delay: -2.7s;
+}
+.card-glints i:nth-child(3) {
+  bottom: 2%;
+  left: 33%;
+  width: 11px;
+  height: 11px;
+  animation-delay: -0.3s;
+}
+.rarity-0 .card-glints,
+.rarity-1 .card-glints {
+  display: none;
+}
+.rarity-2 .card-glints i:nth-child(n + 2) {
+  display: none;
+}
+.duplicate-count {
+  z-index: 3;
+}
+.finish-note {
+  font-size: 11px;
+  color: #8b7196;
+  margin-top: 9px;
+}
+.recent-card .recent-art {
+  flex-shrink: 0;
+  display: block;
+  width: 74px;
+  height: 106px;
+  border-radius: 7px;
+  overflow: hidden;
+}
+.recent-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.recent-card > div:not(.recent-art) {
+  display: flex;
+  flex-direction: column;
+}
+/* Sparkles sit outside the sprite silhouette; the soft ring rests on the grass. */
+.pet-wrap {
+  --move-time: 2.4s;
+  transition: left var(--move-time) linear !important;
+}
+.pet-wrap .pet-aura,
+.friend-pony .pet-aura {
+  z-index: -1;
+  position: absolute;
+  bottom: 25px;
+  width: 112px;
+  height: 22px;
+  filter: blur(1.3px);
+  border: 1px solid color-mix(in srgb, var(--rarity-color) 65%, transparent);
+  background: radial-gradient(
+    ellipse,
+    color-mix(in srgb, var(--aura) 24%, transparent),
+    color-mix(in srgb, var(--rarity-color) 33%, transparent) 55%,
+    transparent 72%
+  );
+  opacity: 0.6;
+  border-radius: 50%;
+}
+.pet-wrap.rarity-0 .pet-aura,
+.pet-wrap.rarity-1 .pet-aura {
+  opacity: 0.35;
+}
+.pet-wrap.rarity-5:after,
+.pet-wrap.rarity-6:after,
+.pet-wrap.rarity-7:after {
+  content: none;
+}
+.pony-sparkles {
+  position: absolute;
+  bottom: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 120px;
+  width: 160px;
+  pointer-events: none;
+  z-index: 2;
+}
+.pony-sparkles i {
+  position: absolute;
+  color: var(--rarity-color);
+  font-size: 18px;
+  line-height: 1;
+  font-style: normal;
+  text-shadow:
+    0 0 3px #fff,
+    0 0 6px #fff;
+  animation: pony-glimmer 3.6s ease-in-out infinite;
+}
+.pony-sparkles i:nth-child(1) {
+  left: 0;
+  top: 37%;
+  animation-delay: -1s;
+}
+.pony-sparkles i:nth-child(2) {
+  right: 0;
+  top: 5%;
+  font-size: 11px;
+  animation-delay: -2.2s;
+}
+.pony-sparkles i:nth-child(3) {
+  right: 9%;
+  bottom: 0;
+  font-size: 14px;
+  animation-delay: -0.4s;
+}
+.rarity-0 .pony-sparkles {
+  opacity: 0.35;
+}
+.rarity-1 .pony-sparkles {
+  opacity: 0.55;
+}
+.rarity-2 .pony-sparkles {
+  opacity: 0.7;
+}
+.rarity-0 .pony-sparkles i:nth-child(n + 2),
+.rarity-1 .pony-sparkles i:nth-child(n + 2) {
+  display: none;
+}
+.rarity-2 .pony-sparkles i:nth-child(3) {
+  display: none;
+}
+.friend-pony .pony-sparkles {
+  width: 140px;
+  height: 100px;
+  bottom: 35px;
+}
+.friend-pony > .pet-aura,
+.friend-pony > .pony-sparkles {
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  background: none;
+}
+.friend-pony > .pet-aura {
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    color-mix(in srgb, var(--rarity-color) 30%, transparent),
+    transparent 72%
+  );
+}
+.pet-preview {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 90px;
+  min-width: 120px;
+}
+.pet-preview > img {
+  max-height: 75px;
+  max-width: 100px;
+  image-rendering: pixelated;
+}
+.pet-preview .pony-sparkles {
+  width: 112px;
+  height: 75px;
+  bottom: 8px;
+}
+.pet-preview .pet-aura {
+  bottom: 8px;
+  width: 90px;
+  height: 15px;
+  opacity: 0.3;
+  filter: blur(3px);
+  background: var(--rarity-color);
+}
+.unlock-preview .pet-preview img {
+  max-width: 65px;
+  max-height: 65px;
+}
+.unlock-preview .pet-preview {
+  min-width: 80px;
+  min-height: 80px;
+}
+.unlock-preview .pet-preview .pony-sparkles {
+  width: 78px;
+  height: 65px;
+}
+@keyframes card-sheen {
+  0%,
+  100% {
+    background-position: 78% 35%;
+  }
+  50% {
+    background-position: 18% 65%;
+  }
+}
+@keyframes edge-glint {
+  0%,
+  100% {
+    transform: scale(0.6);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes pony-glimmer {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translateY(3px) scale(0.8);
+  }
+  50% {
+    opacity: 0.95;
+    transform: translateY(-3px) scale(1);
+  }
+}
+.reduced-motion .card-image .foil {
+  display: block;
+  animation: none !important;
+  background-position: 48% 50%;
+  opacity: calc(var(--finish-strength) * 0.7);
+}
+.reduced-motion .pony-sparkles i,
+.reduced-motion .card-glints i {
+  animation: none !important;
+  opacity: 0.65;
+}
+@media (prefers-reduced-motion: reduce) {
+  .card-image .foil,
+  .pony-sparkles i,
+  .card-glints i {
+    animation: none !important;
+  }
+  .card-image .foil {
+    background-position: 48% 50%;
+  }
+}
+@media (max-width: 900px) {
+  .recent-card > div.recent-art {
+    display: block;
+  }
+  .recent-card > div:not(.recent-art) {
+    display: none;
+  }
+}
+@media (max-width: 620px) {
+  .recent-card > div:not(.recent-art) {
+    display: flex;
+  }
+  .recent-card .recent-art {
+    width: 68px;
+    height: 100px;
+  }
+  .pony-sparkles {
+    width: 140px;
+    height: 110px;
+  }
+}

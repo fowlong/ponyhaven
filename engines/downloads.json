@@ -1,0 +1,26 @@
+[
+  {
+    "file": "srb2-windows.zip",
+    "url": "https://github.com/STJr/SRB2/releases/download/SRB2_release_2.2.15/SRB2-v2215-Full.zip",
+    "sha256": "3eda3080ab87940fca5e4dcd22b8e041dc1d9e65bfe9177bff68383e9bd58a10",
+    "directory": "srb2-windows"
+  },
+  {
+    "file": "kart-installer.exe",
+    "url": "https://github.com/STJr/Kart-Public/releases/download/v1.6/srb2kart-v16-Installer.exe",
+    "sha256": "1b3d86aa599de11e58d6a8595e115e896a89ef18db90a783bbc0f7f2503fc53f",
+    "directory": "kart-windows"
+  },
+  {
+    "file": "srb2-native-source.zip",
+    "url": "https://github.com/STJr/SRB2/archive/refs/tags/SRB2_release_2.2.15.zip",
+    "sha256": "3c6a3b5bb2912fa9056d17d9d02b06086156c131aa026a93f644969c69df56eb",
+    "directory": "srb2-native-source"
+  },
+  {
+    "file": "kart-native-source.zip",
+    "url": "https://github.com/STJr/Kart-Public/archive/refs/tags/v1.6.zip",
+    "sha256": "b46af50d68344f38032027aacf58166b2fffb1b8f3b1f27101fb78cafccd93dd",
+    "directory": "kart-native-source"
+  }
+]

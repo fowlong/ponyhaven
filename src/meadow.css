@@ -1,0 +1,329 @@
+.meadow-effect-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+#interaction-cameos {
+  z-index: 3;
+}
+#care-effects {
+  z-index: 6;
+}
+.native-effect {
+  position: absolute;
+  image-rendering: pixelated;
+  max-width: 65%;
+  max-height: 85%;
+  pointer-events: none;
+}
+.event-cameo {
+  position: absolute;
+  bottom: 21%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.event-cameo img {
+  max-width: 140px;
+  max-height: 145px;
+  image-rendering: pixelated;
+}
+.event-cameo small {
+  font-size: 9px;
+  background: #fffbe0b8;
+  padding: 3px 7px;
+  border-radius: 9px;
+  color: #74606e;
+}
+.care-prop {
+  position: absolute;
+  bottom: 36%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: #e5a3ba;
+}
+.care-prop > .icon {
+  width: 31px;
+  height: 31px;
+  color: #e39d68;
+  filter: drop-shadow(0 2px 2px #fff);
+  animation: treat-bob 1.2s ease-in-out infinite;
+}
+.care-prop i {
+  font-style: normal;
+  font-size: 25px;
+  animation: care-float 2s ease-out infinite;
+}
+.care-feed {
+  margin-left: 49px;
+}
+.care-rest {
+  margin-left: 50px;
+  bottom: 45%;
+  color: #b1a0d3;
+}
+.care-rest i {
+  font-size: 16px;
+  animation-duration: 3s;
+}
+.care-rest i:nth-child(2) {
+  animation-delay: -1s;
+}
+.care-rest i:nth-child(3) {
+  animation-delay: -2s;
+  font-size: 23px;
+}
+.care-play {
+  bottom: 27%;
+}
+.play-ball {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: conic-gradient(#cfaee8 0 90deg, #f3d793 90deg 180deg, #9bcbbb 180deg 270deg, #e6adc0 270deg);
+  border: 2px solid #fff9;
+  box-shadow: 0 3px 4px #557f6d20;
+  animation: ball-bounce 0.8s ease-in-out infinite !important;
+}
+.invite-button {
+  min-height: 36px;
+  font-size: 11px;
+  padding: 8px 12px;
+  margin: 8px 0;
+}
+.friendship-panel #friend-status {
+  font-size: 10px;
+  margin-top: 3px;
+}
+.friendship-panel .text-button {
+  font-size: 11px;
+}
+.pet-panel > .daily-note {
+  font-size: 10px;
+  line-height: 1.6;
+}
+.need > div > span {
+  font-size: 12px;
+}
+.need strong {
+  font-size: 11px;
+}
+.care-actions button small {
+  font-size: 10px;
+}
+.pet-panel-heading .eyebrow {
+  font-size: 9px;
+}
+.card-meta > small {
+  font-size: 9px;
+}
+.rarity-label {
+  font-size: 10px;
+}
+.small-panel p:not(.eyebrow) {
+  font-size: 11px;
+}
+.small-panel .eyebrow {
+  font-size: 8px;
+}
+.gift-panel > .button {
+  font-size: 10px;
+}
+@keyframes treat-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-8deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(6deg);
+  }
+}
+@keyframes care-float {
+  0% {
+    opacity: 0;
+    transform: translateY(5px) scale(0.8);
+  }
+  25%,
+  70% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-28px) scale(1);
+  }
+}
+@keyframes ball-bounce {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  50% {
+    transform: translateY(-18px) rotate(80deg);
+  }
+}
+.reduced-motion .pet-wrap {
+  transition: none !important;
+}
+.reduced-motion .care-prop i {
+  opacity: 0.75;
+}
+.reduced-motion .play-ball {
+  animation: none !important;
+}
+@media (max-width: 620px) {
+  .meadow-scene .native-effect {
+    max-width: 65%;
+  }
+  .event-cameo img {
+    max-width: 100px;
+    max-height: 115px;
+  }
+  .event-cameo small {
+    font-size: 8px;
+  }
+  .friend-pony > img {
+    max-width: 110px;
+    max-height: 100px;
+  }
+  .friend-pony > .friend-label {
+    font-size: 8px;
+    max-width: 130px;
+    text-align: center;
+  }
+  .friendship-panel #friend-status {
+    font-size: 10px;
+  }
+  .care-actions button small {
+    display: none;
+  }
+  .pet-profile .rarity-label {
+    font-size: 10px;
+  }
+  .small-panel .eyebrow {
+    font-size: 8px;
+  }
+  .gift-panel h3 {
+    font-size: 13px;
+  }
+  .gift-panel {
+    flex-wrap: wrap;
+  }
+  .gift-panel > .button {
+    margin-left: 51px;
+    font-size: 11px;
+  }
+  .card-meta .pet-included {
+    font-size: 9px;
+  }
+  .card-meta > small {
+    font-size: 9px;
+  }
+  .collection-toolbar select {
+    font-size: 11px;
+  }
+  .collection-summary,
+  .checkbox-label {
+    font-size: 11px;
+  }
+  .ownership {
+    font-size: 10px;
+  }
+  .pack-details .eyebrow {
+    font-size: 8px;
+  }
+  .pack-details p {
+    font-size: 11px;
+  }
+  .pack-pool {
+    font-size: 9px;
+  }
+  .pack-details > .button {
+    font-size: 11px;
+  }
+  .pack-details > .text-button {
+    font-size: 10px;
+  }
+  .pack-product {
+    grid-template-columns: 100px 1fr;
+    gap: 17px;
+  }
+  .pack-product > .pack-art {
+    width: 100px;
+    height: 190px;
+  }
+  .page-heading:has([data-action='block-help']) {
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 9px;
+    padding: 15px 0 12px;
+  }
+  .page-heading:has([data-action='block-help']) h1 {
+    font-size: 24px;
+  }
+  .page-heading:has([data-action='block-help']) .eyebrow {
+    font-size: 7px;
+  }
+  .page-heading:has([data-action='block-help']) .subheading {
+    display: none;
+  }
+  .page-heading > [data-action='block-help'] {
+    font-size: 9px;
+    padding: 8px;
+    white-space: nowrap;
+  }
+  .blocks-layout {
+    gap: 10px;
+  }
+  .board-wrap {
+    width: min(100%, max(135px, calc((100dvh - 380px) / 2)));
+    margin: auto;
+  }
+  .game-score-panel {
+    gap: 7px;
+  }
+  .score-box,
+  .game-stat-row,
+  .preview-box {
+    padding: 8px;
+  }
+  .preview-box .mini-blocks {
+    grid-auto-rows: 11px;
+    margin: 4px 0;
+    gap: 1px;
+  }
+  .earned-bits {
+    padding: 8px 3px;
+  }
+  .earned-bits > strong {
+    font-size: 21px;
+  }
+  .game-stat-row strong {
+    font-size: 16px;
+  }
+  .game-center {
+    align-self: start;
+  }
+  .touch-controls button {
+    min-height: 39px;
+  }
+  .magic-companion select {
+    width: 97px;
+    font-size: 10px;
+  }
+  .magic-companion h2 {
+    font-size: 12px;
+  }
+  .magic-companion {
+    grid-template-columns: 42px 1fr auto;
+    padding: 9px;
+    gap: 6px;
+  }
+  .keyboard-guide {
+    display: none;
+  }
+}

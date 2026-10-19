@@ -1,0 +1,49 @@
+{
+  "name": "ponyhaven",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "desktop/main.mjs",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "desktop": "npm run build && electron .",
+    "desktop:start": "electron .",
+    "desktop:package": "npm run build && node scripts/package-desktop.mjs",
+    "publish:github": "node scripts/publish-github.mjs",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "tsx --test tests/*.test.ts",
+    "test:browser": "node scripts/qa.mjs",
+    "test:care": "node scripts/qa-care.mjs",
+    "test:cloud": "node scripts/qa-cloud.mjs",
+    "test:sync": "node scripts/qa-sync.mjs",
+    "test:desktop": "node --test tests/desktop.test.mjs",
+    "test:desktop-browser": "node scripts/qa-desktop-browser.mjs",
+    "test:native-network": "node scripts/qa-native-network.mjs",
+    "test:backgrounds": "node scripts/qa-backgrounds.mjs",
+    "test:walking": "node scripts/qa-walking.mjs",
+    "format": "prettier --write src scripts tests *.json *.ts *.html .github/workflows/*.yml",
+    "accounts": "node scripts/accounts.mjs",
+    "cards:cache": "node scripts/cache-cards.mjs",
+    "catalog:import": "node scripts/import-catalog.mjs",
+    "catalog:compile": "node scripts/import-catalog.mjs --cached"
+  },
+  "dependencies": {
+    "firebase": "^12.4.0",
+    "peerjs": "^1.5.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.18.0",
+    "electron": "^44.9.0",
+    "firebase-admin": "^14.5.0",
+    "peer": "^1.0.2",
+    "playwright": "^1.56.1",
+    "prettier": "^3.9.10",
+    "tsx": "^4.20.6",
+    "typescript": "~5.9.3",
+    "vite": "^7.1.12"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "^1.13.6"
+  }
+}
