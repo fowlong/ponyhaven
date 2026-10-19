@@ -8,6 +8,7 @@ import { verifyLicense, username } from './license.mjs';
 import { LocalRelay } from './relay.mjs';
 import { NativeGames } from './games.mjs';
 import { LevelLibrary } from './levels.mjs';
+import { guardNavigation } from './navigation.mjs';
 
 const here=path.dirname(fileURLToPath(import.meta.url)), root=path.dirname(here);
 const product=JSON.parse(readFileSync(path.join(here,'product.json'),'utf8'));
@@ -44,7 +45,7 @@ async function start() {
   win=new BrowserWindow({width:1440,height:960,minWidth:760,minHeight:600,backgroundColor:'#f9f7ff',title:'Ponyhaven',autoHideMenuBar:true,
     webPreferences:{preload:path.join(here,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true,webSecurity:true,backgroundThrottling:false}});
   win.webContents.session.setPermissionRequestHandler((_web,permission,callback)=>callback(permission==='fullscreen'));
-  win.webContents.on('will-navigate',(event)=>event.preventDefault());
+  win.webContents.on('will-navigate',guardNavigation);
   win.webContents.setWindowOpenHandler(({url})=>{
     try { const u=new URL(url); if (u.protocol==='https:' && ['github.com','gumroad.com','phishwatcher.gumroad.com','mylittlecardcollection.com','creativecommons.org'].includes(u.hostname)) void shell.openExternal(u.href); }
     catch {}

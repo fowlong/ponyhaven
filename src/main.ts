@@ -57,7 +57,7 @@ import { BLOCK_COLORS, drawGame, SHAPES, Tetris } from './tetris';
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const modal = document.querySelector<HTMLDialogElement>('#modal')!;
 const store = new SaveStore();
-const views = companion ? ['home','shop','collection'] : ['home','shop','collection','blocks','adventure','ponykart','leaderboard'];
+const views = companion ? ['home','shop','collection','blocks'] : ['home','shop','collection','blocks','adventure','ponykart','leaderboard'];
 document.body.classList.toggle('companion', companion);
 let catalog: Catalog,
   save: Save,
@@ -1097,16 +1097,22 @@ document.addEventListener('click', async (ev) => {
       case 'retry':
         location.reload();
         break;
-      case 'activate':
+      case 'activate': {
         ev.preventDefault();
         if (!desktop) break;
+        const form = document.querySelector<HTMLFormElement>('#activation-form')!;
+        if (!form.reportValidity()) break;
+        const label = target.innerHTML;
         target.setAttribute('disabled', '');
+        target.textContent = 'Checking invitation…';
         try {
           await desktop.activate(document.querySelector<HTMLInputElement>('#activation-key')!.value,
             document.querySelector<HTMLInputElement>('#activation-name')!.value);
+          target.textContent = 'Opening your meadow…';
           location.reload();
-        } catch(err) { target.removeAttribute('disabled'); throw err; }
+        } catch(err) { target.removeAttribute('disabled'); target.innerHTML = label; throw err; }
         break;
+      }
       case 'profiles':
         await refreshDesktop();
         openModal('Your local profiles', `<p class="modal-intro">Each name has its own ponies, cards, bits, and records on this computer.</p><div class="profile-list">${desktopProfile!.profiles.map((p)=>`<button class="button secondary" data-action="select-profile" data-profile="${e(p.id)}">${e(p.name)} ${p.id===desktopProfile!.profile?.id?'· current':''}</button>`).join('')}</div><label class="field-label" for="new-profile-name">Create another local profile</label><div class="input-row"><input id="new-profile-name" maxlength="24"/><button class="button primary" data-action="create-profile">Create</button></div>`);

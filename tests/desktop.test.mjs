@@ -7,12 +7,30 @@ import { verifyLicense, username } from '../desktop/license.mjs';
 import { Profiles } from '../desktop/profiles.mjs';
 import { inspectLevel, LevelLibrary, mapNumber } from '../desktop/levels.mjs';
 import { LocalRelay } from '../desktop/relay.mjs';
+import { guardNavigation } from '../desktop/navigation.mjs';
 const product='test-product',key='INVITATION-FOR-UNIT-TEST';
 const provider=(purchase={},status=200)=>async(_url,options)=>{
   assert.equal(options.body.get('increment_uses_count'),'false');
   assert.equal(options.body.get('product_id'),product);
   return new Response(JSON.stringify({success:status===200,purchase:{product_id:product,...purchase}}),{status});
 };
+test('desktop permits activation/profile reloads and still blocks leaving the bundled app',()=>{
+  for (const url of ['ponyhaven://app/', 'ponyhaven://app/#home', 'ponyhaven://app/index.html#shop']) {
+    let blocked = false;
+    guardNavigation({url, preventDefault:()=>{blocked=true;}});
+    assert.equal(blocked,false,`App reload must be allowed: ${url}`);
+  }
+  for (const url of ['https://example.com/', 'file:///C:/test.html', 'javascript:alert(1)',
+    'ponyhaven://other/', 'ponyhaven://app.evil/', 'ponyhaven://user@app/',
+    'ponyhaven://app/data/cards.json', 'ponyhaven://app/?outside=true', 'invalid']) {
+    let blocked = false;
+    guardNavigation({url, preventDefault:()=>{blocked=true;}});
+    assert.equal(blocked,true,`Unexpected page must be blocked: ${url}`);
+  }
+  let blocked = false;
+  guardNavigation({preventDefault:()=>{blocked=true;}},'ponyhaven://app/');
+  assert.equal(blocked,false);
+});
 test('Gumroad activation validates product, chargebacks, disabled keys, and failure modes',async()=>{
   const receipt=await verifyLicense(key,product,provider());
   assert.equal(receipt.productId,product);assert.match(receipt.fingerprint,/^[a-f0-9]{64}$/);

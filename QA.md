@@ -58,7 +58,7 @@ The local account manager's help and official Admin SDK integration paths have b
 `npm run test:sync` passed against the real local Auth and Firestore emulators, two isolated Chrome contexts, and the real desktop `Profiles` file implementation. The narrow browser IPC adapter substitutes for Electron; it does not substitute the save logic or Firestore rules.
 
 - An existing desktop starter uploads on first link to an invited account.
-- The phone signs in and exposes only Meadow, Little shop and Collection.
+- The phone signs in and exposes Meadow, Magic Blocks, Little shop and Collection.
 - Purchases clear stale collection preview filters; new cards appear in the phone binder and in an already-open desktop binder, with matching quantities on disk.
 - The phone keeps playing while the desktop window is closed; reopening desktop loads the latest save.
 - Competing offline desktop and online phone changes preserve a recovery copy, show the conflict controls, and never roll back the newer cloud revision.
@@ -68,7 +68,11 @@ The Firebase rules in `FIREBASE_CONSOLE_SETUP.txt` are generated directly from t
 
 ## Desktop profiles and native games
 
-`npm run test:desktop` passes five tests: Gumroad product/status checks using injected provider responses, persistent and isolated profile files, map import validation, imported-pack checksums, and a real two-way loopback UDP exchange. These complement the three arcade reward tests in `npm test`.
+`npm run test:desktop` passes six tests: internal reloads versus blocked external navigation, Gumroad product/status checks using injected provider responses, persistent and isolated profile files, map import validation, imported-pack checksums, and a real two-way loopback UDP exchange. These complement the three arcade reward tests in `npm test`.
+
+Version 0.2.1 fixes an Electron navigation guard that blocked the renderer's own refresh after activation, profile changes and sync sign-in. `node scripts/qa-activation.mjs` checks empty-form validation, visible activation progress, a failed request and retry, successful activation using `charris`, starter selection and saved activation on reload. It uses a simulated provider and real profile files in a disposable folder; the actual Electron shell still needs an ordinary-user smoke check.
+
+`node scripts/qa-mobile-blocks.mjs` verifies the companion's four tabs, touch movement/rotation/drop/hold, pony XP persistence, and board/control fit at 390 × 844, 320 × 740 and 844 × 390. The portrait and landscape screenshots were reviewed. This targeted check uses an isolated local save; the existing save/sync implementation is shared with desktop Magic Blocks.
 
 `node scripts/qa-desktop-browser.mjs --network` exercises activation screens, profile rename/reload/switching, native launch/progress/stop, and pastel preferences using the real desktop modules. Two Chrome clients use a local PeerServer and WebRTC to share a meadow, follow the host's background, and connect two actual native engines in both Adventure and Ponykart. `npm run test:native-network` separately verifies two players and advancing simulation time through the UDP bridge. Music decoders are enabled in these network tests, with SDL's dummy audio output.
 

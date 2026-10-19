@@ -12,7 +12,8 @@ await fs.cp(path.join(root,'node_modules/electron/dist'),release,{recursive:true
 const resource=path.join(release,'resources','app');
 await fs.mkdir(resource,{recursive:true});
 for(const dir of ['desktop','dist','native'])await fs.cp(path.join(root,dir),path.join(resource,dir),{recursive:true,filter:p=>path.basename(p)!=='latest-log.txt'&&!p.endsWith('.log')});
-await fs.writeFile(path.join(resource,'package.json'),JSON.stringify({name:'ponyhaven',productName:'Ponyhaven',version:'0.2.0',type:'module',main:'desktop/main.mjs'}));
+const {version}=JSON.parse(await fs.readFile(path.join(root,'package.json'),'utf8'));
+await fs.writeFile(path.join(resource,'package.json'),JSON.stringify({name:'ponyhaven',productName:'Ponyhaven',version,type:'module',main:'desktop/main.mjs'}));
 await fs.copyFile(path.join(release,'electron.exe'),path.join(release,'Ponyhaven.exe'));
 // Remove only the known duplicate executable created by this script.
 await fs.unlink(path.join(release,'electron.exe'));

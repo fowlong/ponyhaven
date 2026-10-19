@@ -2,7 +2,7 @@
 
 For a single copy-and-paste text file with the full rules and Console settings, open [FIREBASE_CONSOLE_SETUP.txt](FIREBASE_CONSOLE_SETUP.txt).
 
-Ponyhaven can share one profile between the Windows app and a mobile website on GitHub Pages. The phone has **Meadow, Little shop, and Collection**. Adventure, Ponykart and Magic Blocks stay in the desktop app. Your phone works while the desktop app is closed.
+Ponyhaven can share one profile between the Windows app and a mobile website on GitHub Pages. The phone has **Meadow, Magic Blocks, Little shop, and Collection**. Adventure and Ponykart stay in the desktop app. Your phone works while the desktop app is closed, including earning bits and pony XP in Magic Blocks.
 
 Use one **Firebase Spark (no billing)** project, Email/Password Authentication, and Cloud Firestore. No private GitHub repository, server, Cloud Functions, paid storage, or Google sign-in is required. Gumroad still activates the desktop installation once. Firebase accounts are separate invitations you create for friends; no public registration is provided.
 

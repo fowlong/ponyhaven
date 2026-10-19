@@ -206,7 +206,7 @@ Add your custom hostname too if you later use one. For local browser testing,
 add localhost and 127.0.0.1 if they are not already authorized.
 
 Open the resulting Pages URL and sign in with the invited Firebase account.
-The phone's Meadow, Little shop and Collection work while desktop is closed.
+The phone's Meadow, Magic Blocks, Little shop and Collection work while desktop is closed.
 Gumroad activation stays in the desktop app; mobile uses the Firebase login.
 
 7. QUICK CHECK

@@ -45,7 +45,8 @@ try {
  await until(async()=>assert.equal((await remote()).save.pet.ponyId,'twilight-sparkle'));
  console.log('Sync QA: first upload verified');
  await b.goto(url);await b.locator('#login-account').fill('sync');await b.locator('#login-password').fill(password);await b.locator('[data-action="login"]').click();await b.locator('#meadow-scene').waitFor();
- assert.equal(await b.locator('nav [data-nav]').count(),3);
+ assert.equal(await b.locator('nav [data-nav]').count(),4);
+ assert.equal(await b.locator('nav [data-nav="blocks"]').isVisible(),true);
  assert.equal(await b.locator('[data-wallet]').innerText(),'600');
  await nav(a,'collection');
  // Leave a series preview, then acquire cards from the other offered pack.
