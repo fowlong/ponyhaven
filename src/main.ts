@@ -3,6 +3,7 @@ import './finishes.css';
 import './meadow.css';
 import './expansion.css';
 import './backgrounds.css';
+import './pony-auras.css';
 import './arcade.css';
 import './sync.css';
 import { desktop, desktopProfile, refreshDesktop, type ArcadeGame } from './desktop';
@@ -15,6 +16,7 @@ import { cardFinish, ponyFinish, finishNames } from './rarity';
 import type { Background, Card, Catalog, PetChoice, Presence, Save } from './types';
 import {
   awardXP,
+  openLevelReward,
   happiness,
   levelForXP,
   levelFloor,
@@ -153,12 +155,14 @@ function notifyUnlocks(next: Save) {
     });
 }
 function rewardDialog() {
+  const revealed = openLevelReward(save);
+  if (revealed !== save) commit(revealed);
   const reward = save.levelRewards[0];
   if (!reward) return;
   const card = cardById(reward.cardId)!;
   openModal(
     'A little milestone together',
-    `<div class="single-reveal"><p class="eyebrow">${e(pony(reward.ponyId).name)} · LEVEL ${reward.level}</p><div class="reveal-card card-image rarity-${card.tier}"><img src="${cardImage(card)}" alt="${e(card.name)}"/>${cardFinish()}</div><span class="rarity-label tier-${card.tier}">${e(card.rarity)}</span><h2>${e(card.name)}</h2><p>A thank-you for growing together. Already saved in your binder.</p>${reward.petDrop ? `<p class="pet-drop-note">New virtual pet: ${e(pony(reward.petDrop.ponyId).name)}!</p>` : ''}<button class="button primary" data-action="claim-reward">${save.levelRewards.length > 1 ? 'See the next gift' : 'Lovely, thank you!'}</button></div>`,
+    `<div class="single-reveal"><p class="eyebrow">${e(pony(reward.ponyId).name)} · LEVEL ${reward.level}</p><div class="reveal-card card-image rarity-${card.tier}"><img src="${cardImage(card)}" alt="${e(card.name)}"/>${cardFinish()}</div><span class="rarity-label tier-${card.tier}">${e(card.rarity)}</span><h2>${e(card.name)}</h2><p>A thank-you for growing together. Added to your binder!</p>${reward.petDrop ? `<p class="pet-drop-note">New virtual pet: ${e(pony(reward.petDrop.ponyId).name)}!</p>` : ''}<button class="button primary" data-action="claim-reward">${save.levelRewards.length > 1 ? 'See the next gift' : 'Lovely, thank you!'}</button></div>`,
   );
   sound.play('reward');
 }
@@ -351,6 +355,7 @@ function mountHome() {
     social.room?.customBackground || (!social.room && prefs.background === 'custom')
       ? undefined
       : chosenBackground()?.stage,
+    sceneImage(),
   );
   refreshFriends();
   document.querySelector('#meadow-scene')!.addEventListener('click', (ev) => {

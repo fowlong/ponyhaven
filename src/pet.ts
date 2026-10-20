@@ -47,6 +47,8 @@ export class Meadow {
   private resizeObserver: ResizeObserver;
   private walkMin = 18;
   private walkMax = 82;
+  private sceneryImage?: HTMLImageElement;
+  private sceneryCanvas = document.createElement('canvas');
 
   constructor(
     private root: HTMLElement,
@@ -56,10 +58,23 @@ export class Meadow {
     private getDirt: () => number = () => 0,
     private onWash: () => void = () => {},
     private stage?: BackgroundStage,
+    backgroundImage?: string,
   ) {
     this.resizeObserver = new ResizeObserver(() => this.layout());
     this.resizeObserver.observe(this.root);
     this.layout();
+    if (backgroundImage) {
+      this.sceneryCanvas.className = 'pixel-background';
+      this.sceneryCanvas.setAttribute('aria-hidden', 'true');
+      this.root.prepend(this.sceneryCanvas);
+      const image = new Image();
+      image.onload = () => {
+        if (this.destroyed) return;
+        this.sceneryImage = image;
+        this.drawScenery();
+      };
+      image.src = backgroundImage;
+    }
     this.effects = this.layer('temporary-effects');
     this.cameos = this.layer('interaction-cameos');
     this.careEffects = this.layer('care-effects');
@@ -125,6 +140,7 @@ export class Meadow {
     this.root.style.setProperty('--sprite-scale', String(geometry.scale));
     this.root.style.setProperty('--scene-focus', `${geometry.focusX}%`);
     this.root.dataset.floor = String(geometry.floor);
+    this.drawScenery();
     const images = [...this.root.querySelectorAll<HTMLImageElement>('#pet-sprite, .friend-pony > img')];
     for (const img of images) {
       if (!img.naturalWidth || !img.naturalHeight) continue;
@@ -162,6 +178,25 @@ export class Meadow {
       if (actor.id === 'pet-wrap') this.x = x;
       else if (actor.dataset.uid) this.positions.set(actor.dataset.uid, x);
     }
+  }
+  private drawScenery() {
+    const image = this.sceneryImage;
+    if (!image) return;
+    const { width, height } = this.root.getBoundingClientRect();
+    if (!width || !height) return;
+    const canvas = this.sceneryCanvas;
+    // Three CSS pixels per sample gives a gentle pixel-art finish at any viewport.
+    canvas.width = Math.max(1, Math.ceil(width / 3));
+    canvas.height = Math.max(1, Math.ceil(height / 3));
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const zoom = Math.max(width / image.naturalWidth, height / image.naturalHeight);
+    const drawnWidth = image.naturalWidth * zoom, drawnHeight = image.naturalHeight * zoom;
+    ctx.setTransform(canvas.width / width, 0, 0, canvas.height / height, 0, 0);
+    ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(image, (width - drawnWidth) * (this.stage?.focusX ?? 0.5),
+      height - drawnHeight, drawnWidth, drawnHeight);
+    canvas.dataset.ready = 'true';
   }
   private layer(id: string) {
     const el = document.createElement('div');
@@ -571,6 +606,7 @@ export class Meadow {
   }
   destroy() {
     this.destroyed = true;
+    this.sceneryImage = undefined;
     this.resizeObserver.disconnect();
     this.controller.abort();
     clearTimeout(this.drawing);

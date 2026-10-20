@@ -105,6 +105,8 @@ export interface LevelReward {
   level: number;
   cardId: string;
   petDrop: PetChoice | null;
+  /** Absent in older saves, whose queued rewards were already granted. */
+  pending?: boolean;
 }
 export interface Background {
   id: string;

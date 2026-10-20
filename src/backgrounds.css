@@ -1,8 +1,18 @@
 /* Feet, floor and pony size share the source image's cover projection. */
 .meadow-scene {
+  isolation: isolate;
   background-position: var(--scene-focus, 50%) bottom;
   --floor: 79%;
   --sprite-scale: 1.35;
+}
+.pixel-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  image-rendering: pixelated;
+  pointer-events: none;
 }
 .meadow-scene .pet-wrap,
 .meadow-scene .friend-pony {

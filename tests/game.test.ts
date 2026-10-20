@@ -5,6 +5,7 @@ import path from 'node:path';
 import type { Catalog } from '../src/types.ts';
 import {
   awardXP,
+  openLevelReward,
   grantPet,
   petDrops,
   happiness,
@@ -159,7 +160,7 @@ test('pet unlocks are explicit and switching is unlimited, preserving each ponyâ
   grantPet(again, variant);
   assert.equal(changePet(again, variant, catalog.cards, now).xp, 77);
 });
-test('level ups give exactly one UR-or-higher card gift and never grant the same milestone twice', () => {
+test('level gifts stay sealed across reloads and grant exactly once when opened', () => {
   const s = chooseStarter(freshSave(), 'twilight-sparkle', catalog);
   s.xp = 99;
   syncProgress(s);
@@ -170,7 +171,7 @@ test('level ups give exactly one UR-or-higher card gift and never grant the same
   assert.ok(catalog.cards.find((c) => c.id === s.levelRewards[0].cardId)!.tier >= 4);
   assert.equal(
     Object.values(s.collection).reduce((a, b) => a + b, 0),
-    before + 1,
+    before,
   );
   awardXP(s, 1, catalog);
   assert.equal(s.levelRewards.length, 1);
@@ -178,6 +179,45 @@ test('level ups give exactly one UR-or-higher card gift and never grant the same
   const loaded = readSave(JSON.parse(JSON.stringify(s)))!;
   awardXP(loaded, 1, catalog);
   assert.equal(loaded.levelRewards.length, 1);
+  assert.equal(loaded.levelRewards[0].pending, true);
+  const revealed = openLevelReward(loaded);
+  const cardId = loaded.levelRewards[0].cardId;
+  assert.equal(revealed.collection[cardId], (loaded.collection[cardId] || 0) + 1);
+  assert.equal(revealed.levelRewards[0].pending, false);
+  assert.deepEqual(openLevelReward(readSave(JSON.parse(JSON.stringify(revealed)))!), revealed);
+});
+test('sealed gifts defer pet unlocks; legacy queued gifts are never granted twice', () => {
+  const s = chooseStarter(freshSave(), 'twilight-sparkle', catalog);
+  s.xp = 99;
+  syncProgress(s);
+  const before = structuredClone(s.petUnlocks);
+  const gifts = { ...catalog, cards: [catalog.cards.find(c => c.tier === 7 && c.ponyIds.length)!] };
+  awardXP(s, 1, gifts, () => 0.99);
+  assert.equal(s.levelRewards[0].pending, true);
+  assert.ok(s.levelRewards[0].petDrop);
+  assert.deepEqual(s.petUnlocks, before);
+  const revealed = openLevelReward(s);
+  assert.equal(revealed.petUnlocks.length, before.length + 1);
+  assert.equal(openLevelReward(revealed).petUnlocks.length, before.length + 1);
+  const legacy = structuredClone(revealed);
+  delete legacy.levelRewards[0].pending;
+  assert.deepEqual(openLevelReward(readSave(legacy)!), legacy);
+});
+test('opening one gift leaves later gifts sealed and handles an already-unlocked pet', () => {
+  const s = chooseStarter(freshSave(), 'twilight-sparkle', catalog);
+  const gifts = { ...catalog, cards: [catalog.cards.find(c => c.tier === 7 && c.ponyIds.length)!] };
+  awardXP(s, 500, gifts, () => 0.99);
+  assert.equal(s.levelRewards.length, 2);
+  const pet = s.levelRewards[0].petDrop!;
+  grantPet(s, pet); // The same pet can be earned elsewhere while a gift is sealed.
+  const before = structuredClone(s.collection);
+  const revealed = openLevelReward(s);
+  assert.equal(revealed.levelRewards[0].petDrop, null);
+  assert.equal(revealed.levelRewards[1].pending, true);
+  const card = revealed.levelRewards[0].cardId;
+  assert.equal(revealed.collection[card], (before[card] || 0) + 1);
+  const second = openLevelReward({ ...revealed, levelRewards: revealed.levelRewards.slice(1) });
+  assert.equal(second.collection[card], (before[card] || 0) + 2);
 });
 test('ordinary packs have one 20% pet roll; the top two tiers always grant a matching pet', () => {
   const card = catalog.cards.find((c) => c.tier === 2 && c.ponyIds.length === 1)!;
