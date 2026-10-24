@@ -1,13 +1,13 @@
 import type { Catalog, Save } from './types';
 import { grantPet, journal } from './game';
-import { chestReadyAt, EQUESTRIA_CHESTS, EQUESTRIA_BOSSES } from './equestria-state';
+import { chestReadyAt, EQUESTRIA_CHESTS, EQUESTRIA_BOSSES, HARMONY_ELEMENTS, harmonyLevel, type HarmonyElement } from './equestria-state';
 import {rememberAdventure} from './equestria-saves';
 
 export type EquestriaRewardEvent =
   | { kind: 'chest'; chest: number; sequence: number; at: number }
   | { kind: 'book'; book: number }
   | { kind: 'boss'; boss: string }
-  | { kind: 'progress'; rings: number; quests: number };
+  | { kind: 'progress'; rings: number; quests: number; harmony?: Partial<Record<HarmonyElement, number>> };
 
 /** The host supplies time and cumulative counters; never accept item IDs from a game. */
 export function equestriaReward(save: Save, catalog: Catalog, event: EquestriaRewardEvent, random = Math.random) {
@@ -33,15 +33,40 @@ function reward(save: Save, catalog: Catalog, event: EquestriaRewardEvent, rando
   }
   if (event.kind === 'progress') {
     if (![event.rings, event.quests].every(n => Number.isSafeInteger(n) && n >= 0 && n <= 1e9)) return unchanged;
+    const harmony = event.harmony;
+    if (harmony !== undefined && (!harmony || typeof harmony !== 'object' || !Object.entries(harmony).every(([k, v]) =>
+      (HARMONY_ELEMENTS as readonly string[]).includes(k) && Number.isSafeInteger(v) && Number(v) >= 0 && Number(v) <= 1e9))) return unchanged;
     const rings = Math.max(0, event.rings - save.equestria.rings);
     const quests = Math.max(0, event.quests - save.equestria.quests);
-    if (!rings && !quests) return unchanged;
+    // Experience is cumulative per element and only ever rises.
+    const gained = HARMONY_ELEMENTS.filter(k => (harmony?.[k] || 0) > (save.equestria.harmony?.[k] || 0));
+    if (!rings && !quests && !gained.length) return unchanged;
     const next = structuredClone(save), bits = rings * 10 + quests * 150;
     next.equestria.rings = Math.max(next.equestria.rings, event.rings);
     next.equestria.quests = Math.max(next.equestria.quests, event.quests);
+    const levelled: string[] = [];
+    if (gained.length) {
+      const h = next.equestria.harmony ||= {};
+      // Each Element level reached grants one very rare card (tier 6+), unowned first.
+      // XP is stored and only rises, so every level pays out exactly once.
+      const veryRare = catalog.cards.filter(c => c.tier >= 6);
+      for (const k of gained) {
+        const before = harmonyLevel(h[k] || 0).level, after = harmonyLevel(harmony![k]!).level;
+        h[k] = harmony![k];
+        for (let level = before + 1; level <= after && veryRare.length; level++) {
+          const fresh = veryRare.filter(c => !next.collection[c.id]), pool = fresh.length ? fresh : veryRare;
+          const card = pool[Math.min(pool.length - 1, Math.floor(random() * pool.length))];
+          next.collection[card.id] = (next.collection[card.id] || 0) + 1;
+          next.recentCards = [card.id, ...next.recentCards.filter(id => id !== card.id)].slice(0, 100);
+          const name = k[0].toUpperCase() + k.slice(1);
+          levelled.push(`${name} reached level ${level}: ${card.name} (${card.rarity}) joined your collection!`);
+        }
+      }
+      for (const line of levelled) journal(next, line);
+    }
     next.equestria.bits += bits;
     next.coins += bits;
-    return { save: next, bits, message: quests ? 'A delivery made a friend smile. +150 bits per quest.' : '' };
+    return { save: next, bits, message: levelled.join(' ') || (quests ? 'A delivery made a friend smile. +150 bits per quest.' : '') };
   }
   if (event.kind !== 'chest' || !Number.isInteger(event.chest) || event.chest < 0 || event.chest >= EQUESTRIA_CHESTS ||
       !Number.isSafeInteger(event.at) || event.at <= 0 || event.at > 8.64e15 ||

@@ -3,7 +3,7 @@ import {constants as fsConstants} from 'node:fs';
 import path from 'node:path';
 import {spawn} from 'node:child_process';
 import {createHash,randomBytes,randomUUID} from 'node:crypto';
-import {availablePort,PONIES} from '../games.mjs';
+import {availablePort,EQUESTRIA_PONIES} from '../games.mjs';
 import {atomicJSON} from '../profiles.mjs';
 import {engineAssetsReady,readDefaultWorld,ENGINE_FOLDER} from './assets.mjs';
 import {ensureTerrainCache,resetTerrainCache} from './terrain-cache.mjs';
@@ -15,14 +15,17 @@ import bossRoster from './bosses.json' with {type:'json'};
 
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const bossIds=new Set(bossRoster.map(b=>b.id));
+// Elements of Harmony experience, one cumulative counter each.
+export const HARMONY=['honesty','kindness','laughter','generosity','loyalty','magic'];
 export function validState(value){
  if(!value || typeof value!=='object' || !Array.isArray(value.chests) || value.chests.length!==50)return false;
  if(!['rings','quests','bits'].every(k=>Number.isSafeInteger(value[k])&&value[k]>=0&&value[k]<=1e12))return false;
  if(value.books!==undefined && (!value.books || typeof value.books!=='object'||!Object.entries(value.books).every(([k,v])=>/^[1-7]$/.test(k)&&v===true)))return false;
  if(value.bosses!==undefined && (!value.bosses || typeof value.bosses!=='object'||!Object.entries(value.bosses).every(([k,v])=>bossIds.has(k)&&v===true)))return false;
+ if(value.harmony!==undefined && (!value.harmony || typeof value.harmony!=='object'||!Object.entries(value.harmony).every(([k,v])=>HARMONY.includes(k)&&Number.isSafeInteger(v)&&v>=0&&v<=1e9)))return false;
  return value.chests.every(c=>c&&Number.isSafeInteger(c.sequence)&&c.sequence>=0&&c.sequence<=1e12&&Number.isSafeInteger(c.openedAt)&&c.openedAt>=0&&c.openedAt<=8.64e15&&(c.sequence===0?c.openedAt===0:c.openedAt>0));
 }
-function validIdentity(value){return value&&typeof value.uid==='string'&&/^[a-zA-Z0-9_-]{1,100}$/.test(value.uid)&&typeof value.displayName==='string'&&value.displayName.length>=1&&value.displayName.length<=24&&PONIES.adventure.includes(value.pony)&&validState(value.state);}
+function validIdentity(value){return value&&typeof value.uid==='string'&&/^[a-zA-Z0-9_-]{1,100}$/.test(value.uid)&&typeof value.displayName==='string'&&value.displayName.length>=1&&value.displayName.length<=24&&EQUESTRIA_PONIES.includes(value.pony)&&validState(value.state);}
 async function files(root,prefix=''){
  const result=[];for(const entry of await fs.readdir(path.join(root,prefix),{withFileTypes:true})){const name=path.join(prefix,entry.name);if(entry.isDirectory())result.push(...await files(root,name));else result.push(name);}return result.sort();
 }
@@ -141,7 +144,7 @@ export class EquestriaGame {
   const {pony,mode,fullscreen,state}=options||{};
   const saveId=options?.saveId||'legacy';if(typeof saveId!=='string'||!/^[a-zA-Z0-9_-]{1,40}$/.test(saveId))throw Error('Choose a valid adventure save.');
   const identityId=profile.id+(saveId==='legacy'?'':'_'+saveId);
-  if(!PONIES.adventure.includes(pony)||!['solo','host','join'].includes(mode)||typeof fullscreen!=='boolean'||!validState(state))throw Error('Choose your pony before opening Equestria.');
+  if(!EQUESTRIA_PONIES.includes(pony)||!['solo','host','join'].includes(mode)||typeof fullscreen!=='boolean'||!validState(state))throw Error('Choose your pony before opening Equestria.');
   const status=await this.status();
   if(!status.engine)throw Error('Equestria engine files are missing. Extract the complete Ponyhaven folder again, including its shaders.');
   if(!status.world)throw Error('The included Equestria map is incomplete. Extract the complete Ponyhaven folder again.');
@@ -177,7 +180,7 @@ export class EquestriaGame {
    await fs.mkdir(clientDir,{recursive:true});const passwordFile=path.join(clientDir,'session-password.txt');
    await fs.writeFile(passwordFile,ticket.password,{mode:0o600});
    const config=path.join(clientDir,'client.conf');
-   await fs.writeFile(config,`screen_w = 1280\nscreen_h = 800\nfullscreen = ${fullscreen}\nwindow_maximized = false\nvsync = true\nfps_max = 60\nviewing_range = 512\nmax_block_send_distance = 256\nenable_clouds = true\nenable_fog = true\nfov = 72\nenable_minimap = ${!this.headless}\nminimap_shape_round = false\ntexture_min_size = 16\nvideo_driver = ${this.headless?'null':'opengl3'}\nenable_sound = ${!this.headless}\nenable_post_processing = false\nenable_shaders = false\nkeymap_forward = SYSTEM_SCANCODE_26\nkeymap_backward = SYSTEM_SCANCODE_22\nkeymap_left = SYSTEM_SCANCODE_4\nkeymap_right = SYSTEM_SCANCODE_7\nkeymap_jump = SYSTEM_SCANCODE_44\nkeymap_aux1 = SYSTEM_SCANCODE_27\nkeymap_zoom = SYSTEM_SCANCODE_8\nkeymap_sneak = SYSTEM_SCANCODE_12\nkeymap_inventory = SYSTEM_SCANCODE_43\nkeymap_chat = SYSTEM_SCANCODE_23\nkeymap_camera_mode = SYSTEM_SCANCODE_64\ncinematic = false\nmouse_sensitivity = 0.15\ncamera_mode = third\n`);
+   await fs.writeFile(config,`screen_w = 1280\nscreen_h = 800\nfullscreen = ${fullscreen}\nwindow_maximized = ${!fullscreen&&!this.headless}\nvsync = true\nfps_max = 60\nviewing_range = 512\nmax_block_send_distance = 256\nenable_clouds = true\nenable_fog = true\nfov = 72\nenable_minimap = ${!this.headless}\nminimap_shape_round = false\ntexture_min_size = 16\nvideo_driver = ${this.headless?'null':'opengl3'}\nenable_sound = ${!this.headless}\nenable_post_processing = false\nenable_shaders = false\nsmooth_lighting = true\nkeymap_forward = SYSTEM_SCANCODE_26\nkeymap_backward = SYSTEM_SCANCODE_22\nkeymap_left = SYSTEM_SCANCODE_4\nkeymap_right = SYSTEM_SCANCODE_7\nkeymap_jump = SYSTEM_SCANCODE_44\nkeymap_aux1 = SYSTEM_SCANCODE_27\nkeymap_zoom = SYSTEM_SCANCODE_8\nkeymap_sneak = SYSTEM_SCANCODE_12\nkeymap_inventory = SYSTEM_SCANCODE_43\nkeymap_chat = SYSTEM_SCANCODE_23\nkeymap_camera_mode = SYSTEM_SCANCODE_64\ncinematic = false\nmouse_sensitivity = 0.15\ncamera_mode = third\n`);
    await fs.appendFile(config,`shader_path = ${path.join(this.engine,'games/ponyhaven/mods/ponyhaven/shaders').replaceAll('\\','/')}\n`);
    await fs.appendFile(config,`enable_remote_media_server = ${!!r.media}\n`);
    await fs.appendFile(config,controllerSettings());

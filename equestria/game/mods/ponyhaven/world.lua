@@ -62,6 +62,7 @@ core.register_on_generated(function(minp,maxp)
  if core.settings:get_bool('ponyhaven_smooth',false) then
   ph.smooth_volume(data,area,minp,maxp,param2)
  end
+ ph.bevel_volume(data,area,minp,maxp)
  vm:set_data(data);vm:set_param2_data(param2);vm:calc_lighting();vm:write_to_map()
 end)
 core.register_on_shutdown(function()for _,r in pairs(files)do r.file:close()end end)

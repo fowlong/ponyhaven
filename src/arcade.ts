@@ -4,7 +4,8 @@ import { party } from './peer-party';
 import { escape as e, icon } from './icons';
 import type { Catalog, Save } from './types';
 import { ponyImage } from './pet';
-import { equestriaSelected, equestriaRunning, renderEquestria, worldTabs } from './equestria';
+import { equestriaSelected, equestriaRunning, renderEquestria, worldTabs, adventureWorld } from './equestria';
+import { renderWiki } from './equestria-wiki';
 
 const rosters = {
   adventure: [['twilight','twilight-sparkle'],['applejack','applejack'],['fluttershy','fluttershy'],['rarity','rarity'],['derpy','derpy-hooves'],['luna','princess-luna'],['trixie','trixie']],
@@ -42,6 +43,7 @@ export async function setupArcade(onEvent: (event:ArcadeEvent)=>number,onChange:
 }
 export function renderArcade(game:ArcadeGame,catalog:Catalog,save:Save) {
   if(game==='adventure' && equestriaSelected)return renderEquestria(catalog,save);
+  if(game==='adventure' && adventureWorld==='wiki')return renderWiki(worldTabs());
   const kart=game==='ponykart', stats=save.arcade[game];
   const hostedGame=party.game && party.game.game!=='equestria'?party.game:null;
   const prefs=preferences();

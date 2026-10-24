@@ -14,10 +14,13 @@ Choose a pony, then New game or Load game to manage that pony's adventures.
 Open party to host or join by invite code.
 
 WASD moves; the mouse rotates the camera, including around a stationary pony.
-Space jumps/uses your ability, X charges a spin dash, E interacts, I opens the
-world map, and V cycles the minimap. Default draw distance is 512 blocks.
-Left click sweeps a horizontal melee trail; right click fires a rainbow orb.
-Orbs destroy a spherical 3-block radius without dropping collectible blocks.
+Space jumps; press it again in the air to fly. E interacts, I opens the
+world map, Tab opens the quest journal, and V cycles the minimap. Default draw
+distance is 512 blocks. Friendship Emergencies (big pink heart) grow your
+Elements of Harmony; the Adventure tab's Wiki button explains everything.
+Left click sweeps a horizontal melee trail; right click throws a cloud puff
+(pegasi), dirt clod (earth ponies) or rainbow orb (unicorns). Each destroys a
+spherical 3-block radius without dropping collectible blocks.
 Collect the seven glowing books and press 1–7 to equip or put away a book.
 An equipped book replaces both mouse attacks with its primary/secondary spells.
 
@@ -32,8 +35,8 @@ as Original adventure. New game starts a separate save; Load game also offers
 save deletion. Collected cards and pets remain in your shared collection.
 
 PS5: sticks move/look, Cross jumps, Square/Circle attack, Triangle interacts,
-L1/R1 cycle books, D-pad left/right opens map/minimap, up interacts, down charges
-spin dash, and Options pauses. Keyboard/mouse remain available for map menus.
+L1/R1 cycle books, D-pad left/right opens map/minimap, up interacts, and Options
+pauses. Keyboard/mouse remain available for map menus.
 Terrain has pastel blue fog and light filtering. Eight-direction pony sprites,
 health bars, red enemy attack warnings and procedural music/sounds are included.
 

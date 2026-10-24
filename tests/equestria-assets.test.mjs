@@ -7,7 +7,7 @@ import {ensureTerrainCache,resetTerrainCache} from '../desktop/equestria/terrain
 import {materialDefinition} from '../desktop/equestria/materials.mjs';
 const mod='native/equestria/luanti-5.17.0-win64/games/ponyhaven/mods/ponyhaven';
 test('every pony direction and motion has visible pixels, including original swimming frames',async()=>{
- const ponies=JSON.parse(await fs.readFile(mod+'/ponies.json','utf8'));assert.equal(Object.keys(ponies).length,7);
+ const ponies=JSON.parse(await fs.readFile(mod+'/ponies.json','utf8'));assert.deepEqual(Object.keys(ponies).sort(),['applejack','derpy','fluttershy','luna','pinkiepie','rainbowdash','rarity','trixie','twilight']);
  for(const [pony,motions]of Object.entries(ponies)){
   assert.ok(motions.swim);
   for(const [motion,sheet]of Object.entries(motions)){

@@ -1,0 +1,165 @@
+{
+ "elements": [
+  {"id": "honesty", "name": "Honesty", "bearer": "Applejack", "colour": "#f6a23a", "about": "Telling the truth kindly, and helping others hear it."},
+  {"id": "kindness", "name": "Kindness", "bearer": "Fluttershy", "colour": "#ff9fd1", "about": "Noticing how others feel and caring for them gently."},
+  {"id": "laughter", "name": "Laughter", "bearer": "Pinkie Pie", "colour": "#6ec6ff", "about": "Bringing joy that includes everypony, never at their expense."},
+  {"id": "generosity", "name": "Generosity", "bearer": "Rarity", "colour": "#a78bfa", "about": "Giving time, effort and credit freely."},
+  {"id": "loyalty", "name": "Loyalty", "bearer": "Rainbow Dash", "colour": "#ff5a5f", "about": "Standing by friends, especially when it is hard."},
+  {"id": "magic", "name": "Magic", "bearer": "Twilight Sparkle", "colour": "#d36bff", "about": "Bringing friends together so their strengths become one."}
+ ],
+ "questThemes": {"harmony": "magic", "cooking": "generosity", "fashion": "generosity", "magic": "magic", "nature": "kindness", "history": "loyalty", "friendship": "laughter"},
+ "archetypes": [
+  {"id": "broken-trust", "name": "Broken Trust", "about": "Two friends have fallen out because one believes the other betrayed them.", "twist": "The accused pony may have broken a promise for a good reason."},
+  {"id": "responsibility", "name": "Friendship Versus Responsibility", "about": "Two ponies have conflicting obligations and neither can keep theirs without disappointing the other.", "twist": "There may be no answer that satisfies everypony completely."},
+  {"id": "fear", "name": "Fear and Misunderstanding", "about": "A pony is avoided because others think they are dangerous, strange or untrustworthy.", "twist": "The feared pony might really be causing trouble, but unintentionally."},
+  {"id": "pressure", "name": "Friendship Under Pressure", "about": "A pony is overwhelmed by responsibility or perfectionism and pushes others away.", "twist": "Simply doing their work for them can reinforce the problem."},
+  {"id": "magical", "name": "Magical Friendship Crisis", "about": "A magical effect amplifies jealousy, dishonesty, anger or suspicion.", "twist": "Removing the magic does not undo the hurtful things that were said."},
+  {"id": "excluded", "name": "The Excluded Friend", "about": "Friends unintentionally leave somepony out.", "twist": "The excluded pony may want a different kind of friendship, or more independence."}
+ ],
+ "emergencies": [
+  {"id": "broken-promise", "title": "The Broken Promise", "archetype": "broken-trust", "elements": ["honesty", "loyalty"],
+   "event": "{B} promised to help {A} with the {town} market stall, and never came.",
+   "open": ["{B} PROMISED to help with my stall today!", "Everypony saw me set it up alone. I thought {B} was my friend."],
+   "other": ["I know I let {A} down. I just... can't explain right now.", "Please don't tell {A} you saw me. I need to sort this out first."],
+   "clues": ["half-finished stall banner", "note about a lost foal"],
+   "twist": "{B} missed the stall to help a lost foal find home, and was too embarrassed to say so.",
+   "choices": [
+    {"element": "honesty", "best": true, "text": "Encourage {B} to tell {A} the whole truth", "outcome": "{B} explains everything. {A} is moved: 'You did the right thing, I just wish you'd told me.'"},
+    {"element": "loyalty", "text": "Remind {A} of every time {B} showed up for them", "outcome": "{A} softens and agrees to hear {B} out, though the full story waits for another day."},
+    {"element": "kindness", "text": "Ask {A} to give {B} time before deciding", "outcome": "{A} agrees to wait. The hurt eases, slowly."}
+   ],
+   "resolve": ["Thank you for not letting us give up on each other."]},
+  {"id": "missing-gift", "title": "The Missing Gift", "archetype": "broken-trust", "elements": ["honesty", "generosity"],
+   "event": "{A}'s handmade gift for the {town} celebration has vanished, and {A} suspects {B}.",
+   "open": ["My gift is gone! I spent weeks on it.", "{B} was the only one who knew where I hid it."],
+   "other": ["Missing? Oh no. Oh no no no.", "I can't say anything yet, but please trust me."],
+   "clues": ["trail of glitter", "tiny repair kit"],
+   "twist": "{B} borrowed the gift to fix a crack {A} hadn't noticed, hoping to surprise {A}.",
+   "choices": [
+    {"element": "honesty", "best": true, "text": "Let {B} explain before anypony accuses", "outcome": "{B} reveals the half-repaired gift. {A} laughs with relief, then apologises."},
+    {"element": "generosity", "text": "Suggest they finish the gift together", "outcome": "The gift is mended by four hooves, but the accusation still stings a little."},
+    {"element": "laughter", "text": "Throw a party so both can cool off", "outcome": "The party helps, though the misunderstanding needs a real talk later."}
+   ],
+   "resolve": ["It's even more special now. Thank you."]},
+  {"id": "unwanted-hero", "title": "The Unwanted Hero", "archetype": "broken-trust", "elements": ["honesty", "loyalty"],
+   "event": "{B} is being praised all over {town} for something {A} did.",
+   "open": ["Everypony is cheering for {B}. For MY idea!", "I thought {B} was my friend. Some friend."],
+   "other": ["I didn't ask for any of this praise.", "Every time I try to explain, the crowd just cheers louder."],
+   "clues": ["newspaper clipping", "{A}'s original sketches"],
+   "twist": "{B} tried to correct everypony, but nopony listened.",
+   "choices": [
+    {"element": "honesty", "best": true, "text": "Gather the evidence and tell the town together", "outcome": "{A} and {B} share the stage. {town} cheers for both of them."},
+    {"element": "loyalty", "text": "Stand beside {A} and demand the credit", "outcome": "The truth comes out, but {B} feels blamed for something they tried to stop."},
+    {"element": "generosity", "text": "Suggest they share the credit quietly", "outcome": "They agree to share it, though {A} still wishes the town knew."}
+   ],
+   "resolve": ["I should have known {B} wouldn't steal from me."]},
+  {"id": "loyalty-dilemma", "title": "The Loyalty Dilemma", "archetype": "responsibility", "elements": ["loyalty", "magic"],
+   "event": "{A} and {B} both asked for urgent help at the same time.",
+   "open": ["Please, I need you right now. You're the only one who can help!", "{B} can wait, can't they?"],
+   "other": ["I really need you too. I'm sorry to ask.", "If you can't come, I understand. I think."],
+   "clues": ["{A}'s list of jobs", "{B}'s list of jobs"],
+   "twist": "There isn't time to help both alone. Somepony will be disappointed.",
+   "choices": [
+    {"element": "magic", "best": true, "text": "Bring friends together so both get help", "outcome": "With everypony pitching in, both jobs are finished. Friendship really is magic."},
+    {"element": "loyalty", "text": "Keep your first promise and apologise to the other", "outcome": "{A} is grateful. {B} is disappointed, but respects that you kept your word."},
+    {"element": "generosity", "text": "Give up your own plans to try to cover both", "outcome": "You manage both, exhausted. They're grateful, but worried about you."}
+   ],
+   "resolve": ["We should have just asked each other for help."]},
+  {"id": "forgotten-birthday", "title": "The Forgotten Birthday", "archetype": "responsibility", "elements": ["generosity", "loyalty"],
+   "event": "{A} missed {B}'s birthday party in {town} because of work.",
+   "open": ["I missed {B}'s birthday. I had a shift I couldn't skip.", "{B} won't even look at me."],
+   "other": ["Everypony came. Except {A}.", "I guess work matters more than me."],
+   "clues": ["unopened party invitation", "{A}'s work rota"],
+   "twist": "{A} couldn't leave without letting the whole {town} bakery down. Nopony gets everything they want.",
+   "choices": [
+    {"element": "generosity", "best": true, "text": "Help {A} plan a heartfelt belated surprise", "outcome": "{B} is overjoyed by the surprise, and understands about the shift."},
+    {"element": "loyalty", "text": "Help {A} explain why work came first", "outcome": "{B} understands, though the missed party still hurts a little."},
+    {"element": "laughter", "text": "Throw an un-birthday party for everypony", "outcome": "Everypony has fun. {B} forgives, but wishes it had been just the two of them."}
+   ],
+   "resolve": ["Best belated birthday ever."]},
+  {"id": "two-friends-one-dream", "title": "Two Friends, One Dream", "archetype": "responsibility", "elements": ["loyalty", "generosity"],
+   "event": "{A} and {B} both applied for the same apprenticeship in {town}.",
+   "open": ["Only one of us can get the apprenticeship.", "I can't stop thinking {B} wants me to fail."],
+   "other": ["I want it so much. But I don't want to lose {A}.", "We haven't spoken in days."],
+   "clues": ["two application letters", "old photo of {A} and {B}"],
+   "twist": "Only one can win, and whoever doesn't will need their friend most.",
+   "choices": [
+    {"element": "loyalty", "best": true, "text": "Help them promise to cheer for whoever wins", "outcome": "They shake hooves. Whoever wins, the other will be first in line to celebrate."},
+    {"element": "generosity", "text": "Suggest the winner shares what they learn", "outcome": "A kind plan, though the rivalry still simmers a little."},
+    {"element": "honesty", "text": "Help them talk openly about their fears", "outcome": "Talking helps. They're nervous, but no longer suspicious."}
+   ],
+   "resolve": ["Whatever happens, we're still us."]},
+  {"id": "rumour-in-ponyville", "title": "A Rumour in Ponyville", "archetype": "fear", "elements": ["kindness", "honesty"],
+   "event": "Gossip says {B} is jinxing the gardens of {town}, and {A} is afraid of them.",
+   "open": ["Every garden near {B}'s house is wilting!", "Everypony says {B} is cursed. I'm scared to go near them."],
+   "other": ["Ponies cross the road when they see me now.", "I don't know what I did wrong."],
+   "clues": ["wilted flower sample", "bag of {B}'s new compost"],
+   "twist": "{B}'s new compost really is wilting the plants, completely by accident.",
+   "choices": [
+    {"element": "kindness", "best": true, "text": "Help {B} fix the compost, then introduce them to {A}", "outcome": "The gardens recover, and {A} brings {B} the first bloom as a peace offering."},
+    {"element": "honesty", "text": "Trace the rumour and share the facts", "outcome": "The rumour stops, though {B} still feels lonely."},
+    {"element": "laughter", "text": "Set up a garden party to break the ice", "outcome": "The party is fun, but the plants keep wilting until the compost is fixed."}
+   ],
+   "resolve": ["{B} isn't scary at all. I feel silly."]},
+  {"id": "friend-in-the-everfree", "title": "A Friend in the Everfree", "archetype": "fear", "elements": ["loyalty", "kindness"],
+   "event": "After an argument, {B} ran off into the wilds near {town}. {A} is frantic.",
+   "open": ["We argued and {B} ran off toward the woods!", "What if something happens? It's all my fault."],
+   "other": ["I'm alright. I just... didn't want to go back.", "{A} said I always ruin everything."],
+   "clues": ["muddy hoofprints", "dropped scarf"],
+   "twist": "{B} is safe, but afraid {A} doesn't want them back.",
+   "choices": [
+    {"element": "loyalty", "best": true, "text": "Bring {A} along so {B} hears it from them", "outcome": "{A} hugs {B} tight: 'I didn't mean it. Please come home.'"},
+    {"element": "kindness", "text": "Bring {B}'s favourite snack and just listen", "outcome": "{B} feels heard and comes home, still nervous about facing {A}."},
+    {"element": "honesty", "text": "Tell {B} exactly what {A} said", "outcome": "{B} comes home, but the hurt words linger between them."}
+   ],
+   "resolve": ["I'll never let an argument go that far again."]},
+  {"id": "too-much-on-their-plate", "title": "Too Much on Their Plate", "archetype": "pressure", "elements": ["kindness", "generosity"],
+   "event": "{A} is running every event in {town} alone, and snapping at {B}.",
+   "open": ["I'm FINE. Everything has to be perfect and only I can do it.", "If {B} wants to help, they can stay out of my way!"],
+   "other": ["{A} hasn't slept in days. I only offered to help.", "Now they won't even talk to me."],
+   "clues": ["overflowing to-do list", "untouched lunch basket"],
+   "twist": "Doing all the work for {A} would only prove they can't rely on anypony.",
+   "choices": [
+    {"element": "kindness", "best": true, "text": "Gently point out the signs and offer to share the load", "outcome": "{A} breaks down, then laughs. 'Maybe I can't do everything.' {B} takes half the list."},
+    {"element": "magic", "text": "Organise friends to each take one small task", "outcome": "The events run smoothly, though {A} feels a little managed."},
+    {"element": "generosity", "text": "Quietly do all of {A}'s chores yourself", "outcome": "The work gets done, but {A} is back to doing everything alone the next week."}
+   ],
+   "resolve": ["Asking for help is a strength. I'll remember that."]},
+  {"id": "discord-charm", "title": "The Discord Charm", "archetype": "magical", "elements": ["magic", "honesty"],
+   "event": "A mischievous trinket in {town} is making {A} and {B} suspicious of each other.",
+   "open": ["{B} is plotting something. I can FEEL it.", "Ever since I found this charm, I know exactly who to blame."],
+   "other": ["{A} accused me of awful things today.", "I said some awful things back. I don't know why."],
+   "clues": ["fizzing trinket", "scorched spell note"],
+   "twist": "Breaking the charm stops the suspicion, but not the unkind words already said.",
+   "choices": [
+    {"element": "honesty", "best": true, "text": "Break the charm, then help them apologise for what was said", "outcome": "The charm shatters. {A} and {B} apologise, and mean it."},
+    {"element": "magic", "text": "Break the charm and call it solved", "outcome": "The magic is gone, but the hurtful words still hang in the air."},
+    {"element": "kindness", "text": "Comfort each pony separately first", "outcome": "They feel cared for, but stay wary until the charm is dealt with."}
+   ],
+   "resolve": ["That charm said the things we were too scared to. We'll talk properly now."]},
+  {"id": "pony-out-of-place", "title": "A Pony Out of Place", "archetype": "excluded", "elements": ["kindness", "laughter"],
+   "event": "{B} just moved to {town}, and {A} thinks they're unfriendly.",
+   "open": ["I invited {B} to the big welcome party and they didn't come!", "Maybe they just don't like us."],
+   "other": ["Big parties make my head spin.", "I'd love a friend, just... a quieter kind of fun."],
+   "clues": ["unused party hat", "book of quiet board games"],
+   "twist": "{B} wants friendship, just not the noisy kind everypony assumed.",
+   "choices": [
+    {"element": "kindness", "best": true, "text": "Arrange a small, quiet meet-up", "outcome": "{A} and {B} spend the afternoon playing board games. A new friendship begins."},
+    {"element": "generosity", "text": "Bring {B} a welcome basket from everypony", "outcome": "{B} is touched, though still unsure where they fit in."},
+    {"element": "laughter", "text": "Throw an even bigger welcome party", "outcome": "{B} tries their best, but slips away early again."}
+   ],
+   "resolve": ["Friendship comes in all sizes, doesn't it?"]},
+  {"id": "great-prank-disaster", "title": "The Great Prank Disaster", "archetype": "excluded", "elements": ["laughter", "kindness"],
+   "event": "{A}'s prank went too far and ruined {B}'s display in {town}.",
+   "open": ["It was just a joke! Why is {B} so upset?", "Now nopony's laughing, and {B} won't speak to me."],
+   "other": ["Everypony laughed. At me.", "I worked so hard on that display."],
+   "clues": ["broken display piece", "leftover prank confetti"],
+   "twist": "{A} thought {B} was in on the joke; {B} felt left out of the fun.",
+   "choices": [
+    {"element": "laughter", "best": true, "text": "Help {A} plan a joke {B} can be part of", "outcome": "{B} gets to be the prankster this time, and both end up laughing together."},
+    {"element": "kindness", "text": "Help repair the display together", "outcome": "The display is fixed, and {B} feels better, if still a little wary of jokes."},
+    {"element": "honesty", "text": "Have {A} apologise plainly", "outcome": "The apology lands, though the fun between them takes time to return."}
+   ],
+   "resolve": ["The best jokes are the ones everypony laughs at."]}
+ ]
+}

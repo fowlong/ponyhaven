@@ -36,10 +36,10 @@ for Luanti's verified media cache.
 | Jump / pony ability | Space | Cross |
 | Melee / primary spell | Left click | Square |
 | Rainbow orb / secondary spell | Right click | Circle |
-| Interact | E | Triangle or D-pad up |
+| Interact / next speech line | E | Triangle or D-pad up |
+| Quest journal | Tab | — |
 | Equip / put away a book | 1–7 | L1 / R1 cycles unlocked books and unarmed |
 | World map / minimap | I / V | D-pad left / right |
-| Charge / release spin dash | Hold / release X | Hold / release D-pad down |
 | Pause | Escape | Options |
 
 Keyboard and mouse remain available for map menus. Controller mappings use
@@ -47,10 +47,34 @@ Luanti's SDL gamepad support; a physical DualSense has not been tested here.
 
 Pony sprites use all eight original SRB2 directions, including diagonals and
 available swimming animations. The camera can orbit a stationary pony and sits
-half a node farther back. Attacks briefly use walking frames. Fluttershy, Derpy
-and Luna have unlimited flight: jump, release, then jump again to start; hold
-jump to climb. Landing or entering water ends flight. Spin/flight aura trails
+half a node farther back. Attacks briefly use walking frames. Every pony can fly:
+jump, release, then jump again to start; hold jump to climb. Fluttershy, Derpy
+and Luna fly on their wings; Twilight, Rarity and Trixie levitate with a glowing
+horn; Fluttershy swoops in to carry Applejack (short cooldown between lifts).
+Landing or entering water ends flight. Spin dash has been removed. Spin/flight aura trails
 are disabled in this revision.
+
+## Friendship (0.3.4)
+
+**Friendship Emergencies** are priority quests, one at a time. A big pink heart
+marks the way: hear the troubled pony, hear the other side, find two clues,
+discover the twist, then choose how to help. Every choice resolves it; the one
+that best honours the twist earns the most experience. Twelve scenarios cover
+six kinds (Broken Trust, Friendship Versus Responsibility, Fear and
+Misunderstanding, Friendship Under Pressure, Magical Friendship Crisis, The
+Excluded Friend). Each pays 300 bits. Give one up from the journal; another
+follows after a short random wait.
+
+**Elements of Harmony** (Honesty, Kindness, Laughter, Generosity, Loyalty, Magic)
+each have an experience bar in the journal and on the Equestria page. Level 2
+needs 300 experience, each later level 150 more, and every new level grants one
+very rare card. Deliveries give a little experience by quest theme.
+
+Ponies speak in speech bubbles (E shows the next line). Town ponies follow
+simple daily routines and stand still when you come to talk. The Wiki button in
+the Adventure tab is generated from the game's own data
+(`npm run wiki:export`). Pinkie Pie (earth pony, carried by Fluttershy) and
+Rainbow Dash (pegasus) joined the roster.
 
 ## Exploration and combat
 

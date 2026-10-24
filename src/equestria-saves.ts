@@ -1,6 +1,6 @@
 import type {Save} from './types';
 import {freshEquestria,validEquestria,type EquestriaProgress} from './equestria-state';
-export const adventurePonies=['twilight','applejack','fluttershy','rarity','derpy','luna','trixie'];
+export const adventurePonies=['twilight','applejack','fluttershy','rarity','derpy','luna','trixie','pinkiepie','rainbowdash'];
 export interface AdventureSave {id:string;pony:string;name:string;createdAt:number;updatedAt:number;progress:EquestriaProgress}
 export function validAdventureSaves(save:Save){
  if(save.equestriaSaves===undefined)return save.equestriaActive===undefined;

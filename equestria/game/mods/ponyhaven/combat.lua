@@ -3,7 +3,11 @@ local encounters=assert(ph.read_json(ph.path..'/encounters.json'))
 ph.encounters=encounters
 local storage=core.get_mod_storage()
 local boss_objects,book_objects,loot_objects={},{},{}
-local colours={twilight='#c998ff',applejack='#ffbc70',fluttershy='#ffd2ec',rarity='#c5b1ff',derpy='#f5e69c',luna='#91aaff',trixie='#83d5ff'}
+local colours=ph.pony_colours
+-- Unarmed right click: pegasi throw a cloud puff, earth ponies a dirt clod and
+-- unicorns a rainbow orb. Damage and digging are identical for every kind.
+local basic_shots={pegasus={texture='eq_cloud_orb.png',colour='#e6f0ff',label='cloud puff'},earth={texture='eq_dirt_orb.png',colour='#b07a4a',label='dirt clod'},unicorn={texture='eq_orb.png',label='rainbow orb'}}
+function ph.basic_shot(pony)return basic_shots[ph.pony_kind(pony)]end
 local spells={'Risier','Fiera','Disperim','Sanium','Expol','Flurra','Fulst'}
 local book_ids,book_positions={},{}
 assert(#encounters.books==7,'Equestria must contain exactly seven unique spellbooks')
@@ -45,6 +49,8 @@ function ph.destroy_sphere(p,r)
   end
  end end end
  if core.settings:get_bool('ponyhaven_smooth',false)then ph.smooth_volume(data,area,vector.offset(p,-r-1,-r-1,-r-1),vector.offset(p,r+1,r+1,r+1),param2)end
+ -- Crater rims become outer edges; the read area keeps the one-node margin.
+ ph.bevel_volume(data,area,vector.offset(p,-r-1,-r-1,-r-1),vector.offset(p,r+1,r+1,r+1))
  vm:set_data(data);vm:set_param2_data(param2);vm:write_to_map(true);vm:update_liquids();vm:close()
  return count
 end
@@ -58,7 +64,7 @@ end
 local function impact(self,p)
  if self.hit then return end;self.hit=true
  local r=self.radius or 2
- aura(p,r,self.colour or '#cfb2ff',.45);particle(p,self.dark and 'eq_dark_orb.png'or'eq_orb.png',r*12,.25);ph.impact_fx(p,r,self.colour or '#cfb2ff')
+ aura(p,r,self.colour or '#cfb2ff',.45);particle(p,self.dark and 'eq_dark_orb.png'or self.texture or'eq_orb.png',r*12,.25);ph.impact_fx(p,r,self.colour or '#cfb2ff')
  if self.enemy then
   for _,player in ipairs(core.get_connected_players())do if vector.distance(offset(player:get_pos(),.7),p)<r then ph.hurt(player,self.damage,p)end end
  else hurt_at(p,r,self.damage,self.owner,self.slow);if self.dig then ph.destroy_sphere(p,self.dig)end end
@@ -78,13 +84,14 @@ core.register_entity('ponyhaven:projectile',{initial_properties={physical=false,
    end
   end
   self.previous=p;self.trail=(self.trail or 0)+dt
-  if self.trail>.06 then self.trail=0;particle(p,self.enemy and 'eq_spark.png^[multiply:'..self.colour or 'eq_orb.png',4,.22)end
+  if self.trail>.06 then self.trail=0;particle(p,self.enemy and 'eq_spark.png^[multiply:'..self.colour or self.texture or 'eq_orb.png',4,.22)end
  end})
 local function shoot(owner,p,dir,opts)
  local obj=core.add_entity(p,'ponyhaven:projectile');if not obj then return end
  local e=obj:get_luaentity();for k,v in pairs(opts)do e[k]=v end;e.owner=owner;e.previous=p
  obj:set_velocity(vector.multiply(dir,opts.speed or 18));if opts.gravity then obj:set_acceleration({x=0,y=-opts.gravity,z=0})end
- if opts.enemy then obj:set_properties({textures={opts.dark and 'eq_dark_orb.png'or'eq_orb.png^[multiply:'..opts.colour},visual_size={x=1,y=1}})end
+ if opts.enemy then obj:set_properties({textures={opts.dark and 'eq_dark_orb.png'or'eq_orb.png^[multiply:'..opts.colour},visual_size={x=1,y=1}})
+ elseif opts.texture then obj:set_properties({textures={opts.texture}})end
  return obj
 end
 local function aim(player)
@@ -178,7 +185,7 @@ function ph.book_input(event)
  if not g.books[tostring(event.book)] then ph.notice(event.player,'Find the glowing '..spells[event.book]..' book first. Its marker is on the world map.');return end
  if g.equipped==event.book then g.equipped=nil else g.equipped=event.book end
  if ph.update_book_hud then ph.update_book_hud(core.get_player_by_name(event.player))end
- ph.notice(event.player,g.equipped and spells[g.equipped]..' equipped: left / right click cast its two spells.' or 'Book put away: left click aura slash, right click rainbow orb.')
+ ph.notice(event.player,g.equipped and spells[g.equipped]..' equipped: left / right click cast its two spells.' or 'Book put away: left click aura slash, right click '..ph.basic_shot(g.pony).label..'.')
 end
 function ph.cycle_book(player,g,direction)
  if g.travel or g.map_open then return end
@@ -186,7 +193,7 @@ function ph.cycle_book(player,g,direction)
  local at=1;for i,id in ipairs(choices)do if id==(g.equipped or 0)then at=i;break end end
  local id=choices[(at-1+direction)%#choices+1];g.equipped=id~=0 and id or nil
  if ph.update_book_hud then ph.update_book_hud(player)end
- ph.notice(player:get_player_name(),g.equipped and spells[g.equipped]..' equipped.' or 'Book put away: aura slash / rainbow orb.')
+ ph.notice(player:get_player_name(),g.equipped and spells[g.equipped]..' equipped.' or 'Book put away: aura slash / '..ph.basic_shot(g.pony).label..'.')
 end
 function ph.combat_step(player,g,dt,c,old,motion)
  local slot=player:get_wield_index()
@@ -197,7 +204,7 @@ function ph.combat_step(player,g,dt,c,old,motion)
  g.mana=math.min(100,g.mana+dt*8)
  if clock()>=(g.attack_until or 0) and (c.dig or c.place) then
   if g.equipped then cast(player,g,c.place)
-  elseif c.place then local p,d=aim(player);shoot(player:get_player_name(),p,d,{speed=18,radius=3,damage=35,dig=3});g.attack_until=clock()+.65;g.attack_pose_until=clock()+.3;g.facing=player:get_look_horizontal();if ph.sound then ph.sound('orb',p,.45)end
+  elseif c.place then local p,d=aim(player);local shot=ph.basic_shot(g.pony);shoot(player:get_player_name(),p,d,{speed=18,radius=3,damage=35,dig=3,texture=shot.texture,colour=shot.colour});g.attack_until=clock()+.65;g.attack_pose_until=clock()+.3;g.facing=player:get_look_horizontal();if ph.sound then ph.sound('orb',p,.45)end
   else slash(player,g)end
  end
  g.fx=(g.fx or 0)+dt

@@ -20,3 +20,21 @@
 .adventure-save-buttons{display:flex;gap:10px;margin:18px 0 10px}.adventure-save-buttons .button{flex:1;padding:10px}.adventure-current-save{font-size:13px;color:#766884;overflow-wrap:anywhere}.adventure-save-menu{padding:18px;background:#f5f1f8;border:1px solid #e0d5e9;border-radius:14px;margin:14px 0}.adventure-save-menu h3{margin-top:0}.adventure-save-menu label{display:block;font-size:13px;margin-bottom:7px}.adventure-save-menu input{box-sizing:border-box;width:100%;padding:10px;border:1px solid #d2c5dd;border-radius:8px;font:inherit}.adventure-save-row{padding:13px 0;border-top:1px solid #ded4e7;overflow-wrap:anywhere}.adventure-save-row>strong,.adventure-save-row>small{display:block;margin-bottom:8px}.adventure-save-row>small{color:#81718d;font-size:11px}.adventure-save-row p{font-size:13px}.controller-help{font-size:12px;margin-top:14px}.controller-help summary{cursor:pointer;font-weight:700}
 @media(max-width:850px){.equestria-hero{min-height:520px;padding:28px}.equestria-hero>img{right:9%;width:116px;bottom:125px}.equestria-treasure{left:20px;right:20px;gap:14px;padding:17px}.equestria-hero>p:not(.eyebrow){max-width:240px}}
 @media(max-width:500px){.adventure-world-tabs{display:flex}.adventure-world-tabs button{flex:1;justify-content:center;padding:10px;font-size:13px}.equestria-hero{min-height:555px}.equestria-stars{display:none}.equestria-hero>img{bottom:120px;right:12%}.equestria-towns{max-width:200px}.equestria-treasure>strong{font-size:26px}.equestria-treasure span{font-size:12px}}
+.harmony-bars{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px 18px;margin:12px 0}
+.harmony-bar{display:grid;gap:5px;font-size:13px;color:var(--ink)}
+.harmony-bar small{color:var(--muted);font-size:11px}
+.harmony-track{display:block;height:9px;border-radius:9px;background:var(--lavender);overflow:hidden}
+.harmony-track>span{display:block;height:100%;border-radius:9px;min-width:3px}
+.wiki-layout{display:grid;grid-template-columns:minmax(170px,220px) 1fr;gap:24px;align-items:start}
+.wiki-nav{display:grid;gap:4px;position:sticky;top:12px;padding:8px;background:var(--cream);border:1px solid var(--line);border-radius:16px}
+.wiki-nav button{text-align:left;padding:10px 14px;border:0;border-radius:11px;background:transparent;color:#776b88;font:inherit;font-weight:700;cursor:pointer}
+.wiki-nav button.selected{background:white;color:#655180;box-shadow:0 2px 7px #48345a12}
+.wiki-page{min-width:0;padding:28px 32px;background:white;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
+.wiki-page h2{margin:0 0 6px;color:var(--purple-deep)}
+.wiki-section h3{margin:22px 0 8px;color:var(--ink)}
+.wiki-section p{line-height:1.7;color:var(--ink);max-width:72ch}
+.wiki-table{overflow-x:auto}
+.wiki-table table{width:100%;border-collapse:collapse;font-size:14px}
+.wiki-table th{text-align:left;color:var(--muted);font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding:8px 10px;border-bottom:1px solid var(--line)}
+.wiki-table td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5}
+@media(max-width:760px){.wiki-layout{grid-template-columns:1fr}.wiki-nav{position:static;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}.wiki-page{padding:20px 18px}}

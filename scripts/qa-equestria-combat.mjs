@@ -39,7 +39,7 @@ core.register_globalstep(function(dt)
   ph.cycle_book(p,g,1);assert(g.equipped==nil);ph.cycle_book(p,g,-1);assert(g.equipped==6)
   g.books=books;g.equipped=nil;ph.update_book_hud(p)
   assert(avatar:get_attach()==p,'Avatar must follow client-predicted player movement through attachment')
-  for _,id in ipairs({'twilight','applejack','fluttershy','rarity','derpy','luna','trixie'})do
+  for _,id in ipairs({'twilight','applejack','fluttershy','rarity','derpy','luna','trixie','pinkiepie','rainbowdash'})do
    g.pony=id;g.motion=nil;ph.set_motion(name,'idle');assert(avatar:get_properties().textures[1]=='eq_pony_'..id..'_idle.png')
    g.motion=nil;ph.set_motion(name,'swim');assert(avatar:get_properties().textures[1]=='eq_pony_'..id..'_swim.png')
   end

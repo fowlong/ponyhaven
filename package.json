@@ -1,6 +1,6 @@
 {
   "name": "ponyhaven",
-  "version": "0.3.1",
+  "version": "0.3.4",
   "private": true,
   "type": "module",
   "main": "desktop/main.mjs",
@@ -31,6 +31,7 @@
     "test:sprite-scale": "node scripts/qa-sprite-scale.mjs",
     "test:equestria-import": "node --test tests/equestria-import.test.mjs",
     "test:equestria-party": "node scripts/qa-equestria-party.mjs",
+    "wiki:export": "node scripts/export-equestria-wiki.mjs",
     "equestria:import": "node scripts/import-equestria.mjs",
     "test:equestria-world": "node scripts/qa-equestria-world.mjs",
     "test:equestria-runtime": "node scripts/qa-equestria-runtime.mjs",

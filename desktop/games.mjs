@@ -10,6 +10,8 @@ export const PONIES = {
   adventure: ['twilight','applejack','fluttershy','rarity','derpy','luna','trixie'],
   ponykart: ['twilight','applejack','fluttershy','rarity','rainbowdash','pinkiepie'],
 };
+// Equestria also has ponies that the SRB2 Bonus stages engine has no sprites for.
+export const EQUESTRIA_PONIES = [...PONIES.adventure,'pinkiepie','rainbowdash'];
 export const COLOURS = {twilight:'Dusk',applejack:'Tangerine',fluttershy:'Lemonade',rarity:'White',rainbowdash:'Cerulean',pinkiepie:'Pink'};
 export function controls(game) {
   const bindings = game==='adventure' ? {forward:['w'],backward:['s'],strafeleft:['a'],straferight:['d'],turnleft:['LEFT ARROW'],turnright:['RIGHT ARROW'],jump:['SPACE','JOY1'],spin:['x','JOY2']} :

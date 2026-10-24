@@ -1,0 +1,683 @@
+{
+ "elements": [
+  {
+   "id": "honesty",
+   "name": "Honesty",
+   "colour": "#f6a23a",
+   "bearer": "Applejack"
+  },
+  {
+   "id": "kindness",
+   "name": "Kindness",
+   "colour": "#ff9fd1",
+   "bearer": "Fluttershy"
+  },
+  {
+   "id": "laughter",
+   "name": "Laughter",
+   "colour": "#6ec6ff",
+   "bearer": "Pinkie Pie"
+  },
+  {
+   "id": "generosity",
+   "name": "Generosity",
+   "colour": "#a78bfa",
+   "bearer": "Rarity"
+  },
+  {
+   "id": "loyalty",
+   "name": "Loyalty",
+   "colour": "#ff5a5f",
+   "bearer": "Rainbow Dash"
+  },
+  {
+   "id": "magic",
+   "name": "Magic",
+   "colour": "#d36bff",
+   "bearer": "Twilight Sparkle"
+  }
+ ],
+ "pages": [
+  {
+   "id": "getting-started",
+   "title": "Getting started",
+   "sections": [
+    {
+     "heading": "Controls",
+     "rows": [
+      [
+       "Move / camera",
+       "WASD / mouse",
+       "Left / right stick"
+      ],
+      [
+       "Jump · fly",
+       "Space, then Space again in the air (hold to climb)",
+       "Cross"
+      ],
+      [
+       "Melee / primary spell",
+       "Left click",
+       "Square"
+      ],
+      [
+       "Throw / secondary spell",
+       "Right click",
+       "Circle"
+      ],
+      [
+       "Interact · talk",
+       "E",
+       "Triangle or D-pad up"
+      ],
+      [
+       "Quest journal",
+       "Tab",
+       "—"
+      ],
+      [
+       "Books",
+       "1–7",
+       "L1 / R1"
+      ],
+      [
+       "World map / minimap",
+       "I / V",
+       "D-pad left / right"
+      ],
+      [
+       "Pause",
+       "Escape",
+       "Options"
+      ]
+     ],
+     "columns": [
+      "Action",
+      "Keyboard / mouse",
+      "Controller"
+     ]
+    },
+    {
+     "heading": "Saving",
+     "text": "Progress saves automatically to the selected adventure. Rings, deliveries, treasures, books, bosses and Elements of Harmony experience sync to your Ponyhaven profile. Terrain damage resets when a solo or hosted world opens."
+    }
+   ]
+  },
+  {
+   "id": "ponies",
+   "title": "Ponies and flight",
+   "sections": [
+    {
+     "heading": "Every pony can fly",
+     "text": "Jump, release, then jump again in the air to fly. Landing or entering water ends flight."
+    },
+    {
+     "heading": "Roster",
+     "columns": [
+      "Pony",
+      "Kind",
+      "Flight",
+      "Right click"
+     ],
+     "rows": [
+      [
+       "Twilight Sparkle",
+       "Unicorn",
+       "Levitates with a soft magical glow, in a prone jump pose.",
+       "rainbow orb"
+      ],
+      [
+       "Applejack",
+       "Earth",
+       "Fluttershy swoops in and carries them (short cooldown between lifts).",
+       "dirt clod"
+      ],
+      [
+       "Fluttershy",
+       "Pegasus",
+       "Flies on their own wings.",
+       "cloud puff"
+      ],
+      [
+       "Rarity",
+       "Unicorn",
+       "Levitates with a soft magical glow, in a prone jump pose.",
+       "rainbow orb"
+      ],
+      [
+       "Pinkie Pie",
+       "Earth",
+       "Fluttershy swoops in and carries them (short cooldown between lifts).",
+       "dirt clod"
+      ],
+      [
+       "Rainbow Dash",
+       "Pegasus",
+       "Flies on their own wings.",
+       "cloud puff"
+      ],
+      [
+       "Derpy",
+       "Pegasus",
+       "Flies on their own wings.",
+       "cloud puff"
+      ],
+      [
+       "Princess Luna",
+       "Alicorn",
+       "Flies on their own wings.",
+       "cloud puff"
+      ],
+      [
+       "Trixie",
+       "Unicorn",
+       "Levitates with a soft magical glow, in a prone jump pose.",
+       "rainbow orb"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "elements",
+   "title": "Elements of Harmony",
+   "sections": [
+    {
+     "heading": "Experience",
+     "text": "Each Element has its own experience bar, shown in the quest journal (Tab) and on the Equestria page. Level 2 needs 300 experience, and each level after needs 150 more. Every new level earns one very rare card for your collection."
+    },
+    {
+     "heading": "The six Elements",
+     "columns": [
+      "Element",
+      "Bearer",
+      "What earns it"
+     ],
+     "rows": [
+      [
+       "Honesty",
+       "Applejack",
+       "Telling the truth kindly, and helping others hear it."
+      ],
+      [
+       "Kindness",
+       "Fluttershy",
+       "Noticing how others feel and caring for them gently."
+      ],
+      [
+       "Laughter",
+       "Pinkie Pie",
+       "Bringing joy that includes everypony, never at their expense."
+      ],
+      [
+       "Generosity",
+       "Rarity",
+       "Giving time, effort and credit freely."
+      ],
+      [
+       "Loyalty",
+       "Rainbow Dash",
+       "Standing by friends, especially when it is hard."
+      ],
+      [
+       "Magic",
+       "Twilight Sparkle",
+       "Bringing friends together so their strengths become one."
+      ]
+     ]
+    },
+    {
+     "heading": "Experience sources",
+     "columns": [
+      "Source",
+      "Experience"
+     ],
+     "rows": [
+      [
+       "Friendship Emergency",
+       "40 to its first Element, 20 to its second, plus 30 (heartfelt choice) or 15 to the Element of your choice"
+      ],
+      [
+       "Delivery step",
+       "10 to the quest theme's Element"
+      ],
+      [
+       "Finished quest chain",
+       "15 bonus to the theme's Element"
+      ]
+     ]
+    },
+    {
+     "heading": "Delivery themes",
+     "columns": [
+      "Quest theme",
+      "Element"
+     ],
+     "rows": [
+      [
+       "Cooking",
+       "Generosity"
+      ],
+      [
+       "Fashion",
+       "Generosity"
+      ],
+      [
+       "Friendship",
+       "Laughter"
+      ],
+      [
+       "Harmony",
+       "Magic"
+      ],
+      [
+       "History",
+       "Loyalty"
+      ],
+      [
+       "Magic",
+       "Magic"
+      ],
+      [
+       "Nature",
+       "Kindness"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "emergencies",
+   "title": "Friendship Emergencies",
+   "sections": [
+    {
+     "heading": "How they work",
+     "text": "Every few minutes a town pony needs urgent help. A big pink heart marks the way. Hear the troubled pony out, hear the other side, find two clues, discover the twist, then choose how to help. Every choice resolves the emergency; the one that best honours the twist earns the most experience. Only one emergency is active at a time, and you can give one up from the journal: another appears after a short while. Each resolution also earns 300 bits."
+    },
+    {
+     "heading": "Kinds of emergency",
+     "columns": [
+      "Kind",
+      "What happens",
+      "Twist"
+     ],
+     "rows": [
+      [
+       "Broken Trust",
+       "Two friends have fallen out because one believes the other betrayed them.",
+       "The accused pony may have broken a promise for a good reason."
+      ],
+      [
+       "Friendship Versus Responsibility",
+       "Two ponies have conflicting obligations and neither can keep theirs without disappointing the other.",
+       "There may be no answer that satisfies everypony completely."
+      ],
+      [
+       "Fear and Misunderstanding",
+       "A pony is avoided because others think they are dangerous, strange or untrustworthy.",
+       "The feared pony might really be causing trouble, but unintentionally."
+      ],
+      [
+       "Friendship Under Pressure",
+       "A pony is overwhelmed by responsibility or perfectionism and pushes others away.",
+       "Simply doing their work for them can reinforce the problem."
+      ],
+      [
+       "Magical Friendship Crisis",
+       "A magical effect amplifies jealousy, dishonesty, anger or suspicion.",
+       "Removing the magic does not undo the hurtful things that were said."
+      ],
+      [
+       "The Excluded Friend",
+       "Friends unintentionally leave somepony out.",
+       "The excluded pony may want a different kind of friendship, or more independence."
+      ]
+     ]
+    },
+    {
+     "heading": "Emergencies",
+     "columns": [
+      "Emergency",
+      "Kind",
+      "Elements",
+      "What happens"
+     ],
+     "rows": [
+      [
+       "The Broken Promise",
+       "Broken Trust",
+       "Honesty · Loyalty",
+       "a friend promised to help a pony with the town market stall, and never came."
+      ],
+      [
+       "The Missing Gift",
+       "Broken Trust",
+       "Honesty · Generosity",
+       "a pony's handmade gift for the town celebration has vanished, and a pony suspects a friend."
+      ],
+      [
+       "The Unwanted Hero",
+       "Broken Trust",
+       "Honesty · Loyalty",
+       "a friend is being praised all over town for something a pony did."
+      ],
+      [
+       "The Loyalty Dilemma",
+       "Friendship Versus Responsibility",
+       "Loyalty · Magic",
+       "a pony and a friend both asked for urgent help at the same time."
+      ],
+      [
+       "The Forgotten Birthday",
+       "Friendship Versus Responsibility",
+       "Generosity · Loyalty",
+       "a pony missed a friend's birthday party in town because of work."
+      ],
+      [
+       "Two Friends, One Dream",
+       "Friendship Versus Responsibility",
+       "Loyalty · Generosity",
+       "a pony and a friend both applied for the same apprenticeship in town."
+      ],
+      [
+       "A Rumour in Ponyville",
+       "Fear and Misunderstanding",
+       "Kindness · Honesty",
+       "Gossip says a friend is jinxing the gardens of town, and a pony is afraid of them."
+      ],
+      [
+       "A Friend in the Everfree",
+       "Fear and Misunderstanding",
+       "Loyalty · Kindness",
+       "After an argument, a friend ran off into the wilds near town. a pony is frantic."
+      ],
+      [
+       "Too Much on Their Plate",
+       "Friendship Under Pressure",
+       "Kindness · Generosity",
+       "a pony is running every event in town alone, and snapping at a friend."
+      ],
+      [
+       "The Discord Charm",
+       "Magical Friendship Crisis",
+       "Magic · Honesty",
+       "A mischievous trinket in town is making a pony and a friend suspicious of each other."
+      ],
+      [
+       "A Pony Out of Place",
+       "The Excluded Friend",
+       "Kindness · Laughter",
+       "a friend just moved to town, and a pony thinks they're unfriendly."
+      ],
+      [
+       "The Great Prank Disaster",
+       "The Excluded Friend",
+       "Laughter · Kindness",
+       "a pony's prank went too far and ruined a friend's display in town."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "quests",
+   "title": "Quests and treasure",
+   "sections": [
+    {
+     "heading": "Quest chains",
+     "text": "Town ponies with a gold ! offer quest chains of two to four deliveries. Each delivered step earns 150 bits and Element experience. Ponies talk in speech bubbles; the journal keeps recent conversations."
+    },
+    {
+     "heading": "Rings and treasure",
+     "text": "Rings appear each day and give 10 bits each. 50 treasure chests each give one rare card or a new pet, and refill 24 hours after opening."
+    },
+    {
+     "heading": "Town ponies",
+     "columns": [
+      "Pony",
+      "Town"
+     ],
+     "rows": [
+      [
+       "Fleetfoot",
+       "Canterlot"
+      ],
+      [
+       "Lemon Hearts",
+       "Canterlot"
+      ],
+      [
+       "Mysterious Mare Do Well",
+       "Canterlot"
+      ],
+      [
+       "Pound Cake",
+       "Canterlot"
+      ],
+      [
+       "Mrs Sparkle",
+       "Cloudsdale"
+      ],
+      [
+       "Pokey Pierce",
+       "Cloudsdale"
+      ],
+      [
+       "Saffron Masala",
+       "Cloudsdale"
+      ],
+      [
+       "Starlight Glimmer",
+       "Cloudsdale"
+      ],
+      [
+       "Blossomforth",
+       "Crystal Empire"
+      ],
+      [
+       "Royal Night Guard",
+       "Crystal Empire"
+      ],
+      [
+       "Spitfire",
+       "Crystal Empire"
+      ],
+      [
+       "Walter",
+       "Crystal Empire"
+      ],
+      [
+       "Applejack",
+       "Ponyville"
+      ],
+      [
+       "Cloakseller",
+       "Ponyville"
+      ],
+      [
+       "Flitter",
+       "Ponyville"
+      ],
+      [
+       "Lily Longsocks",
+       "Ponyville"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "magic",
+   "title": "Spellbooks",
+   "sections": [
+    {
+     "heading": "The seven books",
+     "text": "Seven unique floating spellbooks rest at fixed, widely scattered places, marked in purple on the world map. Press 1–7 to equip a collected book; it replaces both mouse attacks."
+    },
+    {
+     "heading": "Spells",
+     "columns": [
+      "Book",
+      "Primary",
+      "Secondary"
+     ],
+     "rows": [
+      [
+       "Risier",
+       "Upward burst",
+       "Directional dash"
+      ],
+      [
+       "Fiera",
+       "Fire burst / burning area",
+       "Explosive fireball"
+      ],
+      [
+       "Disperim",
+       "Repulsion",
+       "Swap with a targeted enemy"
+      ],
+      [
+       "Sanium",
+       "Healing",
+       "Temporary shield"
+      ],
+      [
+       "Expol",
+       "Explosive projectile",
+       "Pulling singularity / blast"
+      ],
+      [
+       "Flurra",
+       "Slowing snowball",
+       "Icicle field"
+      ],
+      [
+       "Fulst",
+       "Lightning bolt",
+       "Electric orb trap"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "bosses",
+   "title": "World bosses",
+   "sections": [
+    {
+     "heading": "Bosses",
+     "text": "Giant world bosses use telegraphed attacks. Defeating one adds it to your virtual pets."
+    },
+    {
+     "heading": "Roster",
+     "columns": [
+      "Boss",
+      "Attacks"
+     ],
+     "rows": [
+      [
+       "Adagio Dazzle",
+       "volley · meteors · spiral"
+      ],
+      [
+       "Ahuizotl",
+       "nova · meteors · crossfire"
+      ],
+      [
+       "Aria Blaze",
+       "spiral · volley · nova"
+      ],
+      [
+       "Cozy Glow",
+       "meteors · nova · crossfire"
+      ],
+      [
+       "Discord",
+       "crossfire · meteors · volley"
+      ],
+      [
+       "Dr. Caballeron",
+       "meteors · crossfire · nova"
+      ],
+      [
+       "King Sombra",
+       "meteors · volley · nova"
+      ],
+      [
+       "Mane-iac",
+       "crossfire · volley · meteors"
+      ],
+      [
+       "Nightmare Moon",
+       "crossfire · meteors · spiral"
+      ],
+      [
+       "Queen Chrysalis",
+       "crossfire · spiral · nova"
+      ],
+      [
+       "Sonata Dusk",
+       "volley · spiral · nova"
+      ],
+      [
+       "Sphinx",
+       "meteors · crossfire · nova"
+      ],
+      [
+       "Starlight Glimmer",
+       "crossfire · spiral · meteors"
+      ],
+      [
+       "Sunset Shimmer",
+       "volley · meteors · spiral"
+      ],
+      [
+       "Tempest Shadow",
+       "spiral · volley · meteors"
+      ],
+      [
+       "Tirek",
+       "volley · spiral · crossfire"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "world",
+   "title": "The world",
+   "sections": [
+    {
+     "heading": "Towns",
+     "columns": [
+      "Town",
+      "Town ponies"
+     ],
+     "rows": [
+      [
+       "Ponyville",
+       "4"
+      ],
+      [
+       "Canterlot",
+       "4"
+      ],
+      [
+       "Cloudsdale",
+       "4"
+      ],
+      [
+       "Crystal Empire",
+       "4"
+      ]
+     ]
+    },
+    {
+     "heading": "Getting around",
+     "text": "Press I for the world map and travel between towns. Teleporters join distant areas. Town ponies keep simple daily routines and stand still when you come to talk."
+    }
+   ]
+  }
+ ]
+}

@@ -6,6 +6,11 @@ local storage=core.get_mod_storage()
 local players,registry,avatars,npc_objects={}, {}, {}, {}
 ph.players=players;ph.locations=locations;ph.avatars=avatars;ph.npc_sheets=npc_sheets
 local revision=-1;local tick=0;local seconds=0;local enemies={};local enemy_respawn={}
+-- Every pony can fly: pegasi on their wings, unicorns by levitation magic, and
+-- earth ponies carried by Fluttershy. The kind also picks the right-click art.
+local kinds={fluttershy='pegasus',derpy='pegasus',luna='pegasus',rainbowdash='pegasus',twilight='unicorn',rarity='unicorn',trixie='unicorn',applejack='earth',pinkiepie='earth'}
+function ph.pony_kind(pony)return kinds[pony]or'earth'end
+ph.pony_colours={twilight='#c998ff',applejack='#ffbc70',fluttershy='#ffd2ec',rarity='#c5b1ff',derpy='#f5e69c',luna='#91aaff',trixie='#83d5ff',pinkiepie='#ff8fc8',rainbowdash='#7fd4ff'}
 local function now()return os.time()*1000 end
 local function copy(t)return core.parse_json(core.write_json(t)) or {} end
 local function hash(s)local h=17;for i=1,#s do h=(h*131+s:byte(i))%2147483647 end;return h end
@@ -13,13 +18,14 @@ local function distance(a,b)return vector.distance(a,b)end
 local function position(p,dy)return {x=p.x,y=p.y+(dy or 0),z=p.z}end
 local function persist(name)
  local g=players[name];if not g then return end
- storage:set_string('p:'..g.uid,core.write_json({rings=g.rings,quests=g.quests,chests=g.chests,pending=g.pending,quest=g.quest,ring_day=g.ring_day,marks=g.marks,checkpoint=g.checkpoint,books=g.books,bosses=g.bosses}))
+ storage:set_string('p:'..g.uid,core.write_json({rings=g.rings,quests=g.quests,chests=g.chests,pending=g.pending,quest=g.quest,ring_day=g.ring_day,marks=g.marks,checkpoint=g.checkpoint,books=g.books,bosses=g.bosses,harmony=g.harmony,emergency=g.emergency or core.null,fe_count=g.fe_count,last_emergency=g.last_emergency}))
 end
 local function notice(name,text)core.chat_send_player(name,text);local g=players[name];if g then g.notice=text;g.notice_until=seconds+4 end end
 local function reward(name,event)ph.emit({kind='reward',player=name,event=event})end
 local function sync(name)
  local g=players[name];if not g then return end
- if g.rings>g.acked_rings or g.quests>g.acked_quests then reward(name,{kind='progress',rings=g.rings,quests=g.quests})end
+ local gained=false;for k,v in pairs(g.harmony)do if v>(g.acked_harmony[k]or 0)then gained=true end end
+ if g.rings>g.acked_rings or g.quests>g.acked_quests or gained then reward(name,{kind='progress',rings=g.rings,quests=g.quests,harmony=g.harmony})end
  for _,pending in pairs(g.pending)do reward(name,pending)end
 end
 local function valid_state(s)
@@ -32,7 +38,10 @@ local function load_player(name,entry)
  local stored=storage:get_string('p:'..entry.uid);local old=stored~='' and core.parse_json(stored) or {};local state=entry.state
  local g={uid=entry.uid,pony=entry.pony,display=entry.displayName,rings=math.max(old.rings or 0,state.rings),quests=math.max(old.quests or 0,state.quests),
   acked_rings=state.rings,acked_quests=state.quests,chests=copy(state.chests),pending=old.pending or {},quest=old.quest,ring_day=old.ring_day or '',marks=old.marks or {},checkpoint=old.checkpoint,
-  books=copy(state.books or {}),bosses=copy(state.bosses or {}),bag=0,air_used=false,flying=false,roll=0,charge=0,previous={},objects={},notice='',notice_until=0,hp=100,mana=100,facing=0}
+  books=copy(state.books or {}),bosses=copy(state.bosses or {}),harmony={},acked_harmony=copy(state.harmony or {}),
+  emergency=type(old.emergency)=='table'and old.emergency or nil,fe_count=old.fe_count or 0,last_emergency=old.last_emergency,log={},bag=0,air_used=false,flying=false,previous={},objects={},notice='',notice_until=0,hp=100,mana=100,facing=0}
+ -- Element experience is the larger of this world's copy and Ponyhaven's.
+ for _,source in ipairs({old.harmony or {},state.harmony or {}})do for k,v in pairs(source)do if type(v)=='number'then g.harmony[k]=math.max(g.harmony[k]or 0,v)end end end
  -- Saves from before quest chains hold one {item,target,picked} delivery.
  local q=g.quest
  if type(q)=='table' and type(q.steps)~='table' then
@@ -49,6 +58,7 @@ end
 local function acknowledge(name,state)
  local g=players[name];if not g or not valid_state(state) then return end
  g.acked_rings=math.max(g.acked_rings,state.rings);g.acked_quests=math.max(g.acked_quests,state.quests)
+ for k,v in pairs(state.harmony or {})do if type(v)=='number'then g.acked_harmony[k]=math.max(g.acked_harmony[k]or 0,v)end end
  for k,v in pairs(state.books or {})do if v then
   g.books[k]=true;g.pending['book:'..k]=nil
   local obj=ph.book_objects and ph.book_objects[tonumber(k)]
@@ -122,14 +132,19 @@ local function update_avatar(self)
   if viewer:get_camera().mode=='third' then camera=vector.subtract(camera,vector.multiply(viewer:get_look_dir(),3.2))end
   local direction=vector.subtract(position(p:get_pos(),1),camera);view_yaw=math.atan2(-direction.x,direction.z)
  end
- local sheet=pony_sheets[g.pony][g.motion or 'idle'] or pony_sheets[g.pony].idle
+ -- A carrier sprite draws another pony (Fluttershy) with its own fixed motion.
+ local pony,motion=self.pony or g.pony,self.motion or g.motion or 'idle'
+ local sheet=pony_sheets[pony][motion] or pony_sheets[pony].idle
  local column=ph.sprite_column(g.facing or 0,view_yaw)
- local frame=math.floor((seconds-(g.motion_started or 0))/(g.motion=='run' and .065 or .12))%sheet.frames
- local key=sheet.texture..':'..column..':'..frame
+ local frame=math.floor((seconds-(g.motion_started or 0))/(motion=='run' and .065 or .12))%sheet.frames
+ -- Levitating unicorns glow softly: self-lit and lightly tinted with their aura.
+ local magic=g.magic_glow and not self.pony
+ local texture=magic and sheet.texture..'^[colorize:'..(ph.pony_colours[pony]or'#ffffff')..':70'or sheet.texture
+ local key=texture..':'..column..':'..frame
  if key==self.frame_key then return end;self.frame_key=key;self.column=column;self.frame=frame
  -- set_sprite is a transient packet, not part of entity initialization. Keep
  -- the actual frame in properties as well, so late join/re-entry is correct.
- self.object:set_properties({textures={sheet.texture},spritediv={x=sheet.columns,y=sheet.frames},initial_sprite_basepos={x=column,y=frame},visual_size={x=sheet.width/sheet.pixelsPerNode,y=sheet.height/sheet.pixelsPerNode}})
+ self.object:set_properties({textures={texture},glow=magic and 12 or 1,spritediv={x=sheet.columns,y=sheet.frames},initial_sprite_basepos={x=column,y=frame},visual_size={x=sheet.width/sheet.pixelsPerNode,y=sheet.height/sheet.pixelsPerNode}})
  self.object:set_sprite({x=column,y=frame},1,1,false)
 end
 ph.update_avatar=update_avatar
@@ -152,6 +167,49 @@ local function ensure_avatar(player,g)
  end
  for id,obj in pairs(views)do if not core.get_player_by_name(id)then obj:remove();views[id]=nil end end
 end
+-- Fluttershy carrying an earth pony: one sprite per viewer (like avatars),
+-- drawn with her flying frames. Flight itself starts instantly; she is only a
+-- visual. She swoops down from out of view with a velocity aimed at where the
+-- pony will be (moved smoothly client-side), attaches once on arrival, and on
+-- landing detaches and flies back up.
+core.register_entity('ponyhaven:carrier',{initial_properties={physical=false,visual='sprite',textures={'eq_blank.png'},pointable=false,static_save=false,glow=1},on_step=update_avatar})
+local carrier_views={}
+local CARRY_HEIGHT,CARRY_SKY=1.3,9 -- nodes above the attachment point
+local ARRIVE,DEPART=.3,.5 -- seconds
+local CARRY_LAG=.15 -- seconds the server's view of a player trails the client
+local function remove_carrier(name)
+ for id,obj in pairs(carrier_views[name]or{})do obj:remove()end;carrier_views[name]=nil
+end
+-- Returns true once the current swoop has finished.
+local function update_carrier(player,g)
+ local name=player:get_player_name();local views=carrier_views[name]or{};carrier_views[name]=views
+ local t=seconds-g.carry_started;local p,v=player:get_pos(),player:get_velocity()
+ local hover=position(p,1+CARRY_HEIGHT)
+ for _,viewer in ipairs(core.get_connected_players())do local id=viewer:get_player_name();local obj=views[id]
+  if(g.carry=='arriving'or g.carry=='carrying')and(id==name or distance(viewer:get_pos(),p)<180)and not(obj and obj:get_pos())then
+   obj=core.add_entity(position(hover,CARRY_SKY),'ponyhaven:carrier')
+   if obj then local self=obj:get_luaentity();self.owner=name;self.viewer=id;self.pony='fluttershy';self.motion='fly';obj:set_observers({[id]=true});views[id]=obj;update_avatar(self)
+    -- A viewer arriving mid-flight sees her already carrying.
+    if g.carry=='carrying'then obj:set_attach(player,'',{x=0,y=(1+CARRY_HEIGHT)*10,z=0},{x=0,y=0,z=0},true);self.attached=true end
+   end
+  end
+  local e=obj and obj:get_pos()and obj:get_luaentity()
+  if e and g.carry=='arriving'then
+   -- Re-aim at the pony's predicted position so she meets it on time. The
+   -- server sees the player about a tick late (a climbing pony is higher than
+   -- it knows), so lead by that too; otherwise she arrives low, then the
+   -- attachment snaps her up to the pony.
+   local left=math.max(.05,ARRIVE-t);local target=vector.add(hover,vector.multiply(v,left+CARRY_LAG))
+   obj:set_velocity(vector.divide(vector.subtract(target,obj:get_pos()),left))
+   if t>=ARRIVE and not e.attached then obj:set_velocity(vector.zero());obj:set_attach(player,'',{x=0,y=(1+CARRY_HEIGHT)*10,z=0},{x=0,y=0,z=0},true);e.attached=true end
+  elseif e and g.carry=='leaving'and not e.departing then
+   -- Also covers landing before she arrived: she just turns back upward.
+   if e.attached then obj:set_detach();obj:set_pos(hover)end
+   obj:set_velocity({x=v.x,y=CARRY_SKY/DEPART*1.6,z=v.z});e.attached=false;e.departing=true
+  end
+ end
+ return t>=(g.carry=='arriving'and ARRIVE or DEPART)
+end
 core.register_on_joinplayer(function(player)
  local name,entry=player:get_player_name(),registry[player:get_player_name()];if not entry then return end
  local g=load_player(name,entry)
@@ -159,16 +217,16 @@ core.register_on_joinplayer(function(player)
  player:set_camera({mode='third'});player:set_eye_offset({x=0,y=0,z=0},{x=0,y=3,z=-5})
  player:hud_set_flags({hotbar=false,healthbar=false,crosshair=true,wielditem=false,breathbar=false})
  player:get_inventory():set_size('main',8);player:hud_set_hotbar_itemcount(8);g.wield_index=player:get_wield_index()
- player:set_inventory_formspec('formspec_version[6]size[9,5]label[.5,.5;Equestria]label[.5,1.1;Press E to talk, collect or open treasure.]label[.5,1.7;Press I to open the travel map.]button_exit[3,3;3,.8;close;Keep exploring]')
+ g.journal_dirty=true -- Tab opens the quest journal (friendship.lua)
  g.facing=player:get_look_horizontal()
  g.hud=player:hud_add({type='text',position={x=.025,y=.035},alignment={x=1,y=1},offset={x=0,y=0},number=0xfff5db,size={x=1,y=0},text=''})
  g.questhud=player:hud_add({type='text',position={x=.025,y=.13},alignment={x=1,y=1},number=0xffe2a1,size={x=1,y=0},text=''})
- travel(player,g.checkpoint or locations.towns[1]);notice(name,'Welcome to Equestria! E: interact · I: travel map · X: spin dash')
+ travel(player,g.checkpoint or locations.towns[1]);notice(name,'Welcome to Equestria! Jump twice to fly · E: interact · I: travel map')
  ph.emit({kind='joined',player=name});sync(name)
 end)
 core.register_on_leaveplayer(function(player)
  local name=player:get_player_name();persist(name)
- for _,obj in pairs(avatar_views[name] or {})do obj:remove()end;avatar_views[name]=nil;avatars[name]=nil
+ for _,obj in pairs(avatar_views[name] or {})do obj:remove()end;avatar_views[name]=nil;avatars[name]=nil;remove_carrier(name)
  local g=players[name];if g then for _,obj in pairs(g.objects)do obj:remove()end end
  players[name]=nil;ph.emit({kind='left',player=name})
 end)
@@ -227,29 +285,32 @@ local function quest_objective(g)
  end
 end
 local function talk(player,npc)
- local name=player:get_player_name();local g=players[name];if not g or distance(player:get_pos(),npc)>4 then return end
+ local name=player:get_player_name();local g=players[name];if not g or distance(player:get_pos(),ph.npc_position(npc))>4 then return end
+ local say=function(line)ph.say(name,npc,{line})end
  if g.quest then
   if g.quest.npc~=npc.id then notice(name,'Finish your quest for '..locations.npcs[g.quest.npc+1].name..' first.');return end
   local step=g.quest.steps[g.quest.current]
   if not step.picked then
-   notice(name,npc.name..': '..npc_dialogue(npc,2)..' Please bring back the '..step.item..'. Follow the quest marker.');return
+   say(npc_dialogue(npc,2)..' Please bring back the '..step.item..'.');notice(name,'Follow the quest marker to the '..step.item..'.');return
   end
   -- Each delivered step counts as one 150-bit delivery for Ponyhaven, so a
   -- chain pays 150 per step as advertised.
   g.quests=g.quests+1
+  ph.grant_harmony(name,ph.quest_theme_elements[g.quest.theme]or'laughter',10)
   if g.quest.current<g.quest.total then
    g.quest.current=g.quest.current+1;local next_step=g.quest.steps[g.quest.current]
-   persist(name);sync(name);notice(name,npc.name..': Excellent! +150 bits. Now I also need the '..next_step.item..'. '..g.quest.current..'/'..g.quest.total..' steps.')
+   persist(name);sync(name);say('Excellent! Now I also need the '..next_step.item..'.');notice(name,'+150 bits. Step '..g.quest.current..'/'..g.quest.total..': find the '..next_step.item..'.')
   else
    local reward=150*g.quest.total
+   ph.grant_harmony(name,ph.quest_theme_elements[g.quest.theme]or'laughter',15)
    g.quest=nil;persist(name);sync(name)
-   notice(name,npc.name..': '..npc_dialogue(npc,3)..' Quest chain complete: '..reward..' bits earned in total!')
+   say(npc_dialogue(npc,3));notice(name,'Quest chain complete: '..reward..' bits earned in total!')
   end
   return
  end
  g.quest=generate_quest(g,npc);persist(name)
  local step=g.quest.steps[1]
- notice(name,npc.name..': '..npc_dialogue(npc,1)..' Find the '..step.item..' and bring it back. ('..g.quest.total..' steps, +'..150*g.quest.total..' bits)')
+ say(npc_dialogue(npc,1)..' Could you find the '..step.item..' and bring it back?');notice(name,'New quest chain: '..g.quest.total..' steps, +'..150*g.quest.total..' bits.')
 end
 local function open_chest(player,chest)
  local name=player:get_player_name();local g=players[name];if not g or distance(player:get_pos(),chest)>4 then return end
@@ -275,8 +336,9 @@ ph.collect_parcel=collect_parcel
 local function interact(player)
  local name=player:get_player_name();local g=players[name];if not g then return end
  if ph.interact_extra and ph.interact_extra(player)then return end
+ if ph.friendship_interact and ph.friendship_interact(player)then return end
  if g.quest then local step=g.quest.steps[g.quest.current];if step and not step.picked and distance(player:get_pos(),step.target)<3 then collect_parcel(player);return end end
- for _,npc in ipairs(locations.npcs)do if distance(player:get_pos(),npc)<3 then talk(player,npc);return end end
+ for _,npc in ipairs(locations.npcs)do if distance(player:get_pos(),ph.npc_position(npc))<3 then talk(player,npc);return end end
  for _,chest in ipairs(locations.chests)do if distance(player:get_pos(),chest)<3 then open_chest(player,chest);return end end
  local p=position(player:get_pos(),1.1)
  for hit in core.raycast(p,vector.add(p,vector.multiply(player:get_look_dir(),4)),false,false)do
@@ -284,8 +346,46 @@ local function interact(player)
  end
 end
 local function observer(obj,name)obj:set_observers({[name]=true})end
+-- Town ponies keep a simple daily schedule: a few deterministic spots near home
+-- (derived from their id), changing every three in-game hours. They stop while a
+-- player is close or talking to them, and walk at an easy pace otherwise.
+local function npc_spots(npc)
+ if npc.spots then return npc.spots end
+ local spots={{x=npc.x,y=npc.y,z=npc.z}}
+ for i=1,4 do
+  local h=hash(npc.id..':spot:'..i);local angle=(h%360)*math.pi/180;local r=2+h%5
+  local at=ground(npc.x+math.cos(angle)*r,npc.z+math.sin(angle)*r,npc.y-.5)
+  if at and math.abs(at.y-npc.y)<=1.5 then spots[#spots+1]=at end
+ end
+ npc.spots=spots;return spots
+end
+function ph.npc_object(npc)local obj=npc_objects[npc.id];return obj and obj:get_pos()and obj end
+-- Feet position of a town pony, wherever its schedule has taken it.
+function ph.npc_position(npc)
+ local obj=ph.npc_object(npc);if not obj then return npc end
+ local p,e=obj:get_pos(),obj:get_luaentity();return {x=p.x,y=p.y-(e.half or 0),z=p.z}
+end
+function ph.npc_height(npc)local obj=ph.npc_object(npc);return obj and obj:get_luaentity().half*2 or 2 end
 core.register_entity('ponyhaven:npc',{initial_properties={physical=false,visual='sprite',textures={'eq_blank.png'},pointable=false,static_save=false},
- on_rightclick=function(self,p)if self.npc then talk(p,self.npc)end end,on_punch=function(self,p)if p and p:is_player() and self.npc then talk(p,self.npc)end end})
+ on_rightclick=function(self,p)if self.npc then talk(p,self.npc)end end,on_punch=function(self,p)if p and p:is_player() and self.npc then talk(p,self.npc)end end,
+ on_step=function(self,dt)
+  local npc=self.npc;if not npc then return end
+  self.timer=(self.timer or 0)+dt;if self.timer<.25 then return end;local step=self.timer;self.timer=0
+  local pos=self.object:get_pos();local feet=vector.offset(pos,0,-self.half,0)
+  for _,p in ipairs(core.get_connected_players())do
+   local g=players[p:get_player_name()]
+   if distance(p:get_pos(),feet)<5 or (g and g.talking_to==npc.id)then self.object:set_velocity(vector.zero());return end
+  end
+  local spots=npc_spots(npc);local slot=math.floor(core.get_timeofday()*8)
+  local goal=spots[hash(npc.id..':slot:'..slot)%#spots+1]
+  local flat=vector.new(goal.x-feet.x,0,goal.z-feet.z);local d=vector.length(flat)
+  if d<.3 then self.object:set_velocity(vector.zero());return end
+  local move=vector.multiply(vector.normalize(flat),math.min(1.3,d/step))
+  local ahead=ground(feet.x+move.x*step,feet.z+move.z*step,feet.y-.5)
+  if not ahead or math.abs(ahead.y-feet.y)>1.1 then self.object:set_velocity(vector.zero());return end
+  -- Velocity keeps the walk smooth on clients; height snaps to the ground.
+  self.object:set_velocity(move);if math.abs(ahead.y-feet.y)>.05 then self.object:set_pos({x=pos.x,y=ahead.y+self.half,z=pos.z})end
+ end})
 core.register_entity('ponyhaven:treasure',{initial_properties={physical=false,visual='cube',textures={'eq_chest.png','eq_chest.png','eq_chest.png','eq_chest.png','eq_chest.png','eq_chest.png'},visual_size={x=1.1,y=.8,z=.8},selectionbox={-.6,-.4,-.5,.6,.4,.5},pointable=true,static_save=false},
  on_rightclick=function(self,p)if self.owner==p:get_player_name()then open_chest(p,self.chest)end end,on_punch=function(self,p)if p and p:is_player() and self.owner==p:get_player_name()then open_chest(p,self.chest)end end})
 core.register_entity('ponyhaven:ring',{initial_properties={physical=false,visual='sprite',textures={'eq_ring.png'},visual_size={x=.7,y=.7},pointable=false,static_save=false,glow=8},
@@ -302,7 +402,7 @@ core.register_entity('ponyhaven:parcel',{initial_properties={physical=false,visu
 local function enemy_hit(self,player)
  local name=player:get_player_name();local g=players[name];if not g then return end
  local p,e=player:get_pos(),self.object:get_pos();if not e or distance(p,e)>2 then return end
- if g.roll>0 or (player:get_velocity().y<-.5 and p.y>e.y+.3)then
+ if player:get_velocity().y<-.5 and p.y>e.y+.3 then
   enemy_respawn[self.key]=seconds+90;enemies[self.key]=nil;self.object:remove();player:add_velocity({x=0,y=4,z=0});notice(name,'Changeling sent packing!');return
  end
  if ph.hurt then ph.hurt(player,18,e);return end
@@ -346,7 +446,7 @@ local function populate(player)
  for _,npc in ipairs(locations.npcs)do
   if distance(p,npc)<130 and (not npc_objects[npc.id] or not npc_objects[npc.id]:get_pos())then
    local sprite=npc_sheets[npc.pony];local height=math.min(2.3,sprite.height/60);local obj=core.add_entity(position(npc,height/2),'ponyhaven:npc')
-   obj:get_luaentity().npc=npc;obj:set_properties({textures={sprite.texture},spritediv={x=1,y=sprite.frames},visual_size={x=sprite.width/sprite.height*height,y=height},nametag=npc.name,nametag_color='#fff3d8',selectionbox={-.5,-height/2,-.5,.5,height/2,.5}})
+   obj:get_luaentity().npc=npc;obj:get_luaentity().half=height/2;obj:set_properties({textures={sprite.texture},spritediv={x=1,y=sprite.frames},visual_size={x=sprite.width/sprite.height*height,y=height},nametag=npc.name,nametag_color='#fff3d8',selectionbox={-.5,-height/2,-.5,.5,height/2,.5}})
    obj:set_sprite({x=0,y=0},sprite.frames,sprite.delay,false);npc_objects[npc.id]=obj
   end
  end
@@ -394,7 +494,7 @@ local function map_form(player)
  for _,c in ipairs(g.chests)do if c.openedAt>0 and c.openedAt+86400000>now()then opened=opened+1 end end
  local form='formspec_version[6]size[12,8]bgcolor[#28263dee;true]label[.6,.6;EQUESTRIA — a journey with friends]label[.6,1.1;'..opened..' / 50 treasures resting · each refills after 24 hours]'
  for i,t in ipairs(locations.towns)do form=form..'button_exit[.6,'..(1.7+i*.85)..';5,.7;town_'..i..';Travel to '..core.formspec_escape(t.name)..']'end
- form=form..'label[6.3,2.5;W A S D — move]\nlabel[6.3,3;Space — jump / pony ability]\nlabel[6.3,3.5;Hold X, release — spin dash]\nlabel[6.3,4;E — talk / collect / treasure]\nlabel[6.3,4.5;Mouse — turn camera]\nlabel[.6,6.7;World: Equestria 6 / EagleCraft.fr · Brohoof.com · CaptainZepto]\nbutton_exit[8.2,6.8;3,.7;close;Keep exploring]'
+ form=form..'label[6.3,2.5;W A S D — move]\nlabel[6.3,3;Space — jump / pony ability]\nlabel[6.3,3.5;Jump, then jump again — fly]\nlabel[6.3,4;E — talk / collect / treasure]\nlabel[6.3,4.5;Mouse — turn camera]\nlabel[.6,6.7;World: Equestria 6 / EagleCraft.fr · Brohoof.com · CaptainZepto]\nbutton_exit[8.2,6.8;3,.7;close;Keep exploring]'
  core.show_formspec(name,'ponyhaven:travel',form)
 end
 core.register_on_player_receive_fields(function(player,form,fields)
@@ -410,30 +510,43 @@ local function movement(player,g,dt)
  ensure_avatar(player,g)
  local p,v,c=player:get_pos(),player:get_velocity(),player:get_player_control();local old=g.previous
  local feet=core.get_node_or_nil({x=p.x,y=p.y-.12,z=p.z});local def=feet and core.registered_nodes[feet.name];local grounded=def and def.walkable and math.abs(v.y)<.8
- if grounded then g.air_used=false;g.air_ready=false;g.flying=false
- elseif not c.jump then g.air_ready=true end
- local look=player:get_look_dir();local length=math.sqrt(look.x*look.x+look.z*look.z);local direction={x=look.x/math.max(.001,length),z=look.z/math.max(.001,length)}
- if (c.up or c.down or c.left or c.right) and v.x*v.x+v.z*v.z>.2 then g.facing=math.atan2(-v.x,v.z)end
+ local kind=ph.pony_kind(g.pony)
  local body=core.get_node_or_nil(vector.offset(p,0,.7,0));local bodydef=body and core.registered_nodes[body.name];local swimming=bodydef and bodydef.liquid_move_physics
- if c.aux1 and grounded then g.charge=math.min(1.4,g.charge+dt)
- elseif old.aux1 and g.charge>0 then local speed=18+g.charge*14;player:add_velocity({x=direction.x*speed-v.x,y=1,z=direction.z*speed-v.z});g.roll=1.2;g.charge=0 end
- g.roll=math.max(0,g.roll-dt)
- if c.jump and not old.jump and not grounded and g.air_ready and not g.air_used then
-  g.air_used=true;g.air_ready=false
-  if g.pony=='applejack'then player:add_velocity({x=0,y=11-v.y,z=0})
-  elseif g.pony=='twilight' or g.pony=='trixie'then player:add_velocity({x=direction.x*24-v.x,y=3-v.y,z=direction.z*24-v.z});g.roll=.45
-  elseif g.pony=='fluttershy' or g.pony=='derpy' or g.pony=='luna'then g.flying=true end
+ if grounded or swimming then
+  g.flying=false
+  -- Landing sends Fluttershy back up; a short cooldown covers her exit.
+  if g.carry=='arriving'or g.carry=='carrying'then g.carry='leaving';g.carry_started=seconds;g.carry_ready=seconds+DEPART+.1 end
+ end
+ if grounded then g.air_used=false;g.air_ready=false
+ elseif not c.jump then g.air_ready=true end
+ if (c.up or c.down or c.left or c.right) and v.x*v.x+v.z*v.z>.2 then g.facing=math.atan2(-v.x,v.z)end
+ -- Jump, release, then jump again in the air to fly. Hold jump to climb.
+ if c.jump and not old.jump and not grounded and not swimming and g.air_ready and not g.air_used then
+  g.air_ready=false
+  -- Flight starts at once for every kind; Fluttershy's swoop is cosmetic.
+  if kind~='earth'then g.air_used=true;g.flying=true
+  elseif not g.carry and seconds>=(g.carry_ready or 0)then g.air_used=true;g.flying=true;g.carry='arriving';g.carry_started=seconds
+  else notice(player:get_player_name(),'Fluttershy is catching her breath…')end
+ end
+ if g.carry then
+  local done=update_carrier(player,g)
+  if done and g.carry=='arriving'then g.carry='carrying'
+  elseif done and g.carry=='leaving'then g.carry=nil;remove_carrier(player:get_player_name())end
  end
  local gravity=1;local motion='idle'
- if swimming then motion='swim';g.flying=false;g.charge=0;g.air_used=false;gravity=.3
- elseif g.flying then gravity=.2;if c.jump then player:add_velocity({x=0,y=math.max(0,6-v.y)*math.min(1,dt*5),z=0})end;motion='fly'
- elseif g.pony=='rarity' and c.jump and not grounded then gravity=.12;motion='glide';local wall=core.get_node_or_nil({x=p.x+direction.x*.7,y=p.y+.5,z=p.z+direction.z*.7});local wd=wall and core.registered_nodes[wall.name];if wd and wd.walkable then player:add_velocity({x=0,y=(4-v.y)*math.min(1,dt*5),z=0});motion='climb'end
- elseif g.roll>0 or g.charge>0 then motion='roll'
+ if swimming then motion='swim';g.air_used=false;gravity=.3
+ elseif g.flying then
+  gravity=.2;if c.jump then player:add_velocity({x=0,y=math.max(0,6-v.y)*math.min(1,dt*5),z=0})end
+  -- Pegasi flap; unicorns levitate and Applejack hangs on, both in the
+  -- directional prone jump pose.
+  motion=kind=='pegasus'and'fly'or'jump'
  elseif not grounded then motion='jump'
  elseif v.x*v.x+v.z*v.z>80 then motion='run'
  elseif v.x*v.x+v.z*v.z>.2 then motion='walk'end
  if grounded and seconds<(g.attack_pose_until or 0)then motion='walk'end
- player:set_physics_override({gravity=gravity,speed_walk=g.charge>0 and .1 or 1.5,acceleration_default=.85,acceleration_air=.8});set_motion(player:get_player_name(),motion)
+ local glowing=g.flying and kind=='unicorn'or false
+ if glowing~=g.magic_glow then g.magic_glow=glowing;for _,obj in pairs(avatar_views[player:get_player_name()]or{})do if obj:get_pos()then update_avatar(obj:get_luaentity())end end end
+ player:set_physics_override({gravity=gravity,speed_walk=1.5,acceleration_default=.85,acceleration_air=.8});set_motion(player:get_player_name(),motion)
  if ph.combat_step then ph.combat_step(player,g,dt,c,old,motion)end
  if c.zoom and not old.zoom then interact(player)end
  if c.sneak and not old.sneak then map_form(player)end
@@ -453,7 +566,7 @@ core.register_globalstep(function(dt)
    local opened=0;for _,c in ipairs(g.chests)do if c.openedAt>0 and c.openedAt+86400000>now()then opened=opened+1 end end
    local hs=ph.hud_scale(name)
    if hs~=g.hud_scale then g.hud_scale=hs;player:hud_change(g.hud,'size',{x=hs,y=0});player:hud_change(g.questhud,'size',{x=hs,y=0})end
-   player:hud_change(g.hud,'text',g.display..'  ·  Rings '..g.bag..'  ·  '..(g.rings*10+g.quests*150)..' bits earned  ·  Treasure '..opened..'/50\nSpace: jump / ability   X: spin dash   E: interact   I: travel map')
+   player:hud_change(g.hud,'text',g.display..'  ·  Rings '..g.bag..'  ·  '..(g.rings*10+g.quests*150)..' bits earned  ·  Treasure '..opened..'/50\nSpace: jump · twice to fly   E: interact   Tab: journal   I: map')
    local text=seconds<g.notice_until and g.notice or ''
    if text=='' and g.quest then local step=g.quest.steps[g.quest.current];if step then local target=step.picked and locations.npcs[g.quest.npc+1] or step.target;text=(step.picked and 'Return ' or 'Find ')..step.item..' · '..math.floor(distance(player:get_pos(),target))..' m ('..g.quest.current..'/'..g.quest.total..')' end end
    player:hud_change(g.questhud,'text',text)

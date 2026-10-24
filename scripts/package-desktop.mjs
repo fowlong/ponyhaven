@@ -23,7 +23,7 @@ execFileSync(process.execPath,['scripts/retire-equestria-backdrop.mjs'],{stdio:'
 const luanti=path.join(root,'native','equestria','luanti-5.17.0-win64');
 if(!await engineAssetsReady(path.dirname(luanti)))throw Error('Equestria engine or required shaders are missing.');
 await readDefaultWorld(path.dirname(luanti),{verify:true});
-for(const name of ['materials.json','ponies.json','npcs.json','surfaces.json','encounters.json','map.json','combat.lua','maps.lua','init.lua','models/eq_melee_arc.obj','textures/eq_melee_trail.png','WYRDA_LICENSE.txt'])
+for(const name of ['materials.json','ponies.json','npcs.json','surfaces.json','bevels.json','bevels.lua','models/eq_bevel_1f.obj','encounters.json','map.json','combat.lua','maps.lua','init.lua','models/eq_melee_arc.obj','textures/eq_melee_trail.png','WYRDA_LICENSE.txt'])
   await fs.access(path.join(luanti,'games','ponyhaven','mods','ponyhaven',name));
 const runtimeManifest={};
 for(const game of ['adventure','ponykart']){

@@ -62,8 +62,10 @@ function ph.map_form(player)
  for _,npc in ipairs(ph.locations.npcs)do marker(npc,'eq_quest.png',npc.name..' · quest chain')end
  local target,objective=ph.quest_target(g)
  if target then marker(target,'eq_quest_done.png',objective)end
+ local urgent,task,scenario=ph.emergency_target and ph.emergency_target(g)
+ if urgent then local x,y=xy(urgent);form=form..'image['..(x-.3)..','..(y-.3)..';.6,.6;eq_emergency.png]tooltip['..(x-.3)..','..(y-.3)..';.6,.6;'..escape('Friendship Emergency · '..scenario.title..' · '..task)..']'end
  marker(player:get_pos(),'eq_orb.png','You are here')
- form=form..'label[13,.9;Travel to a town]label[13,4.8;Gold: towns / deliveries]label[13,5.3;Purple: spellbooks]label[13,5.8;Pink: world bosses]label[13,6.3;Green: tracked quest]label[13,7.1;1–7: equip / put away book]label[13,7.6;Left / right mouse: attacks]label[13,8.1;E: interact · I: world map]textarea[13,8.65;3.5,1.1;;Tracked quest;'..escape(objective or 'Talk to a town pony with a gold ! to accept a delivery.')..']button_exit[13,9.9;3.5,.7;close;Keep exploring]label[.5,9.7;Hover over a marker for its name. Books stay in the same locations. Boss pets are collected at defeated arenas.]'
+ form=form..'label[13,.9;Travel to a town]label[13,4.8;Gold: towns / deliveries]label[13,5.3;Purple: spellbooks]label[13,5.8;Pink: world bosses]label[13,6.3;Green: tracked quest · big heart: emergency]label[13,7.1;1–7: equip / put away book]label[13,7.6;Left / right mouse: attacks]label[13,8.1;E: interact · I: world map]textarea[13,8.65;3.5,1.1;;Tracked quest;'..escape(objective or 'Talk to a town pony with a gold ! to accept a delivery.')..']button_exit[13,9.9;3.5,.7;close;Keep exploring]label[.5,9.7;Hover over a marker for its name. Books stay in the same locations. Boss pets are collected at defeated arenas.]'
  core.show_formspec(name,'ponyhaven:travel',form)
 end
 core.register_on_joinplayer(function(player)
@@ -91,24 +93,35 @@ function ph.update_map_huds()
     player:hud_change(h.quest,'size',{x=s,y=0})
    end
    player:hud_change(h.health,'text','eq_health_'..math.max(0,math.min(20,math.ceil(g.hp/5)))..'.png')
-   player:hud_change(h.status,'text','Health '..math.ceil(g.hp)..'/100   Magic '..math.floor(g.mana)..'/100   '..(g.equipped and ph.spells[g.equipped]..' · LMB primary / RMB secondary' or 'LMB aura combo / RMB rainbow orb')..'\n1–7 books · E interact · I world map · V minimap')
+   player:hud_change(h.status,'text','Health '..math.ceil(g.hp)..'/100   Magic '..math.floor(g.mana)..'/100   '..(g.equipped and ph.spells[g.equipped]..' · LMB primary / RMB secondary' or 'LMB aura combo / RMB '..ph.basic_shot(g.pony).label)..'\n1–7 books · E interact · I world map · V minimap')
    local closest,range=nil,100
    for _,obj in pairs(ph.boss_objects)do local p=obj:get_pos();if p then local e=obj:get_luaentity();local d=vector.distance(player:get_pos(),e.home);if d<range then closest=e;range=d end end end
    player:hud_change(h.boss,'text',closest and closest.boss.name..'\n'..string.rep('█',math.ceil(closest.hp/closest.maxhp*24))..string.rep('░',24-math.ceil(closest.hp/closest.maxhp*24))..'  '..closest.hp..' / '..closest.maxhp or '')
    local desired={}
-   local function track(key,p,text,texture,label)
+   local function track(key,p,text,texture,label,size,colour)
     desired[key]=true
     local marker=h.markers[key]
-    if not marker then marker={icon=player:hud_add({type='image_waypoint',world_pos=vector.offset(p,0,2.6,0),text=texture,scale={x=.6,y=.6},alignment={x=0,y=0},z_index=2})};h.markers[key]=marker
+    if not marker then marker={icon=player:hud_add({type='image_waypoint',world_pos=vector.offset(p,0,2.6,0),text=texture,scale={x=size or .6,y=size or .6},alignment={x=0,y=0},z_index=size and 4 or 2})};h.markers[key]=marker
     else player:hud_change(marker.icon,'world_pos',vector.offset(p,0,2.6,0));player:hud_change(marker.icon,'text',texture)end
     if label then
-     if not marker.label then marker.label=player:hud_add({type='waypoint',name=text,text=' m',precision=1,world_pos=vector.offset(p,0,2.6,0),offset={x=0,y=28},number=0xb9ffd3})
+     if not marker.label then marker.label=player:hud_add({type='waypoint',name=text,text=' m',precision=1,world_pos=vector.offset(p,0,2.6,0),offset={x=0,y=size and 44 or 28},number=colour or 0xb9ffd3})
      else player:hud_change(marker.label,'world_pos',vector.offset(p,0,2.6,0));player:hud_change(marker.label,'name',text)end
     end
    end
    for _,npc in ipairs(ph.locations.npcs)do if vector.distance(player:get_pos(),npc)<110 then
     track('npc:'..npc.id,npc,npc.name,g.quest and g.quest.npc==npc.id and (g.quest.steps[g.quest.current]or{}).picked and 'eq_quest_done.png' or 'eq_quest.png')
    end end
+   -- A Friendship Emergency takes priority: big pink heart and the top HUD line.
+   local urgent,task,scenario=ph.emergency_target(g)
+   local headline=''
+   if urgent then
+    track('emergency',urgent,'FRIENDSHIP EMERGENCY · '..task,'eq_emergency.png',true,1.5,0xff7ac4)
+    headline='♥ FRIENDSHIP EMERGENCY · '..scenario.title..'\n'..task..' · '..math.floor(vector.distance(player:get_pos(),urgent))..' m · Tab: journal\n'
+    if vector.distance(player:get_pos(),urgent)<100 and (ph.seconds or 0)>(h.urgent_fx or 0)then
+     h.urgent_fx=(ph.seconds or 0)+1
+     core.add_particlespawner({amount=24,time=1,minpos=vector.offset(urgent,-.6,.2,-.6),maxpos=vector.offset(urgent,.6,1.6,.6),minvel={x=-.2,y=.4,z=-.2},maxvel={x=.2,y=1.2,z=.2},minexptime=.7,maxexptime=1.3,minsize=5,maxsize=9,glow=14,texture='eq_spark.png^[multiply:#ff6fb5',playername=name})
+    end
+   end
    local target,objective=ph.quest_target(g)
    if target then
     if vector.distance(player:get_pos(),target)<100 and (ph.seconds or 0)>(h.quest_fx or 0)then
@@ -117,8 +130,8 @@ function ph.update_map_huds()
     end
     local step=g.quest.steps[g.quest.current]
     track('quest',target,step and step.picked and 'Return delivery' or 'Quest parcel','eq_quest_done.png',true)
-    player:hud_change(h.quest,'text','TRACKED QUEST ('..g.quest.current..'/'..g.quest.total..')\n'..objective..'\n'..math.floor(vector.distance(player:get_pos(),target))..' m · Follow the neon green marker · E to '..(step and step.picked and 'deliver' or 'collect')..' · I for map')
-   else player:hud_change(h.quest,'text','QUESTS · Talk to a town pony with a gold !\nE to interact · I for the world map')end
+    player:hud_change(h.quest,'text',headline..'TRACKED QUEST ('..g.quest.current..'/'..g.quest.total..')\n'..objective..'\n'..math.floor(vector.distance(player:get_pos(),target))..' m · Follow the neon green marker · E to '..(step and step.picked and 'deliver' or 'collect')..' · I for map')
+   else player:hud_change(h.quest,'text',headline..'QUESTS · Talk to a town pony with a gold !\nE to interact · I for the world map')end
    for key,marker in pairs(h.markers)do if not desired[key]then player:hud_remove(marker.icon);if marker.label then player:hud_remove(marker.label)end;h.markers[key]=nil end end
   end
  end

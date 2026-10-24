@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { freshSave, readSave } from '../src/game';
 import { equestriaReward } from '../src/equestria-rewards';
-import { EQUESTRIA_REFRESH_MS, EQUESTRIA_BOSSES, chestReadyAt } from '../src/equestria-state';
+import { EQUESTRIA_REFRESH_MS, EQUESTRIA_BOSSES, chestReadyAt, harmonyLevel } from '../src/equestria-state';
 import type { Catalog } from '../src/types';
 import { readFileSync } from 'node:fs';
 
@@ -89,4 +89,33 @@ test('each named boss awards exactly itself once, including replay after reload'
  save=readSave(JSON.parse(JSON.stringify(save)))!;
  assert.equal(save.petUnlocks.length,16);assert.equal(save.coins,before);assert.equal(Object.keys(save.collection).length,0);
  for(const boss of [...EQUESTRIA_BOSSES,'not-a-boss'])assert.equal(equestriaReward(save,catalog,{kind:'boss',boss}).save,save);
+});
+
+test('Element experience merges upward, levels slowly and pays one very rare card per level', () => {
+  assert.deepEqual(harmonyLevel(0), { level: 1, into: 0, need: 300 });
+  assert.equal(harmonyLevel(299).level, 1);
+  assert.equal(harmonyLevel(300).level, 2);
+  assert.equal(harmonyLevel(749).level, 2);
+  assert.equal(harmonyLevel(750).level, 3);
+  let save = freshSave();
+  const progress = (harmony: Record<string, number>) => ({ kind: 'progress', rings: 0, quests: 0, harmony } as const);
+  let result = equestriaReward(save, catalog, progress({ honesty: 120, kindness: 40 }), () => 0);
+  save = result.save;
+  assert.equal(save.equestria.harmony?.honesty, 120);
+  assert.equal(Object.keys(save.collection).length, 0, 'no card before a level is reached');
+  // Lower or replayed snapshots never reduce experience or pay again.
+  assert.equal(equestriaReward(save, catalog, progress({ honesty: 60 })).save, save);
+  // Crossing two honesty levels at once pays two very rare cards.
+  result = equestriaReward(save, catalog, progress({ honesty: 760, kindness: 40 }), () => 0);
+  save = result.save;
+  const cards = Object.entries(save.collection);
+  assert.equal(cards.reduce((n, [, count]) => n + count, 0), 2);
+  assert.ok(cards.every(([id]) => catalog.cards.find(c => c.id === id)!.tier >= 6));
+  assert.match(result.message, /Honesty reached level 3/);
+  save = readSave(JSON.parse(JSON.stringify(save)))!;
+  assert.equal(save.equestria.harmony?.honesty, 760);
+  assert.equal(equestriaReward(save, catalog, progress({ honesty: 760 })).save, save);
+  // Unknown elements and invalid amounts are rejected outright.
+  assert.equal(equestriaReward(save, catalog, progress({ friendship: 900 } as any)).save, save);
+  assert.equal(equestriaReward(save, catalog, progress({ magic: -5 })).save, save);
 });

@@ -10,7 +10,8 @@ import { desktop, desktopProfile, refreshDesktop, type ArcadeGame } from './desk
 import { arcadeReward } from './arcade-progress';
 import { renderArcade, renderLeaderboard, launchArcade, importLevel, removeLevel, setupArcade, setupScores, shareScores, running } from './arcade';
 import { party } from './peer-party';
-import { equestriaRunning, selectEquestria, setupEquestria, launchEquestria,adventureSaveAction } from './equestria';
+import { equestriaRunning, selectWorld, setupEquestria, launchEquestria,adventureSaveAction } from './equestria';
+import { selectWikiPage } from './equestria-wiki';
 import { equestriaReward } from './equestria-rewards';
 import { SharedMeadow, roomBackground } from './social';
 import { sound } from './sound';
@@ -1136,8 +1137,12 @@ document.addEventListener('click', async (ev) => {
         try { await launchArcade(target.dataset.arcade as ArcadeGame,target.dataset.mode as 'solo'|'host'|'join'); }
         catch(err) {target.removeAttribute('disabled');throw err;}
         break;
+      case 'wiki-page':
+        selectWikiPage(target.dataset.page || '');
+        render();
+        break;
       case 'equestria-select':
-        selectEquestria(target.dataset.world === 'equestria');
+        selectWorld(target.dataset.world || 'equestria');
         view = 'adventure';
         render();
         break;
