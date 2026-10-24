@@ -19,7 +19,10 @@ local function media_path(tile)
  local target=cache..'/'..tile.mesh;assert(core.safe_file_write(target,data));media[tile.id]=target;return target
 end
 core.register_entity('ponyhaven:scenery_anchor',{initial_properties={visual='sprite',textures={'eq_blank.png'},physical=false,pointable=false,static_save=false,is_visible=false}})
-core.register_entity('ponyhaven:distance',{initial_properties={visual='mesh',textures={'eq_horizon.png'},
+-- Dense tiles are split into OBJ groups (16-bit index limit); each group is
+-- its own mesh buffer and needs its own texture entry.
+local textures={};for i=1,definition.meshGroups or 1 do textures[i]='eq_horizon.png'end
+core.register_entity('ponyhaven:distance',{initial_properties={visual='mesh',textures=textures,
  physical=false,pointable=false,collide_with_objects=false,static_save=false,collisionbox={0,0,0,0,0,0},selectionbox={0,0,0,0,0,0},
  backface_culling=true,shaded=false,glow=-1,visual_size={x=1,y=1,z=1}},
  on_activate=function(self,mesh)self.object:set_properties({mesh=mesh})end})

@@ -102,5 +102,20 @@ export function sceneryOBJ(quads,{rx,rz,minY,step=2,textureWidth,textureHeight})
    if(!id){id=positions.length+1;positions.push(line);positionIds.set(line,id);}return `${id}/${ti}/1`;
   });faces.push('f '+ids.join(' '));
  }
- return '# Source-height scenery: native world projection; normal length 3 is the scenery marker.\nvn 0 3 0\n'+positions.join('\n')+'\n'+uv.join('\n')+'\n'+faces.join('\n')+'\n';
+ return '# Source-height scenery: native world projection; normal length 3 is the scenery marker.\nvn 0 3 0\n'+positions.join('\n')+'\n'+uv.join('\n')+'\n'+groupOBJFaces(faces).join('\n')+'\n';
 }
+
+// Luanti's OBJ loader keeps one 16-bit index buffer per group, so vertex 65536
+// silently becomes vertex 0 and dense tiles smear into streaks across the sky.
+// Start a new group (= mesh buffer) before any group exceeds that limit.
+export const OBJ_GROUP_VERTICES=65535;
+export function objFaceGrouper(){
+ let seen=new Set(),groups=1;
+ // Returns the lines to write for one face: optionally a new group, then the face.
+ return face=>{
+  const corners=face.split(' ').slice(1),out=[];
+  if(seen.size+new Set(corners.filter(c=>!seen.has(c))).size>OBJ_GROUP_VERTICES){out.push('g part'+groups++);seen=new Set();}
+  for(const c of corners)seen.add(c);out.push(face);return out;
+ };
+}
+export function groupOBJFaces(faces){const group=objFaceGrouper();return faces.flatMap(group);}
