@@ -29,9 +29,14 @@ try{
     assert(p:get_camera().mode=='third','Third-person camera missing')
     local chest=ponyhaven.locations.chests[1];p:set_pos(vector.offset(chest,0,.1,0));ponyhaven.open_chest(p,chest);ponyhaven.open_chest(p,chest)
     local npc=ponyhaven.locations.npcs[1];p:set_pos(vector.offset(npc,0,.1,0));ponyhaven.talk(p,npc)
-    assert(g.quest and not g.quest.picked,'Fetch quest was not accepted')
-    p:set_pos(vector.offset(g.quest.target,0,.1,0));ponyhaven.collect_parcel(p);assert(g.quest.picked,'Fetch item did not collect')
-    p:set_pos(vector.offset(npc,0,.1,0));ponyhaven.talk(p,npc);assert(g.quests>0 and not g.quest,'Return did not complete quest')
+    assert(g.quest and g.quest.total>=2 and g.quest.current==1,'Quest chain was not accepted')
+    local total=g.quest.total
+    for i=1,total do
+     local step=g.quest.steps[i];assert(g.quest.current==i and not step.picked,'Quest chain step out of order')
+     p:set_pos(vector.offset(step.target,0,.1,0));ponyhaven.collect_parcel(p);assert(step.picked,'Fetch item did not collect')
+     p:set_pos(vector.offset(npc,0,.1,0));ponyhaven.talk(p,npc);assert(g.quests==i,'Each delivered step pays one delivery')
+    end
+    assert(not g.quest,'Final return did not complete the chain')
    end
   end
  end)
@@ -48,9 +53,9 @@ try{
    // This harness verifies engine acknowledgement. The actual collection award is covered by the TypeScript reward tests.
    await fs.writeFile(path.join(root,names.get(message.player)+'-save.json'),JSON.stringify(save));await host.acknowledge(message.player,save);
   }
-  return Object.values(saves).every(s=>s.chests[0].sequence===1&&s.quests===1);
+  return Object.values(saves).every(s=>s.chests[0].sequence===1&&s.quests>=2);
  });
- assert.equal(host.running.joined.size,2);assert.ok(saves.host.bits>=150&&saves.guest.bits>=150);
+ assert.equal(host.running.joined.size,2);assert.ok(saves.host.bits>=300&&saves.guest.bits>=300);
  await guest.stop();b.close();await host.revoke('guest');a.close();
  await until(()=>host.running.joined.size===1);
  const next=await host.invite('guest-rejoined',{uid:'qa-guest',displayName:'Second Pony',pony:'applejack',state:saves.guest});

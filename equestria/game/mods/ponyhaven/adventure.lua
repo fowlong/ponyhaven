@@ -33,6 +33,11 @@ local function load_player(name,entry)
  local g={uid=entry.uid,pony=entry.pony,display=entry.displayName,rings=math.max(old.rings or 0,state.rings),quests=math.max(old.quests or 0,state.quests),
   acked_rings=state.rings,acked_quests=state.quests,chests=copy(state.chests),pending=old.pending or {},quest=old.quest,ring_day=old.ring_day or '',marks=old.marks or {},checkpoint=old.checkpoint,
   books=copy(state.books or {}),bosses=copy(state.bosses or {}),bag=0,air_used=false,flying=false,roll=0,charge=0,previous={},objects={},notice='',notice_until=0,hp=100,mana=100,facing=0}
+ -- Saves from before quest chains hold one {item,target,picked} delivery.
+ local q=g.quest
+ if type(q)=='table' and type(q.steps)~='table' then
+  g.quest=q.item and q.target and type(q.npc)=='number' and {npc=q.npc,theme='friendship',steps={{item=q.item,target=q.target,picked=q.picked==true}},current=1,total=1} or nil
+ end
  if old.chests then for i,c in ipairs(old.chests)do if g.chests[i] and c.sequence>g.chests[i].sequence then g.chests[i]=c end end end
  for key,event in pairs(g.pending)do
   if event.kind=='chest' and state.chests[event.chest+1].sequence>=event.sequence then g.pending[key]=nil end
@@ -229,14 +234,16 @@ local function talk(player,npc)
   if not step.picked then
    notice(name,npc.name..': '..npc_dialogue(npc,2)..' Please bring back the '..step.item..'. Follow the quest marker.');return
   end
-  -- Step complete: advance to next step or finish quest
+  -- Each delivered step counts as one 150-bit delivery for Ponyhaven, so a
+  -- chain pays 150 per step as advertised.
+  g.quests=g.quests+1
   if g.quest.current<g.quest.total then
    g.quest.current=g.quest.current+1;local next_step=g.quest.steps[g.quest.current]
-   persist(name);notice(name,npc.name..': Excellent! Now I also need a '..next_step.item..'. '..g.quest.current..'/'..g.quest.total..' steps.')
+   persist(name);sync(name);notice(name,npc.name..': Excellent! +150 bits. Now I also need the '..next_step.item..'. '..g.quest.current..'/'..g.quest.total..' steps.')
   else
-   local reward=150*g.quest.total  -- longer quests pay more
-   g.quest=nil;g.quests=g.quests+1;persist(name);sync(name)
-   notice(name,npc.name..': '..npc_dialogue(npc,3)..' +'..reward..' bits for completing the full quest chain!')
+   local reward=150*g.quest.total
+   g.quest=nil;persist(name);sync(name)
+   notice(name,npc.name..': '..npc_dialogue(npc,3)..' Quest chain complete: '..reward..' bits earned in total!')
   end
   return
  end
@@ -444,9 +451,7 @@ core.register_globalstep(function(dt)
   if g then
    populate(player);sync(name)
    local opened=0;for _,c in ipairs(g.chests)do if c.openedAt>0 and c.openedAt+86400000>now()then opened=opened+1 end end
-   local info=core.get_player_window_information(name)
-   local ww=info and info.size.x/(info.real_hud_scaling or 1)or 1280
-   local hs=math.min(1,math.max(.4,(ww-24)/594))
+   local hs=ph.hud_scale(name)
    if hs~=g.hud_scale then g.hud_scale=hs;player:hud_change(g.hud,'size',{x=hs,y=0});player:hud_change(g.questhud,'size',{x=hs,y=0})end
    player:hud_change(g.hud,'text',g.display..'  ·  Rings '..g.bag..'  ·  '..(g.rings*10+g.quests*150)..' bits earned  ·  Treasure '..opened..'/50\nSpace: jump / ability   X: spin dash   E: interact   I: travel map')
    local text=seconds<g.notice_until and g.notice or ''

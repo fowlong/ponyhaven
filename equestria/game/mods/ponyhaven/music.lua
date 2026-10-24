@@ -85,10 +85,14 @@ core.register_globalstep(function(dt)
       c.drum=random(c,#drum_patterns)
       c.voicing=random(c,#voicings)
       c.dynamics=.65+random(c,35)/100  -- 0.65 to 1.0
-      -- Occasionally pick a rest phrase (1 in 6 chance, never first 2 phrases)
+      -- Occasionally pick a rest phrase (1 in 6 chance, never first 2 phrases).
+      -- Cleared every phrase: step wraps at 64, so a stale value would mute
+      -- the first half of every later phrase.
+      c.rest_until=0
       if c.phrase_count>2 and random(c,6)==1 then c.rest_until=c.step+32 end
-      -- Occasional octave shift for the melody
-      c.octave_shift=random(c,4)==1 and 12 or 0
+      -- Occasional phrase in the lower register; an upward shift on top of the
+      -- melody's two-octave range made the piano sample shrill.
+      c.octave_shift=random(c,4)==1 and -12 or 0
      end
      -- Occasional chord substitution from the transition matrix
      if c.bar>0 and random(c,4)==1 then
@@ -118,7 +122,7 @@ core.register_globalstep(function(dt)
       -- Weighted random walk with occasional larger leaps
       local leap=random(c,8)==1 and (random(c,2)==1 and 4 or -4) or 0
       local step=random(c,5)-3+leap
-      c.melody=math.max(1,math.min(16,c.melody+step))
+      c.melody=math.max(1,math.min(12,c.melody+step))
       -- Melody gain varies with beat position for natural phrasing
       local accent=beat==0 and 1.2 or beat==8 and 1.1 or beat%4==0 and 1.0 or .85
       note(c,name,'piano',degree(scale,c.melody)+12+c.octave_shift,.055*accent*c.dynamics)

@@ -3,18 +3,16 @@ local map=assert(ph.read_json(ph.path..'/map.json'))
 local huds={}
 local escape=core.formspec_escape
 local function update_books(player,g,h)
- local info=core.get_player_window_information(player:get_player_name())
- local width=info and info.size.x/(info.real_hud_scaling or 1) or 1280
- local scale=math.min(1,math.max(.4,(width-24)/594))
+ local scale=ph.hud_scale(player:get_player_name())
  for i,spell in ipairs(ph.spells)do
   local owned=g.books[tostring(i)]==true;local state=g.equipped==i and owned and 'equipped' or owned and 'owned' or 'locked'
   local slot=h.books[i];local x=(i-4)*86*scale
   local colour=state=='equipped' and 0xffda8b or owned and 0xf1e7ff or 0x999fb5
   local function text(value,y,size,dx)
-   return {type='text',position={x=.5,y=1},alignment={x=0,y=0},offset={x=x+(dx or 0)*scale,y=-66+y*scale},size={x=size*scale,y=0},number=colour,text=value,z_index=12}
+   return {type='text',position={x=.5,y=1},alignment={x=0,y=0},offset={x=x+(dx or 0)*scale,y=(y-66)*scale},size={x=size*scale,y=0},number=colour,text=value,z_index=12}
   end
   local function image(texture,y,size)
-   return {type='image',position={x=.5,y=1},alignment={x=0,y=0},offset={x=x,y=-66+y*scale},scale={x=size*scale,y=size*scale},text=texture,z_index=11}
+   return {type='image',position={x=.5,y=1},alignment={x=0,y=0},offset={x=x,y=(y-66)*scale},scale={x=size*scale,y=size*scale},text=texture,z_index=11}
   end
   if not slot or slot.state~=state or h.book_scale~=scale then
    local dim=owned and '' or '^[opacity:65'
@@ -83,10 +81,8 @@ function ph.update_map_huds()
   local name=player:get_player_name();local g=ph.players[name];local h=huds[name]
   if g and h then
    update_books(player,g,h)
-   -- Responsive HUD: derive scale from window width, same factor as the book bar.
-   local info=core.get_player_window_information(name)
-   local width=info and info.size.x/(info.real_hud_scaling or 1) or 1280
-   local s=math.min(1,math.max(.4,(width-24)/594))
+   -- Responsive HUD: the same window-relative factor as the book bar.
+   local s=ph.hud_scale(name)
    if s~=h.hud_scale then
     h.hud_scale=s
     player:hud_change(h.health,'scale',{x=3*s,y=2*s})
@@ -111,7 +107,7 @@ function ph.update_map_huds()
     end
    end
    for _,npc in ipairs(ph.locations.npcs)do if vector.distance(player:get_pos(),npc)<110 then
-    track('npc:'..npc.id,npc,npc.name,g.quest and g.quest.npc==npc.id and g.quest.picked and 'eq_quest_done.png' or 'eq_quest.png')
+    track('npc:'..npc.id,npc,npc.name,g.quest and g.quest.npc==npc.id and (g.quest.steps[g.quest.current]or{}).picked and 'eq_quest_done.png' or 'eq_quest.png')
    end end
    local target,objective=ph.quest_target(g)
    if target then
