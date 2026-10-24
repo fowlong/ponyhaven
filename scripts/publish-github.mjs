@@ -121,7 +121,7 @@ try {
   if (origin.status === 0 && origin.stdout.trim() !== remote) throw new Error('The publishing checkout has a different origin. Nothing was pushed.');
   if (origin.status !== 0) git(['remote', 'add', 'origin', remote]);
   // Scope authentication to this generated checkout; do not change global Git settings.
-  git(['config', '--local', 'credential.https://github.com.helper', '']);
+  git(['config', '--local', '--replace-all', 'credential.https://github.com.helper', '']);
   git(['config', '--local', '--add', 'credential.https://github.com.helper', `!"${gh.replaceAll('\\', '/')}" auth git-credential`]);
   git(['config', '--local', 'user.name', owner]);
   git(['config', '--local', 'user.email', '110037490+fowlong@users.noreply.github.com']);
