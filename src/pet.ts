@@ -2,6 +2,7 @@ import type { BackgroundStage, Behavior, Pony, PonyEffect, Presence } from './ty
 import { projectStage } from './backgrounds';
 import { escape, icon } from './icons';
 import { ponyFinish } from './rarity';
+import { animationFits, ponyScale } from './sprite-size';
 
 export const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 export function ponyImage(pony: Pony, still = false): string {
@@ -18,7 +19,7 @@ const transformationPattern =
 export const transformations = (pony: Pony) =>
   pony.behaviors.filter(
     (b) =>
-      transformationPattern.test(b.name) && !b.next && !b.followTarget && !/drag|walk|start/i.test(b.name),
+      b.scaleSafe!==false && transformationPattern.test(b.name) && !b.next && !b.followTarget && !/drag|walk|start/i.test(b.name),
   );
 
 export class Meadow {
@@ -47,6 +48,10 @@ export class Meadow {
   private resizeObserver: ResizeObserver;
   private walkMin = 18;
   private walkMax = 82;
+  private sceneryImage?: HTMLImageElement;
+  private sceneryCanvas = document.createElement('canvas');
+  private activeBehavior?: Behavior;
+  private imageRequests=new WeakMap<HTMLImageElement,number>();
 
   constructor(
     private root: HTMLElement,
@@ -56,10 +61,23 @@ export class Meadow {
     private getDirt: () => number = () => 0,
     private onWash: () => void = () => {},
     private stage?: BackgroundStage,
+    backgroundImage?: string,
   ) {
     this.resizeObserver = new ResizeObserver(() => this.layout());
     this.resizeObserver.observe(this.root);
     this.layout();
+    if (backgroundImage) {
+      this.sceneryCanvas.className = 'pixel-background';
+      this.sceneryCanvas.setAttribute('aria-hidden', 'true');
+      this.root.prepend(this.sceneryCanvas);
+      const image = new Image();
+      image.onload = () => {
+        if (this.destroyed) return;
+        this.sceneryImage = image;
+        this.drawScenery();
+      };
+      image.src = backgroundImage;
+    }
     this.effects = this.layer('temporary-effects');
     this.cameos = this.layer('interaction-cameos');
     this.careEffects = this.layer('care-effects');
@@ -125,21 +143,22 @@ export class Meadow {
     this.root.style.setProperty('--sprite-scale', String(geometry.scale));
     this.root.style.setProperty('--scene-focus', `${geometry.focusX}%`);
     this.root.dataset.floor = String(geometry.floor);
+    this.drawScenery();
+    if (this.activeBehavior && this.activeBehavior.name !== this.pony.idle &&
+        !animationFits(this.pony, this.activeBehavior, geometry.scale, rect.width, geometry.floor)) {
+      this.run(this.behavior(this.pony.idle), 0, 4200);
+      return;
+    }
     const images = [...this.root.querySelectorAll<HTMLImageElement>('#pet-sprite, .friend-pony > img')];
     for (const img of images) {
       if (!img.naturalWidth || !img.naturalHeight) continue;
-      const width = img.naturalWidth * geometry.scale;
-      const height = img.naturalHeight * geometry.scale;
-      // Preserve the source aspect ratio when a large creature or outfit needs a viewport cap.
-      const fit = Math.min(
-        1,
-        Math.min(innerWidth * 0.7, 420) / width,
-        Math.min(geometry.floor - 48, 280) / height,
-      );
-      img.style.width = `${width * fit}px`;
-      img.style.height = `${height * fit}px`;
+      const pony = img.id === 'pet-sprite' ? this.pony :
+        this.allPonies.find(p => p.id === (img.parentElement as HTMLElement).dataset.pony);
+      const scale = ponyScale(pony || this.pony, geometry.scale, rect.width, geometry.floor);
+      img.style.width = `${img.naturalWidth * scale}px`;
+      img.style.height = `${img.naturalHeight * scale}px`;
     }
-    const halfBody = Math.max(...images.map((img) => img.getBoundingClientRect().width)) / 2;
+    const halfBody = Math.max(0, ...images.map((img) => img.getBoundingClientRect().width)) / 2;
     const edge = Math.min(48, ((halfBody + 8) / rect.width) * 100);
     this.walkMin = Math.max(geometry.min, edge);
     this.walkMax = Math.min(geometry.max, 100 - edge);
@@ -162,6 +181,25 @@ export class Meadow {
       if (actor.id === 'pet-wrap') this.x = x;
       else if (actor.dataset.uid) this.positions.set(actor.dataset.uid, x);
     }
+  }
+  private drawScenery() {
+    const image = this.sceneryImage;
+    if (!image) return;
+    const { width, height } = this.root.getBoundingClientRect();
+    if (!width || !height) return;
+    const canvas = this.sceneryCanvas;
+    // Three CSS pixels per sample gives a gentle pixel-art finish at any viewport.
+    canvas.width = Math.max(1, Math.ceil(width / 3));
+    canvas.height = Math.max(1, Math.ceil(height / 3));
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const zoom = Math.max(width / image.naturalWidth, height / image.naturalHeight);
+    const drawnWidth = image.naturalWidth * zoom, drawnHeight = image.naturalHeight * zoom;
+    ctx.setTransform(canvas.width / width, 0, 0, canvas.height / height, 0, 0);
+    ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(image, (width - drawnWidth) * (this.stage?.focusX ?? 0.5),
+      height - drawnHeight, drawnWidth, drawnHeight);
+    canvas.dataset.ready = 'true';
   }
   private layer(id: string) {
     const el = document.createElement('div');
@@ -199,17 +237,32 @@ export class Meadow {
     this.root.classList.remove('transformed');
     delete this.root.dataset.care;
   }
+  private swapSprite(img:HTMLImageElement,url:string,pony:Pony,shown?:()=>void){
+    const request=(this.imageRequests.get(img)||0)+1;this.imageRequests.set(img,request);
+    const candidate=new Image();candidate.src=url;
+    void candidate.decode().then(()=>{
+      if(this.destroyed||this.imageRequests.get(img)!==request||!img.isConnected)return;
+      const rect=this.root.getBoundingClientRect(),geometry=projectStage(this.stage,rect.width,rect.height);
+      const scale=ponyScale(pony,geometry.scale,rect.width,geometry.floor);
+      // Commit the decoded image and its dimensions together. A larger GIF
+      // must never spend a paint using the previous smaller canvas's size.
+      img.style.width=`${candidate.naturalWidth*scale}px`;img.style.height=`${candidate.naturalHeight*scale}px`;
+      img.src=url;shown?.();
+    }).catch(()=>{});
+  }
   private show(b: Behavior) {
+    if(b.scaleSafe===false)b=this.behavior(this.pony.idle);
+    this.activeBehavior = b;
     const img = this.root.querySelector<HTMLImageElement>('#pet-sprite');
-    this.root.dataset.behavior = b.name;
     if (img) {
-      img.src = this.reduced
+      const src = this.reduced
         ? asset(
             (this.direction === 'right' ? b.previewRight : b.previewLeft) ||
               this.pony.preview ||
               b[this.direction],
           )
         : asset(b[this.direction]);
+      this.swapSprite(img,src,this.pony,()=>{this.root.dataset.behavior=b.name;});
       img.alt = `${this.pony.name} · ${b.name.replaceAll('_', ' ')}`;
     }
   }
@@ -236,6 +289,10 @@ export class Meadow {
   }
   private run(b: Behavior, depth = 0, forcedDuration?: number, target?: number) {
     if (this.destroyed) return;
+    const rect = this.root.getBoundingClientRect();
+    const geometry = projectStage(this.stage, rect.width, rect.height);
+    // A stage-sized scene is omitted on a small screen, never squeezed into a tiny pony.
+    if (!animationFits(this.pony, b, geometry.scale, rect.width, geometry.floor)) b = this.behavior(this.pony.idle);
     this.clearBehavior();
     this.freeze();
     // Linked animation parts keep their original timing, with a cap for desktop-length scenes.
@@ -273,6 +330,7 @@ export class Meadow {
     let eligible = this.pony.behaviors.filter(
       (b) =>
         b.chance > 0 &&
+        b.scaleSafe!==false &&
         !b.skip &&
         !b.followTarget &&
         !transformationPattern.test(b.name) &&
@@ -429,11 +487,11 @@ export class Meadow {
       const old = this.positions.get(f.uid);
       const x = this.bounded(f.uid.startsWith('npc:') ? (old ?? f.x) : f.x);
       if (!f.uid.startsWith('npc:') && old !== undefined && Math.abs(x - old) > 2 && !this.reduced) {
-        const walk = p.behaviors.find((b) => b.name === p.walk) || p.behaviors[0];
+        const walk = p.behaviors.find((b) => b.name === p.walk&&b.scaleSafe!==false) || p.behaviors.find(b=>b.name===p.idle) || p.behaviors[0];
         const direction = x > old ? 'right' : 'left';
         actor.dataset.direction = direction;
         actor.dataset.walkUntil = String(Date.now() + 3000);
-        actor.querySelector<HTMLImageElement>('img')!.src = asset(walk[direction]);
+        this.swapSprite(actor.querySelector<HTMLImageElement>('img')!,asset(walk[direction]),p);
       }
       this.positions.set(f.uid, x);
       actor.style.left = `${this.bounded(x)}%`;
@@ -454,7 +512,7 @@ export class Meadow {
         const walk = guest.uid.startsWith('npc:') && Math.random() < 0.65;
         const old = this.positions.get(guest.uid) || guest.x;
         const target = walk ? this.bounded(between(this.x - 20, this.x + 25)) : old;
-        const b = p.behaviors.find((b) => b.name === (walk ? p.walk : p.idle)) || p.behaviors[0];
+        const b = p.behaviors.find((b) => b.name === (walk ? p.walk : p.idle)&&b.scaleSafe!==false) || p.behaviors.find(b=>b.name===p.idle) || p.behaviors[0];
         const direction =
           target === old
             ? el.dataset.direction === 'left'
@@ -464,7 +522,7 @@ export class Meadow {
               ? 'right'
               : 'left';
         el.dataset.direction = direction;
-        el.querySelector<HTMLImageElement>('img')!.src = asset(b[direction]);
+        this.swapSprite(el.querySelector<HTMLImageElement>('img')!,asset(b[direction]),p);
         el.style.left = `${target}%`;
         this.positions.set(guest.uid, target);
       }
@@ -571,6 +629,7 @@ export class Meadow {
   }
   destroy() {
     this.destroyed = true;
+    this.sceneryImage = undefined;
     this.resizeObserver.disconnect();
     this.controller.abort();
     clearTimeout(this.drawing);

@@ -1,0 +1,41 @@
+PONYHAVEN 0.3.0 — WINDOWS
+
+1. Close any older Ponyhaven copy and its game windows.
+2. Right-click the ZIP and choose Extract All. Keep the whole extracted folder.
+3. Open Ponyhaven-0.3.0-win32-x64 and double-click Ponyhaven.exe.
+4. Sign in with your invited Firebase account. No Gumroad key is required.
+
+Existing saves stay in your Windows profile. Keep resources and the DLLs beside
+Ponyhaven.exe. No Node.js, Python, Minecraft or map conversion is needed.
+
+Adventure opens Equestria by default; the original SRB2 courses are Bonus stages.
+The converted Equestria map is included. NoCube is disabled in this revision.
+Choose a pony, then New game or Load game to manage that pony's adventures.
+Open party to host or join by invite code.
+
+WASD moves; the mouse rotates the camera, including around a stationary pony.
+Space jumps/uses your ability, X charges a spin dash, E interacts, I opens the
+world map, and V cycles the minimap. Default draw distance is 512 blocks.
+Left click sweeps a horizontal melee trail; right click fires a rainbow orb.
+Orbs destroy a spherical 3-block radius without dropping collectible blocks.
+Collect the seven glowing books and press 1–7 to equip or put away a book.
+An equipped book replaces both mouse attacks with its primary/secondary spells.
+
+Town ponies offer fetch quests; rings and deliveries earn bits. Fifty chests each
+give one rare card or pet and refill independently after 24 hours. Sixteen giant
+world bosses have telegraphed attacks and drop their own virtual-pet collectible.
+Use Finish & return in Ponyhaven to exit.
+
+Terrain damage resets each time a solo or hosted world opens; progress is kept.
+Joining a live party retains its current terrain. Older progress is available
+as Original adventure. New game starts a separate save; Load game also offers
+save deletion. Collected cards and pets remain in your shared collection.
+
+PS5: sticks move/look, Cross jumps, Square/Circle attack, Triangle interacts,
+L1/R1 cycle books, D-pad left/right opens map/minimap, up interacts, down charges
+spin dash, and Options pauses. Keyboard/mouse remain available for map menus.
+Terrain has pastel blue fog and light filtering. Eight-direction pony sprites,
+health bars, red enemy attack warnings and procedural music/sounds are included.
+
+Read EQUESTRIA_0.3.0.md for controls, spell details and gameplay limits.
+QA.md records automated checks and remaining manual play-feel review.

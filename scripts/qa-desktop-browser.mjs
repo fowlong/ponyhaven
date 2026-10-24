@@ -1,12 +1,12 @@
 // Browser integration harness for the desktop renderer. Files, saves and UDP
-// bridges use the real Node modules; activation uses an explicit test provider.
+// bridges use the real Node modules. Use an unconfigured local QA build or set
+// QA_ACCOUNT / QA_PASSWORD for an invited account on a configured test server.
 // This does not replace the sandboxed Electron smoke test in qa-desktop.mjs.
 import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { Profiles } from '../desktop/profiles.mjs';
-import { verifyLicense } from '../desktop/license.mjs';
 import { NativeGames } from '../desktop/games.mjs';
 import { LevelLibrary } from '../desktop/levels.mjs';
 import { LocalRelay } from '../desktop/relay.mjs';
@@ -26,20 +26,23 @@ async function client(label){
   page.on('pageerror',e=>errors.push(e.message));
   const send=(topic,data)=>void page.evaluate(([t,d])=>window.__qaEvents[t]?.forEach(f=>f(d)),[topic,data]).catch(()=>{});
   const levels=new LevelLibrary(folder),games=new NativeGames(path.resolve('native'),folder,e=>send('game',e),levels),relay=new LocalRelay(p=>send('packet',p));
-  const api={status:()=>profiles.status(),load:()=>profiles.read(),save:s=>profiles.write(s),rename:n=>profiles.rename(n),createProfile:n=>profiles.create(n),selectProfile:id=>profiles.select(id),backup:()=>profiles.backup(),exportSave:async()=>true,
-    activate:async(key,name)=>profiles.activate(await verifyLicense(key,'test-product',async()=>new Response(JSON.stringify({success:true,purchase:{product_id:'test-product'}}))),name),
+  const api={status:()=>profiles.status(),load:()=>profiles.read(),save:s=>profiles.write(s),rename:n=>profiles.rename(n),createProfile:n=>profiles.create(n),selectProfile:id=>profiles.select(id),linkCloud:uid=>profiles.linkCloud(uid),backup:()=>profiles.backup(),exportSave:async()=>true,
     engines:()=>games.available(),levels:g=>levels.list(profiles.requireActive(),g),importLevel:g=>levels.add(profiles.requireActive(),g,path.resolve('tmp/qa-import.wad')),
     launch:o=>games.launch(o,profiles.requireActive()),stopGame:()=>games.stop(),relayOpen:o=>relay.open(o),relaySend:(id,b)=>relay.send(id,b),relayClose:id=>relay.close(id),fullscreen:async()=>false};
   await page.exposeBinding('__qaIPC',(_source,name,args)=>api[name](...args));
   await context.addInitScript(()=>{
     window.__qaEvents={game:[],packet:[]};window.ponyDesktop={};
-    for(const name of ['status','load','save','rename','createProfile','selectProfile','backup','exportSave','activate','engines','levels','importLevel','launch','stopGame','relayOpen','relaySend','relayClose','fullscreen'])window.ponyDesktop[name]=(...args)=>window.__qaIPC(name,args);
+    for(const name of ['status','load','save','rename','createProfile','selectProfile','linkCloud','backup','exportSave','engines','levels','importLevel','launch','stopGame','relayOpen','relaySend','relayClose','fullscreen'])window.ponyDesktop[name]=(...args)=>window.__qaIPC(name,args);
     for(const [name,topic] of [['onGame','game'],['onPacket','packet']])window.ponyDesktop[name]=f=>{window.__qaEvents[topic].push(f);return()=>{};};
   });
-  await page.goto(process.env.QA_URL||'http://127.0.0.1:5174/');await page.locator('#activation-form').waitFor();
-  await page.screenshot({path:`tmp/qa/desktop-${label}-activation.png`});
-  await page.locator('#activation-name').fill(label);await page.locator('#activation-key').fill('QA-PROVIDER-RESPONSE-ONLY');
-  await page.locator('[data-action="activate"]').click();await page.locator('.starter-grid').waitFor();
+  await page.goto(process.env.QA_URL||'http://127.0.0.1:5174/');
+  await page.locator('#profile-form, #account-form').waitFor();
+  if(await page.locator('#account-form').count()){
+    assert.ok(process.env.QA_ACCOUNT&&process.env.QA_PASSWORD,'Configured test servers require QA_ACCOUNT and QA_PASSWORD.');
+    await page.locator('#login-account').fill(process.env.QA_ACCOUNT);await page.locator('#login-password').fill(process.env.QA_PASSWORD);await page.locator('[data-action="login"]').click();
+  }else{
+    await page.locator('#profile-name').fill(label);await page.locator('[data-action="create-first-profile"]').click();
+  }
   await page.locator('[data-starter="twilight-sparkle"]').click();await page.locator('[data-action="begin"]').click();await page.locator('#meadow-scene').waitFor();
   const c={context,page,profiles,games,relay,errors};clients.push(c);return c;
 }
@@ -54,12 +57,12 @@ try {
   await page.locator('#new-profile-name').fill('Another Friend');await page.locator('[data-action="create-profile"]').click();await page.locator('.starter-grid').waitFor();
   assert.equal(await a.profiles.read(),null);assert.equal(a.profiles.status().profiles.length,2);
   await page.locator('[data-action="profiles"]').click();await page.locator('[data-action="select-profile"]').first().click();await page.locator('nav').waitFor();
-  await navigate(page,'adventure');await page.locator('#arcade-pastel').selectOption('35');
+  await navigate(page,'adventure');await page.locator('[data-action="equestria-select"][data-world="trails"]').click();await page.locator('#arcade-pastel').selectOption('35');
   await page.locator('[data-action="launch-arcade"][data-mode="solo"]').click();await page.locator('.arcade-live').waitFor();
   await assertEventually(async()=>{assert.ok((await a.profiles.read()).arcade.sessions.length>0);});
   await page.locator('[data-action="stop-arcade"]').click();await page.locator('.arcade-live').waitFor({state:'hidden'});
   assert.equal(await page.locator('#arcade-pastel').inputValue(),'35');
-  console.log('Desktop renderer: activation, profile persistence/isolation, rename, native launch/progress/stop, pastel preference, and all screens passed.');
+  console.log('Desktop renderer: profile creation, profile persistence/isolation, rename, native launch/progress/stop, pastel preference, and all screens passed.');
   if(process.argv.includes('--network')) {
     const b=await client('Second Friend');
     const code=await page.evaluate(async()=>{const {party}=await import('/src/peer-party.ts');party.peerOptions={host:'127.0.0.1',port:19001,path:'/ponyhaven',secure:false,config:{iceServers:[]}};return party.create('Renamed Friend','meadow','', 'day');});
@@ -74,7 +77,7 @@ try {
     for(const game of ['adventure','ponykart']){
       await navigate(page,game);await page.locator('[data-action="launch-arcade"][data-mode="host"]').click();await page.locator('.arcade-live').waitFor();
       await navigate(b.page,game);await b.page.locator('[data-action="launch-arcade"][data-mode="join"]').waitFor();await b.page.locator('[data-action="launch-arcade"][data-mode="join"]').click();
-      await assertEventually(async()=>{const r=a.games.running;assert.ok(r);const d=JSON.parse(await fs.readFile(r.progress,'utf8'));assert.equal(d.players,2);},30000);
+      await assertEventually(async()=>{const r=a.games.running;assert.ok(r);assert.equal(r.snapshot?.players,2);},30000);
       console.log(game+': two actual native engines joined over PeerJS/WebRTC + loopback UDP.');
       await b.games.stop();await a.games.stop();await page.locator('.arcade-live').waitFor({state:'hidden'});await b.page.locator('.arcade-live').waitFor({state:'hidden'});
     }

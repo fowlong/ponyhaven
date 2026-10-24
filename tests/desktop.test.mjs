@@ -3,25 +3,63 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import dgram from 'node:dgram';
-import { verifyLicense, username } from '../desktop/license.mjs';
+import { username } from '../desktop/license.mjs';
 import { Profiles } from '../desktop/profiles.mjs';
 import { inspectLevel, LevelLibrary, mapNumber } from '../desktop/levels.mjs';
 import { LocalRelay } from '../desktop/relay.mjs';
+import { guardNavigation } from '../desktop/navigation.mjs';
+import { NativeProgress } from '../desktop/native-progress.mjs';
 const product='test-product',key='INVITATION-FOR-UNIT-TEST';
-const provider=(purchase={},status=200)=>async(_url,options)=>{
-  assert.equal(options.body.get('increment_uses_count'),'false');
-  assert.equal(options.body.get('product_id'),product);
-  return new Response(JSON.stringify({success:status===200,purchase:{product_id:product,...purchase}}),{status});
-};
-test('Gumroad activation validates product, chargebacks, disabled keys, and failure modes',async()=>{
-  const receipt=await verifyLicense(key,product,provider());
-  assert.equal(receipt.productId,product);assert.match(receipt.fingerprint,/^[a-f0-9]{64}$/);
-  assert.ok(!JSON.stringify(receipt).includes(key));
-  for(const p of [{product_id:'other'},{refunded:true},{chargebacked:true},{license_disabled:true},{disputed:true},{subscription_ended_at:'2026-01-01'}])
-    await assert.rejects(verifyLicense(key,product,provider(p)));
-  await assert.rejects(verifyLicense(key,product,provider({},429)),/busy/);
-  await assert.rejects(verifyLicense(key,product,async()=>{throw Error('offline');}),/reach Gumroad/);
-  assert.throws(()=>username('../profile'));assert.throws(()=>username('a'));assert.equal(username('  Friend  '),'Friend');
+const progressSession='00000000-0000-0000-0000-000000000001';
+const progressRecord={session:progressSession,rings:4,score:200,map:1,elapsed:150,laps:0,players:1,finished:false};
+const progressLine=value=>'PONYHAVEN_PROGRESS '+JSON.stringify(value)+'\n';
+test('native pipe handles arbitrary chunk boundaries and final completion without a file',()=>{
+  const received=[],reader=new NativeProgress(progressSession,d=>received.push(d));
+  const first=progressLine(progressRecord);
+  for(const byte of first)reader.push(byte);
+  reader.push(first); // Repeated snapshots must not duplicate a notification.
+  reader.push(progressLine({...progressRecord,finished:true}).trimEnd());
+  reader.end();
+  assert.deepEqual(received,[progressRecord,{...progressRecord,finished:true}]);
+});
+test('native pipe rejects foreign sessions, corrupt data and injected event fields',()=>{
+  const received=[],reader=new NativeProgress(progressSession,d=>received.push(d));
+  reader.push('ordinary engine log\nPONYHAVEN_PROGRESS {broken}\n');
+  for(const invalid of [
+    {...progressRecord,session:'another-session'}, {...progressRecord,rings:-1},
+    {...progressRecord,map:2000}, {...progressRecord,players:0},
+    {...progressRecord,finished:'true'}, {...progressRecord,score:1e20},
+  ])reader.push(progressLine(invalid));
+  reader.push(progressLine({...progressRecord,type:'error',game:'other',pack:'unexpected'}));
+  assert.deepEqual(received,[progressRecord]);
+});
+test('native pipe bounds unfinished input and recovers after oversized lines',()=>{
+  const received=[],reader=new NativeProgress(progressSession,d=>received.push(d));
+  reader.push('x'.repeat(5000));assert.ok(reader.buffer.length<=4096);
+  reader.push('continued oversized line\n'+progressLine(progressRecord));
+  reader.push('PONYHAVEN_PROGRESS '+'x'.repeat(5000)+'\n');
+  reader.push(progressLine({...progressRecord,rings:5}));
+  assert.equal(received.length,2);assert.equal(received[1].rings,5);
+});
+test('desktop permits profile reloads and still blocks leaving the bundled app',()=>{
+  for (const url of ['ponyhaven://app/', 'ponyhaven://app/#home', 'ponyhaven://app/index.html#shop']) {
+    let blocked = false;
+    guardNavigation({url, preventDefault:()=>{blocked=true;}});
+    assert.equal(blocked,false,`App reload must be allowed: ${url}`);
+  }
+  for (const url of ['https://example.com/', 'file:///C:/test.html', 'javascript:alert(1)',
+    'ponyhaven://other/', 'ponyhaven://app.evil/', 'ponyhaven://user@app/',
+    'ponyhaven://app/data/cards.json', 'ponyhaven://app/?outside=true', 'invalid']) {
+    let blocked = false;
+    guardNavigation({url, preventDefault:()=>{blocked=true;}});
+    assert.equal(blocked,true,`Unexpected page must be blocked: ${url}`);
+  }
+  let blocked = false;
+  guardNavigation({preventDefault:()=>{blocked=true;}},'ponyhaven://app/');
+  assert.equal(blocked,false);
+});
+test('profile names reject paths and empty values',()=>{
+ assert.throws(()=>username('../profile'));assert.throws(()=>username('a'));assert.equal(username('  Friend  '),'Friend');
 });
 test('profiles survive restart, serialize saves, isolate names, and back up before reset',async()=>{
   const root=await fs.mkdtemp(path.resolve('tmp/profile-test-'));
@@ -29,7 +67,7 @@ test('profiles survive restart, serialize saves, isolate names, and back up befo
   const encryption={isEncryptionAvailable:()=>true,encryptString:(s)=>Buffer.from(s),decryptString:(b)=>b.toString()};
   const p=new Profiles(root,encryption,product);await p.init();
   assert.throws(()=>p.requireActive());
-  await p.activate(await verifyLicense(key,product,provider()),'First Friend');const id=p.requireActive().id;
+  await p.create('First Friend');const id=p.requireActive().id;
   const save={version:1,coins:10,collection:{},ponyProgress:{},petUnlocks:[]};
   await Promise.all([p.write(save),p.write({...save,coins:20}),p.write({...save,coins:30})]);
   assert.equal((await p.read()).coins,30);

@@ -1,0 +1,126 @@
+/* One set of pony finishes for desktop, companion, visitors and pet previews.
+   These saturated colours are separate from the softer card-foil palette. */
+.rarity-0 { --pony-glow: #36b77c; --pony-light: #b5ffd4; --pony-halo: 0; }
+.rarity-1 { --pony-glow: #16bda8; --pony-light: #d1fff7; --pony-halo: 0.55; }
+.rarity-2 { --pony-glow: #369bff; --pony-light: #d9f5ff; --pony-halo: 0.8; }
+.rarity-3 { --pony-glow: #af50f5; --pony-light: #f4ccff; --pony-halo: 0.85; }
+.rarity-4 { --pony-glow: #efa714; --pony-light: #fff4b2; --pony-halo: 0.9; }
+.rarity-5 { --pony-glow: #ff861b; --pony-light: #fff0a1; --pony-halo: 0.95; }
+.rarity-6 { --pony-glow: #ef53bd; --pony-light: #a6fff2; --pony-halo: 0.95; }
+.rarity-7 { --pony-glow: #a45dff; --pony-light: #bffcff; --pony-halo: 1; }
+
+:is(.pet-wrap, .friend-pony, .pet-preview) .pet-aura {
+  display: block;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+  pointer-events: none;
+  border: 2px solid var(--pony-glow);
+  border-radius: 50%;
+  opacity: 0.9;
+  filter: none;
+  background: radial-gradient(ellipse, var(--pony-light) 4%,
+    color-mix(in srgb, var(--pony-glow) 70%, transparent) 48%, transparent 75%);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--pony-glow) 65%, transparent),
+    inset 0 0 7px var(--pony-light);
+}
+.meadow-scene :is(.pet-wrap, .friend-pony) .pet-aura {
+  width: 118%;
+  height: 22px;
+  bottom: -7px;
+}
+:is(.pet-wrap, .friend-pony, .pet-preview) > img {
+  position: relative;
+  z-index: 1;
+}
+:is(.pet-wrap, .friend-pony, .pet-preview).rarity-0 .pet-aura { opacity: 0.7; border-width: 1px; }
+:is(.pet-wrap, .friend-pony, .pet-preview).rarity-1 .pet-aura { opacity: 0.82; border-style: double; border-width: 3px; }
+.rarity-2 .pet-aura::after,
+.rarity-5 .pet-aura::after,
+.rarity-7 .pet-aura::after {
+  content: '';
+  position: absolute;
+  inset: -5px -8px;
+  border: 1.5px solid var(--pony-light);
+  border-radius: 50%;
+  box-shadow: 0 0 5px var(--pony-glow);
+}
+.rarity-2 .pet-aura::after { transform: rotate(-9deg); }
+:is(.pet-wrap, .friend-pony, .pet-preview).rarity-3 .pet-aura {
+  border-radius: 32%;
+  background: radial-gradient(ellipse, #f5ceff 5%, #b35aeb99 48%, transparent 76%);
+}
+:is(.pet-wrap, .friend-pony, .pet-preview).rarity-4 .pet-aura {
+  border-style: dotted;
+  border-width: 3px;
+}
+:is(.pet-wrap, .friend-pony, .pet-preview).rarity-5 .pet-aura {
+  background: radial-gradient(ellipse, #fff5c0 10%, #ffc139b8 48%, #ff911c66 68%, transparent 80%);
+  box-shadow: 0 0 18px #ffb331b3, inset 0 0 9px #fff6bc;
+}
+:is(.pet-wrap, .friend-pony, .pet-preview).rarity-6 .pet-aura {
+  background: conic-gradient(from 30deg, #ff8cddb8, #96ffdcc9, #79caffc4, #e9a1ffc9, #ff8cddb8);
+  border-color: #f8c5ff;
+  box-shadow: -7px 0 16px #ef53bd8c, 7px 0 16px #39d6cf9c, inset 0 0 8px #fff4;
+}
+:is(.pet-wrap, .friend-pony, .pet-preview).rarity-7 .pet-aura {
+  background: conic-gradient(#ff79c8, #ffce6b, #83f5ca, #7cceff, #bb80ff, #ff79c8);
+  border-color: #fff3d6;
+  box-shadow: 0 0 18px #a868fbb8, 0 0 7px #f8b5ff, inset 0 0 9px #fff7;
+}
+.pony-sparkles { overflow: visible; }
+.pony-sparkles::before {
+  content: '';
+  position: absolute;
+  inset: -3px 3px;
+  border: 1.5px solid var(--pony-glow);
+  border-top-color: var(--pony-light);
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  opacity: var(--pony-halo);
+  box-shadow: 0 0 9px color-mix(in srgb, var(--pony-glow) 50%, transparent),
+    inset 0 0 9px color-mix(in srgb, var(--pony-glow) 22%, transparent);
+  pointer-events: none;
+}
+.rarity-1 .pony-sparkles::before { border-style: dotted; }
+.rarity-2 .pony-sparkles::before { transform: rotate(-14deg); }
+.rarity-3 .pony-sparkles::before { border-radius: 22%; transform: rotate(45deg) scale(0.79); }
+.rarity-4 .pony-sparkles::before { border-style: dashed; }
+.rarity-5 .pony-sparkles::before { border: 3px double var(--pony-glow); }
+.rarity-6 .pony-sparkles::before,
+.rarity-7 .pony-sparkles::before {
+  border: 0;
+  padding: 2px;
+  background: conic-gradient(from 25deg, #ff91cf, #f8d998, #7bf1c9, #87caff, #bc7fff, #ff91cf);
+  mask: linear-gradient(#fff 0 0) content-box exclude, linear-gradient(#fff 0 0);
+}
+.rarity-6 .pony-sparkles::before { transform: rotate(-12deg); border-radius: 44% 56% 58% 42%; }
+.rarity-7 .pony-sparkles::before { inset: -8px -3px; padding: 3px; }
+.rarity-7 .pony-sparkles::after {
+  content: '✧ ✦ ✧';
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff0b5;
+  font-size: 16px;
+  white-space: nowrap;
+  text-shadow: 0 0 3px #a05af4, 0 0 7px #b075ff;
+}
+.pony-sparkles i {
+  color: var(--pony-light);
+  text-shadow: 0 0 2px var(--pony-glow), 0 0 5px var(--pony-glow), 0 0 9px var(--pony-glow);
+}
+.rarity-0 .pony-sparkles { opacity: 0.75; }
+.rarity-1 .pony-sparkles { opacity: 0.9; }
+.pet-preview .pet-aura { width: 84%; height: 17px; bottom: 6px; }
+.pet-preview .pony-sparkles { z-index: 2; }
+/* Standard N/BASE and R pets have no rarity aura, including visitors and previews. */
+:is(.pet-wrap, .friend-pony, .pet-preview):is(.rarity-0, .rarity-1) :is(.pet-aura, .pony-sparkles) {
+  display: none;
+}
+/* Halos remain visible with gentle motion, including the phone companion. */
+.reduced-motion .pony-sparkles i { opacity: 0.9; }
+@media (prefers-reduced-motion: reduce) {
+  .pony-sparkles i { opacity: 0.9; }
+}

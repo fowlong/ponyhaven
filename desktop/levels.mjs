@@ -43,6 +43,7 @@ function zip(data) {
     return {name,data:bytes};
   });
 }
+export { zip as readZipEntries };
 function inspectSOC(data,names) {
   const text=data.toString('utf8');
   let inLevel=false;

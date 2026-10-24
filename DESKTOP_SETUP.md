@@ -1,69 +1,59 @@
 # Ponyhaven desktop setup
 
-Ponyhaven is a free personal fan game. Electron keeps the existing meadow, cards,
-shop and Magic Blocks interface, and launches Adventure and Ponykart in their own
-native Windows game windows. Local solo play needs no backend after activation.
-Optional Firebase sync connects a GitHub Pages phone companion; see
-[MOBILE_SYNC_SETUP.md](MOBILE_SYNC_SETUP.md). Supabase is not used.
+Ponyhaven is a free personal fan game. Electron provides the meadow, cards, shop
+and Magic Blocks; Equestria, Bonus stages and Ponykart open native game windows.
+Firebase invited accounts provide access and optional progress sync. Gumroad
+licence-key activation has been removed.
 
 ## For friends
 
-1. Extract the entire `Ponyhaven-win32-x64` folder somewhere writable, such as
-   `Documents/Ponyhaven`. Keep its `resources` folder and DLLs beside the app.
-2. Run `Ponyhaven.exe`. Enter your chosen username and the invitation license key
-   supplied by your host. An internet connection is required for this activation.
-3. Choose your first pony. Later launches use your saved activation and profile;
-   solo play works offline. No key is stored in the renderer or sent to friends.
-4. Use Settings → Export save regularly. Import save restores that progress into
-   the current local profile. A backup does not carry the license activation.
+1. Extract the whole Ponyhaven-0.3.0-win32-x64 folder somewhere writable.
+2. Run Ponyhaven.exe and sign in with the Firebase account your host supplied.
+3. Choose your first pony. Existing local profiles and saves are preserved.
+4. Use Settings → Export save regularly. Import save restores the current profile.
 
-Progress is saved under `%APPDATA%/Ponyhaven/Ponyhaven/profiles/<profile-id>/`.
-Windows may retain the package name `ponyhaven` as the first directory; Windows
-paths are case insensitive. Profile names are display names, while a stable ID
-keeps progress intact when you rename a profile.
+The configured app validates account access online at startup. Progress is kept
+locally if a connection drops during play; wait for Cloud saved before switching
+devices. A developer build without Firebase can create local profiles directly.
 
-Settings → Manage local profiles creates or selects another independent local
-profile. This is convenient for a shared computer, not separate licensing for
-each name. Settings → Start this profile again requires typing `RESET`, creates
-a recovery backup, and clears cards, unlocked pets, bits and game records. It
-keeps activation. Imported scenery/preferences and level files are local settings.
-Close a native game before resetting or switching profiles.
+Saves are under %APPDATA%/Ponyhaven/Ponyhaven/profiles/<profile-id>/.
+Manage local profiles creates or selects independent saves. Reset requires RESET
+and makes a recovery backup. Close native games before switching/resetting.
+Existing unlinked saves remain local until Connect mobile sync is chosen.
 
-## Owner: issue free invitations
+## Owner: invite friends
 
-The app verifies keys for your existing [MLP4KT Gumroad product](https://phishwatcher.gumroad.com/l/smbxq).
-The public product ID and permalink are in `desktop/product.json`; neither is a
-secret. License keys must be enabled in the product settings. Issue your friends
-valid keys for this product through your Gumroad account, using your free access
-arrangement. The game has no checkout, purchase prompt, paid currency or ads.
-
-See [Gumroad's license-key guide](https://gumroad.com/help/article/76-license-keys)
-for the seller workflow. The app uses the documented license verification endpoint,
-validates the product and rejection/refund/chargeback status, and does not increment
-the key's use count on retries. No seller API token is needed or bundled.
-
-The activation receipt is encrypted by Electron's Windows `safeStorage`; the raw
-license key is discarded. This is intentionally one-time access control. Revoking
-a key prevents a new activation but does not remotely revoke an already activated,
-offline installation. A new computer needs its own initial verification.
-
-The first real key activation remains a manual acceptance check: no real key was
-provided during development. Tests inject provider responses only into test code.
+Create an Email/Password account in Firebase Authentication, then enable its UID
+in allowedUsers with enabled=true and a name. See FIREBASE_SETUP.md and
+MOBILE_SYNC_SETUP.md. No public registration, paid activation or Gumroad key is used.
 
 ## Native games and controls
 
-Adventure uses SRB2 2.2.15 with the supplied older pony artwork converted to the
+Version 0.3.0 also includes **Adventure → Equestria**, powered by Luanti. The converted
+Equestria 6 Update 8 world is included. Choose a pony and use New game / Load game
+to manage its adventures. Damage resets when a world opens; progress persists.
+NoCube is currently disabled. Minecraft and map conversion are unnecessary.
+See [EQUESTRIA_0.3.0.md](EQUESTRIA_0.3.0.md) for controls, invite-code multiplayer,
+controller bindings, local storage and map limitations.
+
+Bonus stages uses SRB2 2.2.15 with the supplied older pony artwork converted to the
 current sprite format and palette. Ponykart uses SRB2Kart 1.6 and the supplied
 Mane Six pack. Character choices are available in the launcher. Native menus use
 Ponyhaven's simple pause/return screen. Source credits remain in the distribution.
 
 | Game | Controls | Rewards |
 | --- | --- | --- |
-| Adventure | WASD move, left/right arrows turn, Space jump/ability, X spin | 10 bits per newly collected ring; 100 on finishing |
+| Bonus stages | WASD move, left/right arrows turn, Space jump/ability, X spin | 10 bits per newly collected ring; 100 on finishing |
 | Ponykart | W/up accelerate, S/down brake, A/D or arrows steer, Space drift, X item | 50 bits per lap, up to 3; 200 on finishing |
 | Both | Esc opens the pause menu; Enter/Esc resumes; Q exits from that menu; Alt+Enter toggles fullscreen | Progress is saved as it arrives |
 
 SRB2Kart 1.6 has no collectible rings, so races reward laps and completion instead.
+Ponykart's controls are applied at every launch, including existing profiles,
+so the in-game bindings match the keys shown in Ponyhaven.
+Adventure's camera follows the pony's gravity direction, keeping the pony upright
+in Cloud Rock's reverse-gravity sections. The course's gravity switches still
+work, and left/right movement is unchanged. Existing profiles receive this camera
+setting automatically at launch.
 Dropped Adventure rings do not pay again when picked up. Rewards use cumulative
 session counters so reading the same update twice does not pay twice. Individual
 course runs return to the launcher; hosted games let friends finish before the
@@ -150,7 +140,7 @@ python scripts/prepare-native.py
 npm run desktop:package
 ```
 
-The portable folder is `release/Ponyhaven-win32-x64`. Keep its accompanying
+The portable folder is `release/Ponyhaven-0.3.0-win32-x64`. Keep its accompanying
 `engine-sources.zip`, licenses and attribution files when sharing it. That source
 archive includes the upstream source archives and the exact modification/build
 scripts for the native engines. `engines/README.md` describes their changes.
@@ -164,8 +154,9 @@ python scripts/qa-native.py --roster
 node scripts/qa-desktop.mjs
 ```
 
-`qa-desktop.mjs` uses an isolated workspace profile and a simulated Gumroad response.
-It never activates the real user profile. If an agent/sandbox environment prevents
+`qa-desktop.mjs` uses an isolated workspace profile. For configured builds, supply
+an invited test account through QA_ACCOUNT and QA_PASSWORD. It does not use the
+real local profile. If an agent/sandbox environment prevents
 Electron's child processes from reading the installed runtime, run this check from
 an ordinary local terminal. Keep the production Electron renderer sandbox enabled.
 

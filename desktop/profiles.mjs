@@ -20,15 +20,9 @@ export class Profiles {
     this.productId = productId;
     this.queue = Promise.resolve();
     this.index = { active: null, profiles: [] };
-    this.activation = null;
   }
   async init() {
     await fs.mkdir(this.root, { recursive: true });
-    try {
-      const encrypted = await fs.readFile(path.join(this.root, 'activation.bin'));
-      const a = JSON.parse(this.encryption.decryptString(encrypted));
-      if (a.productId === this.productId && /^[a-f0-9]{64}$/.test(a.fingerprint)) this.activation = a;
-    } catch (e) { if (e.code !== 'ENOENT') this.activation = null; }
     try {
       const index = JSON.parse(await fs.readFile(path.join(this.root, 'profiles.json'), 'utf8'));
       if (Array.isArray(index.profiles) && index.profiles.every((p) =>
@@ -38,29 +32,18 @@ export class Profiles {
   }
   status() {
     return {
-      activated: !!this.activation,
+      activated: true,
       profile: this.index.profiles.find((p) => p.id === this.index.active) || null,
       profiles: this.index.profiles.map((p) => ({ ...p })),
     };
   }
   requireActive() {
-    if (!this.activation) throw new Error('Activate your invitation first.');
     const p = this.status().profile;
     if (!p) throw new Error('Choose a local profile first.');
     return p;
   }
-  async activate(receipt, name) {
-    username(name);
-    if (!this.encryption.isEncryptionAvailable()) throw new Error('Secure activation storage is unavailable on this computer.');
-    await fs.writeFile(path.join(this.root, 'activation.bin'),
-      this.encryption.encryptString(JSON.stringify(receipt)), { mode: 0o600 });
-    this.activation = receipt;
-    if (!this.index.profiles.length) await this.create(name);
-    return this.status();
-  }
   async create(value) {
     return this.mutateIndex(async()=>{
-    if (!this.activation) throw new Error('Activate your invitation first.');
     const name = username(value);
     if (this.index.profiles.some((p) => p.name.toLocaleLowerCase() === name.toLocaleLowerCase()))
       throw new Error('That name already has a profile on this computer.');
@@ -73,7 +56,7 @@ export class Profiles {
   }
   async select(id) {
     return this.mutateIndex(async()=>{
-    if (!this.activation || !this.index.profiles.some((p) => p.id === id)) throw new Error('Profile not found.');
+    if (!this.index.profiles.some((p) => p.id === id)) throw new Error('Profile not found.');
     this.index.active = id;
     await atomicJSON(path.join(this.root, 'profiles.json'), this.index);
     return this.status();

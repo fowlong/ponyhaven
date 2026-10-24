@@ -6,6 +6,10 @@ Both engines retain their upstream GNU GPL notices. The older
 `STJr/SRB2-Public` repository targets SRB2 2.0; the supplied Adventure character
 WADs are converted for the current maintained engine instead.
 
+The Adventure launcher enables `flipcam` and `flipcam2` at every launch, including
+existing profiles. This keeps the pony upright in reverse-gravity sections such
+as Cloud Rock 2 without changing the map's gravity or movement physics.
+
 `scripts/patch-native.py` applies reproducible changes from pristine source:
 
 - `ponyhaven_bridge.h`: cumulative ring, lap, score and finish snapshots, plus a
@@ -13,6 +17,11 @@ WADs are converted for the current maintained engine instead.
 - `ponyhaven_pastel.h`: adjustable, world-texture-only palette translation. It
   operates on private texture caches, excluding source sprite lumps and the HUD.
 - Ponyhaven window titles, pause screen and shared-game finish screen.
+- Hidden SDL startup log screens, with the native window shown after its first
+  game frame. Adventure's level intro uses only a small pink level name, keeping
+  the original title-card timing.
+- Session progress is sent through the launcher's stdout pipe; it does not
+  repeatedly delete or replace progress files.
 - Disable Adventure's normal player recolour pass for the converted pony art.
 - Replace stock base-file MD5 checks for the curated local data; native network
   addon consistency checks remain in place. Distribution files have SHA-256 hashes.

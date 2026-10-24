@@ -14,8 +14,10 @@ end)
 '''
 addon=folder/'qa-pickup.pk3'
 with zipfile.ZipFile(addon,'w') as z:z.writestr('Lua/qa.lua',lua)
-args=[str(ROOT/'native/adventure/adventure.exe'),'-home',str(folder),'-skipintro','-nosound','-nomusic','-win','-ph-progress',str(folder/'progress.json'),'-ph-session','00000000-0000-0000-0000-000000000099','-warp','1','+skin','twilight','-file',str(ROOT/'native/adventure/ponyhaven.pk3'),str(addon)]
+args=[str(ROOT/'native/adventure/adventure.exe'),'-home',str(folder),'-skipintro','-nosound','-nomusic','-win','-ph-progress-stdio','-ph-session','00000000-0000-0000-0000-000000000099','-warp','1','+skin','twilight','-file',str(ROOT/'native/adventure/ponyhaven.pk3'),str(addon)]
 with (folder/'process.log').open('w') as log:
     p=subprocess.run(args,cwd=ROOT/'native/adventure',env={**os.environ,'SDL_VIDEODRIVER':'dummy','SDL_RENDER_DRIVER':'software'},stdout=log,stderr=log,timeout=35)
-d=json.loads((folder/'progress.json').read_text());print('Actual fresh-ring pickup, dropped ring excluded, and finish:',p.returncode,d)
+records=[json.loads(line.removeprefix('PONYHAVEN_PROGRESS ')) for line in (folder/'process.log').read_text().splitlines() if line.startswith('PONYHAVEN_PROGRESS ')]
+assert records,'No progress messages'
+d=records[-1];print('Actual fresh-ring pickup, dropped ring excluded, and finish:',p.returncode,d)
 assert p.returncode==0 and d['rings']==1 and d['finished']

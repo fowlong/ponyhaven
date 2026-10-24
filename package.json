@@ -1,6 +1,6 @@
 {
   "name": "ponyhaven",
-  "version": "0.1.0",
+  "version": "0.3.1",
   "private": true,
   "type": "module",
   "main": "desktop/main.mjs",
@@ -26,7 +26,15 @@
     "accounts": "node scripts/accounts.mjs",
     "cards:cache": "node scripts/cache-cards.mjs",
     "catalog:import": "node scripts/import-catalog.mjs",
-    "catalog:compile": "node scripts/import-catalog.mjs --cached"
+    "catalog:compile": "node scripts/import-catalog.mjs --cached",
+    "sprites:measure": "node scripts/measure-sprites.mjs",
+    "test:sprite-scale": "node scripts/qa-sprite-scale.mjs",
+    "test:equestria-import": "node --test tests/equestria-import.test.mjs",
+    "test:equestria-party": "node scripts/qa-equestria-party.mjs",
+    "equestria:import": "node scripts/import-equestria.mjs",
+    "test:equestria-world": "node scripts/qa-equestria-world.mjs",
+    "test:equestria-runtime": "node scripts/qa-equestria-runtime.mjs",
+    "test:equestria-desktop": "node scripts/qa-equestria-desktop.mjs"
   },
   "dependencies": {
     "firebase": "^12.4.0",

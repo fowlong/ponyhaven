@@ -3,18 +3,22 @@ import './finishes.css';
 import './meadow.css';
 import './expansion.css';
 import './backgrounds.css';
+import './pony-auras.css';
 import './arcade.css';
 import './sync.css';
 import { desktop, desktopProfile, refreshDesktop, type ArcadeGame } from './desktop';
 import { arcadeReward } from './arcade-progress';
 import { renderArcade, renderLeaderboard, launchArcade, importLevel, removeLevel, setupArcade, setupScores, shareScores, running } from './arcade';
 import { party } from './peer-party';
+import { equestriaRunning, selectEquestria, setupEquestria, launchEquestria,adventureSaveAction } from './equestria';
+import { equestriaReward } from './equestria-rewards';
 import { SharedMeadow, roomBackground } from './social';
 import { sound } from './sound';
 import { cardFinish, ponyFinish, finishNames } from './rarity';
 import type { Background, Card, Catalog, PetChoice, Presence, Save } from './types';
 import {
   awardXP,
+  openLevelReward,
   happiness,
   levelForXP,
   levelFloor,
@@ -57,7 +61,7 @@ import { BLOCK_COLORS, drawGame, SHAPES, Tetris } from './tetris';
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const modal = document.querySelector<HTMLDialogElement>('#modal')!;
 const store = new SaveStore();
-const views = companion ? ['home','shop','collection'] : ['home','shop','collection','blocks','adventure','ponykart','leaderboard'];
+const views = companion ? ['home','shop','collection','blocks'] : ['home','shop','collection','blocks','adventure','ponykart','leaderboard'];
 document.body.classList.toggle('companion', companion);
 let catalog: Catalog,
   save: Save,
@@ -153,12 +157,14 @@ function notifyUnlocks(next: Save) {
     });
 }
 function rewardDialog() {
+  const revealed = openLevelReward(save);
+  if (revealed !== save) commit(revealed);
   const reward = save.levelRewards[0];
   if (!reward) return;
   const card = cardById(reward.cardId)!;
   openModal(
     'A little milestone together',
-    `<div class="single-reveal"><p class="eyebrow">${e(pony(reward.ponyId).name)} · LEVEL ${reward.level}</p><div class="reveal-card card-image rarity-${card.tier}"><img src="${cardImage(card)}" alt="${e(card.name)}"/>${cardFinish()}</div><span class="rarity-label tier-${card.tier}">${e(card.rarity)}</span><h2>${e(card.name)}</h2><p>A thank-you for growing together. Already saved in your binder.</p>${reward.petDrop ? `<p class="pet-drop-note">New virtual pet: ${e(pony(reward.petDrop.ponyId).name)}!</p>` : ''}<button class="button primary" data-action="claim-reward">${save.levelRewards.length > 1 ? 'See the next gift' : 'Lovely, thank you!'}</button></div>`,
+    `<div class="single-reveal"><p class="eyebrow">${e(pony(reward.ponyId).name)} · LEVEL ${reward.level}</p><div class="reveal-card card-image rarity-${card.tier}"><img src="${cardImage(card)}" alt="${e(card.name)}"/>${cardFinish()}</div><span class="rarity-label tier-${card.tier}">${e(card.rarity)}</span><h2>${e(card.name)}</h2><p>A thank-you for growing together. Added to your binder!</p>${reward.petDrop ? `<p class="pet-drop-note">New virtual pet: ${e(pony(reward.petDrop.ponyId).name)}!</p>` : ''}<button class="button primary" data-action="claim-reward">${save.levelRewards.length > 1 ? 'See the next gift' : 'Lovely, thank you!'}</button></div>`,
   );
   sound.play('reward');
 }
@@ -351,6 +357,7 @@ function mountHome() {
     social.room?.customBackground || (!social.room && prefs.background === 'custom')
       ? undefined
       : chosenBackground()?.stage,
+    sceneImage(),
   );
   refreshFriends();
   document.querySelector('#meadow-scene')!.addEventListener('click', (ev) => {
@@ -514,7 +521,7 @@ function petPicker() {
 function settings() {
   openModal(
     'Your little preferences',
-    `<div class="settings-body"><div class="account-summary"><span class="avatar">${e(save.name[0])}</span><div><strong>${e(save.name)}</strong><p>${desktop ? 'Activated invitation &middot; Local profile' : cloudConfigured ? 'Invited account' : 'Local play on this browser'}</p><small>${e(store.status)}</small></div></div><label class="field-label" for="display-name">What should your friends call you?</label><div class="input-row"><input id="display-name" maxlength="24" value="${e(save.name)}"/><button class="button secondary" data-action="save-name">Save</button></div><label class="setting-toggle"><span><strong>Gentle motion</strong><small>Still pony previews and quieter visual effects.</small></span><input type="checkbox" id="motion-setting" ${prefs.reducedMotion ? 'checked' : ''}/></label><label class="setting-toggle"><span><strong>Game sounds</strong><small>Soft sounds for care, magic, and little discoveries.</small></span><input type="checkbox" id="sound-setting" ${prefs.quiet ? '' : 'checked'}/></label><div class="setting-row"><span><strong>Make the meadow yours</strong><small>Upload a background, or return to Ponyville.</small></span><button class="icon-button" data-action="background" aria-label="Change background">${icon('image')}</button></div><div class="settings-buttons"><button class="button secondary" data-action="export">${icon('download')} Export save</button><label class="button secondary">${icon('upload')} Import save<input class="sr-only" type="file" id="import-save" accept="application/json"/></label></div><p class="fine-print">${desktop ? 'Progress saves in your local profile. Export a backup to move computers. Each profile has its own progress and meadow preferences; resetting progress keeps your activation.' : cloudConfigured ? 'Cloud saves sync between your devices. Backgrounds and motion preferences stay on this device.' : 'Your game saves automatically in this browser. Export a backup before clearing browser data or moving devices. Account sign-in and the shared meadow become available when the owner connects the free backend.'}</p>${desktop ? '<button class="button secondary full" data-action="profiles">Manage local profiles</button>' : ''}<button class="text-button danger" data-action="reset-account">Start this profile again</button>${cloudConfigured ? '<button class="text-button" data-action="logout">Sign out</button>' : ''}</div>`,
+    `<div class="settings-body"><div class="account-summary"><span class="avatar">${e(save.name[0])}</span><div><strong>${e(save.name)}</strong><p>${desktop ? 'Firebase account &middot; Local profile' : cloudConfigured ? 'Invited account' : 'Local play on this browser'}</p><small>${e(store.status)}</small></div></div><label class="field-label" for="display-name">What should your friends call you?</label><div class="input-row"><input id="display-name" maxlength="24" value="${e(save.name)}"/><button class="button secondary" data-action="save-name">Save</button></div><label class="setting-toggle"><span><strong>Gentle motion</strong><small>Still pony previews and quieter visual effects.</small></span><input type="checkbox" id="motion-setting" ${prefs.reducedMotion ? 'checked' : ''}/></label><label class="setting-toggle"><span><strong>Game sounds</strong><small>Soft sounds for care, magic, and little discoveries.</small></span><input type="checkbox" id="sound-setting" ${prefs.quiet ? '' : 'checked'}/></label><div class="setting-row"><span><strong>Make the meadow yours</strong><small>Upload a background, or return to Ponyville.</small></span><button class="icon-button" data-action="background" aria-label="Change background">${icon('image')}</button></div><div class="settings-buttons"><button class="button secondary" data-action="export">${icon('download')} Export save</button><label class="button secondary">${icon('upload')} Import save<input class="sr-only" type="file" id="import-save" accept="application/json"/></label></div><p class="fine-print">${desktop ? 'Progress saves in your local profile. Export a backup to move computers. Each profile has its own progress and meadow preferences; resetting progress keeps your account.' : cloudConfigured ? 'Cloud saves sync between your devices. Backgrounds and motion preferences stay on this device.' : 'Your game saves automatically in this browser. Export a backup before clearing browser data or moving devices. Account sign-in and the shared meadow become available when the owner connects the free backend.'}</p>${desktop ? '<button class="button secondary full" data-action="profiles">Manage local profiles</button>' : ''}<button class="text-button danger" data-action="reset-account">Start this profile again</button>${cloudConfigured ? '<button class="text-button" data-action="logout">Sign out</button>' : ''}</div>`,
   );
   if (desktop) {
     const body=modal.querySelector('.settings-body')!;
@@ -874,7 +881,7 @@ document.addEventListener('click', async (ev) => {
         syncDialog();break;
       case 'connect-sync': {
         ev.preventDefault();
-        if (running) throw new Error('Close your game before connecting sync.');
+        if (running || equestriaRunning) throw new Error('Close your game before connecting sync.');
         const account=document.querySelector<HTMLInputElement>('#sync-account')!;
         const password=document.querySelector<HTMLInputElement>('#sync-password')!;
         (target as HTMLButtonElement).disabled=true;
@@ -885,7 +892,7 @@ document.addEventListener('click', async (ev) => {
       case 'disconnect-sync':
         await store.disconnectDesktop();await refreshDesktop();settings();break;
       case 'reload-cloud':
-        if (running) throw new Error('Close your game before loading another save.');
+        if (running || equestriaRunning) throw new Error('Close your game before loading another save.');
         await store.reloadCloud();break;
       case 'export-conflict': {
         const raw=localStorage.getItem(store.key+':conflict-backup');
@@ -949,7 +956,7 @@ document.addEventListener('click', async (ev) => {
         if (document.querySelector<HTMLInputElement>('#reset-confirm')!.value !== 'RESET')
           throw new Error('Type RESET to confirm.');
         localStorage.setItem(store.key + ':before-reset', JSON.stringify(save));
-        if (running) throw new Error('Close your game before resetting this profile.');
+        if (running || equestriaRunning) throw new Error('Close your game before resetting this profile.');
         await desktop?.backup();
         await social.leave();
         commit({ ...freshSave(save.name), coins: 0 });
@@ -1076,6 +1083,7 @@ document.addEventListener('click', async (ev) => {
         break;
       }
       case 'logout':
+        if(running||equestriaRunning)await desktop?.stopGame();
         await social.leave();
         await store.logout();
         location.reload();
@@ -1097,23 +1105,21 @@ document.addEventListener('click', async (ev) => {
       case 'retry':
         location.reload();
         break;
-      case 'activate':
+      case 'create-first-profile': {
         ev.preventDefault();
-        if (!desktop) break;
-        target.setAttribute('disabled', '');
-        try {
-          await desktop.activate(document.querySelector<HTMLInputElement>('#activation-key')!.value,
-            document.querySelector<HTMLInputElement>('#activation-name')!.value);
-          location.reload();
-        } catch(err) { target.removeAttribute('disabled'); throw err; }
-        break;
+        if (!desktop || cloudConfigured) break;
+        const form=document.querySelector<HTMLFormElement>('#profile-form')!;
+        if (!form.reportValidity()) break;
+        await desktop.createProfile(document.querySelector<HTMLInputElement>('#profile-name')!.value);
+        location.reload();break;
+      }
       case 'profiles':
         await refreshDesktop();
         openModal('Your local profiles', `<p class="modal-intro">Each name has its own ponies, cards, bits, and records on this computer.</p><div class="profile-list">${desktopProfile!.profiles.map((p)=>`<button class="button secondary" data-action="select-profile" data-profile="${e(p.id)}">${e(p.name)} ${p.id===desktopProfile!.profile?.id?'· current':''}</button>`).join('')}</div><label class="field-label" for="new-profile-name">Create another local profile</label><div class="input-row"><input id="new-profile-name" maxlength="24"/><button class="button primary" data-action="create-profile">Create</button></div>`);
         break;
       case 'select-profile':
       case 'create-profile':
-        if (running) throw new Error('Close your game before changing profiles.');
+        if (running || equestriaRunning) throw new Error('Close your game before changing profiles.');
         await social.leave(); await store.flush();
         if (target.dataset.action === 'select-profile') await desktop!.selectProfile(target.dataset.profile!);
         else await desktop!.createProfile(document.querySelector<HTMLInputElement>('#new-profile-name')!.value);
@@ -1130,9 +1136,21 @@ document.addEventListener('click', async (ev) => {
         try { await launchArcade(target.dataset.arcade as ArcadeGame,target.dataset.mode as 'solo'|'host'|'join'); }
         catch(err) {target.removeAttribute('disabled');throw err;}
         break;
+      case 'equestria-select':
+        selectEquestria(target.dataset.world === 'equestria');
+        view = 'adventure';
+        render();
+        break;
+      case 'launch-equestria':
+        if(running)throw new Error('Finish your current game before opening Equestria.');
+        await launchEquestria(target.dataset.mode as 'solo'|'host'|'join');
+        break;
       case 'stop-arcade':
         await desktop?.stopGame();
         break;
+      case 'equestria-new': case 'equestria-saves': case 'equestria-save-cancel':
+      case 'equestria-save-create': case 'equestria-save-load': case 'equestria-save-delete': case 'equestria-save-delete-confirm':
+        await adventureSaveAction(target.dataset.action!,target.dataset.save);break;
       case 'app-fullscreen':
         if (desktop) await desktop.fullscreen();
         else if(document.fullscreenElement) await document.exitFullscreen();
@@ -1293,7 +1311,7 @@ document.addEventListener('change', async (ev) => {
       )
         throw new Error('This save contains an unknown pet or level gift.');
       localStorage.setItem(`${store.key}:before-import`, JSON.stringify(save));
-      if (running) throw new Error('Close your game before importing a save.');
+      if (running || equestriaRunning) throw new Error('Close your game before importing a save.');
       await desktop?.backup();
       if (desktop) imported.name = save.name;
       commit(migrateProgress(imported, catalog));
@@ -1384,8 +1402,8 @@ modal.addEventListener('click', (ev) => {
 });
 
 function renderLogin() {
-  if (desktop) {
-    app.innerHTML = `<main class="login-screen"><span class="brand-mark">${icon('spark')}</span><p class="eyebrow">AN INVITATION TO A LITTLE MAGIC</p><h1>Welcome to Ponyhaven.</h1><p>Give your little world a name, and enter the key your host shared.</p><form id="activation-form"><label for="activation-name">Your username</label><input id="activation-name" autocomplete="nickname" minlength="2" maxlength="24" required/><label for="activation-key">Invitation license key</label><input id="activation-key" type="password" autocomplete="off" spellcheck="false" required/><button type="submit" class="button primary full" data-action="activate">Activate my invitation ${icon('arrow')}</button></form><p class="activation-note">An internet connection is needed just this once to validate your invitation with Gumroad. After activation, your profile saves on this computer and solo play works offline. Your key is never shared with other players.</p><small>A free little fan game, for friends.</small></main>`;
+  if (desktop && !cloudConfigured) {
+    app.innerHTML = `<main class="login-screen"><span class="brand-mark">${icon('spark')}</span><h1>Welcome to Ponyhaven.</h1><p>Give your little world a name.</p><form id="profile-form"><label for="profile-name">Your name</label><input id="profile-name" autocomplete="nickname" minlength="2" maxlength="24" required/><button type="submit" class="button primary full" data-action="create-first-profile">Open my meadow</button></form><small>A free little fan game, for friends.</small></main>`;
     return;
   }
   app.innerHTML = `<main class="login-screen"><span class="brand-mark">${icon('spark')}</span><p class="eyebrow">YOUR LITTLE WORLD IS WAITING</p><h1>Welcome to Ponyhaven.</h1><p>Sign in with the account your host gave you.</p><form id="account-form"><label for="login-account">Username or email</label><input id="login-account" autocomplete="username" required/><label for="login-password">Password</label><input type="password" id="login-password" autocomplete="current-password" required/><button type="submit" class="button primary full" data-action="login">Come on in ${icon('arrow')}</button></form><small>A free little fan game, for friends.</small></main>`;
@@ -1423,7 +1441,7 @@ function refreshInvitation() {
 }
 social.onChange = () => {
   if (save?.pet) {
-    if (view === 'home') render();
+    if (view === 'home' || view === 'adventure' || view === 'ponykart') render();
     void heartbeat();
   }
 };
@@ -1467,8 +1485,8 @@ document.addEventListener('submit', (ev) => {
   if ((ev.target as HTMLElement).id === 'sync-form') {
     ev.preventDefault();document.querySelector<HTMLButtonElement>('[data-action="connect-sync"]')?.click();
   }
-  if ((ev.target as HTMLElement).id === 'activation-form') {
-    ev.preventDefault();document.querySelector<HTMLButtonElement>('[data-action="activate"]')?.click();
+  if ((ev.target as HTMLElement).id === 'profile-form') {
+    ev.preventDefault();document.querySelector<HTMLButtonElement>('[data-action="create-first-profile"]')?.click();
   }
   if ((ev.target as HTMLElement).id === 'account-form') {
     ev.preventDefault();
@@ -1508,6 +1526,17 @@ async function boot() {
       }
       return result.bits;
     }, () => { if (['adventure','ponykart'].includes(view)) render(); }, toast);
+    await setupEquestria(() => save, async (event) => {
+      if(store.conflicted)throw new Error('Resolve your save conflict before collecting Equestria rewards.');
+      const result = equestriaReward(save, catalog, event);
+      if(result.save !== save)commit(result.save);
+      await store.flush();
+      if(result.message)toast(result.message);
+      return structuredClone(save.equestria);
+    }, () => { if(view === 'adventure')render(); }, toast, async next=>{
+      if(store.conflicted)throw new Error('Resolve your save conflict before managing adventures.');
+      commit(next);await store.flush();
+    });
     const blob = await backgroundBlob().catch(() => null);
     if (blob) backgroundUrl = URL.createObjectURL(blob);
     unsubscribeFriends = store.watchFriends((list) => {

@@ -1,0 +1,13 @@
+{
+  "engine": "Luanti",
+  "version": "5.17.0",
+  "platform": "win64",
+  "url": "https://github.com/luanti-org/luanti/releases/download/5.17.0/luanti-5.17.0-win64.zip",
+  "sha256": "3ce20c77f5c206a988d7a6b883439e2759e3cf67428c9dbcf99ecd2936da631c",
+  "bytes": 17539019,
+  "worldPage": "https://www.planetminecraft.com/project/equestria-6/",
+  "downloaded": true,
+  "verifiedInGame": true,
+  "sourceUrl": "https://codeload.github.com/luanti-org/luanti/zip/refs/tags/5.17.0",
+  "sourceSha256": "d1913b725777946de69b35cfa8e44cf88e695b542bab8c2e30add6ca7f708789"
+}

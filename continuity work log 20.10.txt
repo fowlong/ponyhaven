@@ -1,0 +1,2695 @@
+#ifdef _MSC_VER
+• Failed (exit 1) Get-ChildItem tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/libs/libcurl -Recurse -File | Where-Object Extension -in '.lib','.a' | Select-Obj…
+  └ // VERSIONSTRING_RC is for the resource-definition script used by windows builds
+    #else
+    #ifdef BETAVERSION
+• Failed (exit 1) Test-Path 'C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\Llvm\bin\clang-cl.exe'; Get-Content tmp/arcade/kart-native-source/Kart-Pub…
+  └ 64:#define READCHAR(p)         ({    char *p_tmp = (   char *)p;    char b = *p_tmp; p_tmp++; p = (void *)p_tmp; b; })
+    
+    
+• Ran Get-Content tmp/arcade/kart-native-source/Kart-Public-1.6/src/byteptr.h | Select-Object -Skip 185 -First 65; Get-ChildItem tmp/arcade/srb2-native-source/SRB2-SRB2…
+  └                                                                                                                  
+    
+    
+• Edited scripts\build-native.py (+7 -7)
+-target_include_directories({game} PRIVATE "${{ENGINE}}/src" "${{ENGINE}}/libs/SDL2/include" "${{ENGINE}}/libs/SDL2_mixer/include")
+-target_compile_definitions({game} PRIVATE WIN32 _WINDOWS _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_DEPRECATE _WINSOCK_DEPRECATED_NO_WARNINGS HAVE_SDL HAVE_THREADS HAVE_BLUA HAVE_PNG HAVE_ZLIB HAVE_MIXER SOUND=SOUND_MIXER SDLMAIN DIRECTFULLSCREEN)
+• Ran python scripts/build-native.py ponykart *> tmp/arcade/kart-clang.log; Get-Content tmp/arcade/kart-clang.log -Tail 4
+  └ subprocess.CalledProcessError: Command '['cmake', '--build', 
+    'C:\\Users\\calla\\Desktop\\MLPKT\\tmp\\native-build\\ponykart\\out-clang', '--config', 'Release', '--parallel', '8']' 
+    returned non-zero exit status 1.
+• Ran python scripts/build-native.py adventure *> tmp/arcade/adventure-clang.log; Get-Content tmp/arcade/adventure-clang.log -Tail 4
+  └ subprocess.CalledProcessError: Command '['cmake', '--build', 
+    'C:\\Users\\calla\\Desktop\\MLPKT\\tmp\\native-build\\adventure\\out-clang', '--config', 'Release', '--parallel', 
+    '8']' returned non-zero exit status 1.
+• Ran @' …
+  └ followitem = MT_METALJETFUME
+    
+    ['Flats/Generic/Signage/CEIL3_1', 'Flats/Generic/Signage/DEM1_3', 'Flats/Generic/Signage/ERZRDCAU', 'Flats/Generic/Signage/ERZYLCAU', 'Flats/Generic/Signage/LIFTFLA…
+• Ran rg -n 'error:|error LNK|fatal' tmp/arcade/adventure-clang.log tmp/arcade/kart-clang.log | Select-Object -First 14
+  └ tmp/arcade/adventure-clang.log:137:  fatal error: too many errors emitted, stopping now [-ferror-limit=]
+• Ran rg -n 'error' tmp/arcade/adventure-clang.log | Select-Object -First 13; rg -n 'error|undefined' tmp/arcade/kart-clang.log | Select-Object -First 13; Get-Content t…
+  └ subprocess.CalledProcessError: Command '['cmake', '--build', 
+    'C:\\Users\\calla\\Desktop\\MLPKT\\tmp\\native-build\\ponykart\\out-clang', '--config', 'Release', '--parallel', '8']' 
+    returned non-zero exit status 1.
+• Edited src\storage.ts (+42 -6)
++import { desktop, refreshDesktop } from './desktop';
+-export const cloudConfigured = !!(
++export const cloudConfigured = !desktop && !!(
+• Ran rg -n 'error :' tmp/arcade/adventure-clang.log tmp/arcade/kart-clang.log | Select-Object -First 22; Get-Content tmp/arcade/kart-native-source/Kart-Public-1.6/src/…
+  └ 429:    message(STATUS "No libpng Found")
+    433:#libpng links zlib too?
+    438:#got no libpng? we need zlib
+• Ran rg -n 'void P_GivePlayerRings|P_GivePlayerRings\(' tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/p_user.c | Select-Object -First 8; rg -n 'P_GivePlay…
+  └ 951:                P_PlayerThink(&players[i]);
+    tmp/arcade/kart-native-source/Kart-Public-1.6/src/m_misc.h:71:void M_ScreenShot(void);
+    tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/m_misc.h:67:void M_ScreenShot(void);
+• Edited 2 files (+100 -0)
+  └ engines\ponyhaven_bridge.h (+37 -0)
++/* Ponyhaven integration, GPL-2.0-or-later. Included once by each engine's d_main.c. */
++#include "m_argv.h"
++#include "m_misc.h"
+
+  └ scripts\patch-native.py (+63 -0)
++"""Apply documented Ponyhaven changes to pristine, pinned engine sources."""
++import pathlib,re,shutil
++from importlib.util import spec_from_file_location,module_from_spec
+• Ran python scripts/patch-native.py
+  └ Patched adventure
+    Patched ponykart
+• Ran python scripts/build-native.py adventure *> tmp/arcade/adventure-clang.log; Get-Content tmp/arcade/adventure-clang.log -Tail 3
+  └ subprocess.CalledProcessError: Command '['cmake', '--build', 
+    'C:\\Users\\calla\\Desktop\\MLPKT\\tmp\\native-build\\adventure\\out-clang', '--config', 'Release', '--parallel', 
+    '8']' returned non-zero exit status 1.
+• Ran python scripts/build-native.py ponykart *> tmp/arcade/kart-clang.log; Get-Content tmp/arcade/kart-clang.log -Tail 3
+  └ subprocess.CalledProcessError: Command '['cmake', '--build', 
+    'C:\\Users\\calla\\Desktop\\MLPKT\\tmp\\native-build\\ponykart\\out-clang', '--config', 'Release', '--parallel', '8']' 
+    returned non-zero exit status 1.
+• Added src\peer-party.ts (+179 -0)
++import Peer, { type DataConnection } from 'peerjs';
++import { desktop, desktopProfile, type ArcadeGame } from './desktop';
++import type { MeadowRoom, Presence } from './types';
+• Edited 2 files (+16 -1)
+  └ src\social.ts (+12 -0)
++import { desktop } from './desktop';
++import { party } from './peer-party';
+    ⋮
+
+  └ src\storage.ts (+4 -1)
++import { party } from './peer-party';
+    ⋮
++    if (desktop) { party.onFriends = callback; return () => { party.onFriends = () => {}; }; }
+Both engines need some build fixes before they can use the pony assets cleanly. I’m building modified versions so the character lists and pause menus can be replaced, and so rewards come directly from gameplay events.
+
+Adventure will award 10 bits for each fresh ring pickup. SRB2Kart doesn’t collect rings, so Ponykart will award bits for completed laps and races, with course times on its leaderboard.
+• Edited 5 files (+152 -0)
+  └ src\arcade-progress.ts (+42 -0)
++import type { ArcadeProgress, Save } from './types';
++import type { ArcadeEvent } from './desktop';
++
+
+  └ src\arcade.css (+4 -0)
++.arcade-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,1fr);gap:28px}.arcade-hero{border-radius:28px;min-height:500px;overflow:hidden;background:linear-gradient(180deg,#ece5ff77,#a7dac866),url('../public/assets/meadow.svg') center/cover;border:1px solid #e8e1ef;position:relative}.arcade-hero>div{padding:40px;position:relative;height:100%;min-height:500px}.arcade-hero h2{font-size:clamp(38px,4vw,56px);line-height:1.18;color:#544175;font-weight:500;margin:22p
+
+  └ src\arcade.ts (+89 -0)
++import { desktop, desktopProfile, type ArcadeEvent, type ArcadeGame } from './desktop';
++import { party } from './peer-party';
++import { escape as e, icon } from './icons';
+
+  └ src\game.ts (+4 -0)
++import { freshArcade, validArcade } from './arcade-progress';
+   ⋮
++    arcade: freshArcade(),
+
+  └ src\types.ts (+13 -0)
++  arcade: ArcadeProgress;
++}
++export interface ArcadeRecord {
+• Ran Get-Content src/main.ts | Select-Object -Skip 704 -First 27; rg -n "case 'save-name'|case 'export'|case 'friends'|import-save" src/main.ts; Get-Content src/main.t…
+  └   apple:
+        '<path d="M12 7C6 2 1 9 5 17c2 5 5 4 7 3 2 1 5 2 7-3 4-8-1-15-7-10Z"/><path d="M12 7c0-4 2-5 5-5 0 3-2 5-5 5"/>',
+      moon: '<path d="M21 13a9 9 0 0 1-10-10 9 9 0 1 0 10 10Z"/>',
+• Ran Get-Content tmp/arcade/kart-clang.log | Select-Object -Skip 15 -First 31; Get-Content tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/d_event.h -TotalC…
+  └       if (save.pet) render();
+          else renderWelcome();
+          toast('Save imported. Your previous save is backed up on this device.');
+• Edited 2 files (+72 -1)
+  └ src\icons.ts (+3 -0)
++  compass: '<circle cx="12" cy="12" r="9"/><path d="m16 8-2.5 5.5L8 16l2.5-5.5Z"/>',
++  flag: '<path d="M5 22V3m0 1c5-5 9 5 15 0v11c-6 5-10-5-15 0"/><path d="m10 3 0 11m5-10v11M5 9c5-5 9 5 15 0"/>',
++  trophy: '<path d="M7 3h10v7a5 5 0 0 1-10 0ZM7 5H3v3a4 4 0 0 0 4 4m10-7h4v3a4 4 0 0 1-4 4M12 15v5M8 21h8"/>',
+
+  └ src\main.ts (+69 -1)
++import './arcade.css';
++import { desktop, desktopProfile, refreshDesktop, type ArcadeGame } from './desktop';
++import { arcadeReward } from './arcade-progress';
+• Ran rg -n 'switch|const action|data-action="friends"' src/main.ts | Select-Object -First 9; Get-Content tmp/arcade/kart-native-source/Kart-Public-1.6/src/blua/luaconf…
+  └ 273:#endif/* PNG_WRITE_APNG_SUPPORTED */
+    282:#ifndef PNG_WRITE_APNG_SUPPORTED
+    286:#endif/* PNG_WRITE_APNG_SUPPORTED */
+• Edited scripts\patch-native.py (+3 -0)
++        if game=='adventure': t=t.replace('ev->data1','ev->key')
++    if game=='ponykart':
++        edit('src/blua/luaconf.h',lambda t:t.replace('#include <limits.h>','#include <limits.h>\n#ifdef _WIN32\n#include <windows.h>\n#endif'))
+• Ran python scripts/patch-native.py
+  └ Patched adventure
+    Patched ponykart
+• Ran python scripts/build-native.py ponykart *> tmp/arcade/kart-clang.log; Get-Content tmp/arcade/kart-clang.log -Tail 3
+  └ subprocess.CalledProcessError: Command '['cmake', '--build', 
+    'C:\\Users\\calla\\Desktop\\MLPKT\\tmp\\native-build\\ponykart\\out-clang', '--config', 'Release', '--parallel', '8']' 
+    returned non-zero exit status 1.
+• Ran rg -n 'error :|error LNK|fatal error' tmp/arcade/adventure-clang.log tmp/arcade/kart-clang.log | Select-Object -First 20; Get-Content tmp/arcade/adventure-clang.l…
+  └ 1493:                midi_disabled = true; // WARNING: DOS version initmusic in I_StartupSound
+    1495:            if (M_CheckParm("-nodigmusic"))
+    1496:                digital_disabled = true; // WARNING: DOS version initmusic in I_StartupSound
+• Ran python scripts/build-native.py adventure *> tmp/arcade/adventure-clang.log; Get-Content tmp/arcade/adventure-clang.log -Tail 3
+  └ subprocess.CalledProcessError: Command '['cmake', '--build', 
+    'C:\\Users\\calla\\Desktop\\MLPKT\\tmp\\native-build\\adventure\\out-clang', '--config', 'Release', '--parallel', 
+    '8']' returned non-zero exit status 1.
+• Ran @' …
+  └ dist/assets/index-B8DTWuL-.js          210.07 kB │ gzip:  65.71 kB
+    dist/assets/firebase-data-CcssZ5vg.js  475.53 kB │ gzip: 142.92 kB
+    ✓ built in 33.04s
+• Added scripts\prepare-native-assets.py (+126 -0)
++"""Convert the owner's SRB2 2.0 ponies and curate the two native game bundles.
++Source mods are read-only. Run after downloading/extracting the pinned releases.
++"""
+• Ran python scripts/prepare-native-assets.py
+  └ Prepared Adventure (7 ponies) and Ponykart (Mane 6). Original mods are unchanged.
+• Ran rg -n 'error :|error LNK|fatal error' tmp/arcade/adventure-clang.log | Select-Object -First 20; Get-Content tmp/arcade/adventure-clang.log -Tail 5; Get-ChildItem …
+  └ 426:                ${SRB2_PNG_SOURCES} ${SRB2_PNG_HEADERS})
+    544:#    ${SRB2_CORE_SOURCES}
+    546:#    ${SRB2_CORE_RENDER_SOURCES}
+• Edited 2 files (+2 -2)
+  └ scripts\patch-native.py (+1 -1)
+-        edit('src/blua/luaconf.h',lambda t:t.replace('#include <limits.h>','#include <limits.h>\n#ifdef _WIN32\n#include <windows.h>\n#endif'))
++        edit('src/blua/luaconf.h',lambda t:t.replace('#include <limits.h>','#include <limits.h>\n#ifdef _WIN32\n#include <windows.h>\n#undef LoadString\n#endif'))
+
+  └ scripts\prepare-native-assets.py (+1 -1)
+-            z.writestr(base+'S_SKIN',params)
++            z.writestr(base+'S_SKIN',params)
+• Ran python scripts/patch-native.py …
+  └ subprocess.CalledProcessError: Command '['cmake', '--build', 
+    'C:\\Users\\calla\\Desktop\\MLPKT\\tmp\\native-build\\ponykart\\out-clang', '--config', 'Release', '--parallel', '8']' 
+    returned non-zero exit status 1.
+• Ran Get-Content tmp/arcade/adventure-clang.log -TotalCount 32; rg -n 'WS_addrinfocleanup|I_getaddrinfo|I_freeaddrinfo' tmp/arcade/srb2-native-source/SRB2-SRB2_release…
+  └ 568:      next.bestScore = Math.max(next.bestScore, game!.score);
+    587:      s.bestScore = Math.max(s.bestScore, game!.score);
+    623:    if (game.score > save.bestScore) commit({ ...save, bestScore: game.score });
+• Edited 3 files (+29 -0)
+  └ .gitignore (+2 -0)
++native/
++release/
+
+  └ package.json (+4 -0)
++  "main": "desktop/main.mjs",
++    "desktop": "npm run build && electron .",
++    "desktop:start": "electron .",
+
+  └ scripts\package-desktop.mjs (+23 -0)
++import fs from 'node:fs/promises';
++import path from 'node:path';
++import { createHash } from 'node:crypto';
+• Edited scripts\build-native.py (+3 -2)
+-        core += ['netcode/'+p.name for p in (src/'src/netcode').glob('*.c')]
+-        core += ['filesrch.c']
++        core += ['netcode/'+p.name for p in (src/'src/netcode').glob('*.c') if p.name!='i_addrinfo.c']
+• Ran rg -n 'error :|error LNK|fatal error' tmp/arcade/kart-clang.log | Select-Object -First 20
+  └ 9:C:\Users\calla\Desktop\MLPKT\tmp\arcade\kart-native-source\Kart-Public-1.6\src\sdl\i_main.c(62,10): fatal  error : 'exchndl.h' file not found [C:\Users\calla\Desk…
+• Ran rg --files tmp/arcade/kart-native-source/Kart-Public-1.6 | rg '(exchndl|crash|win_dbg)' ; Get-Content tmp/arcade/adventure-clang.log -Tail 8; rg -n 'error :' tmp/…
+  └ export class Meadow {
+      x = 45;
+      private timer: Timer | undefined;
+• Ran python scripts/build-native.py adventure *> tmp/arcade/adventure-clang.log; Get-Content tmp/arcade/adventure-clang.log -Tail 3
+  └ subprocess.CalledProcessError: Command '['cmake', '--build', 
+    'C:\\Users\\calla\\Desktop\\MLPKT\\tmp\\native-build\\adventure\\out-clang', '--config', 'Release', '--parallel', 
+    '8']' returned non-zero exit status 1.
+• Failed (exit 1) node -e "console.log(require('electron'))"
+  └     at require (node:internal/modules/helpers:147:16)
+    
+    Node.js v22.20.0
+• Edited scripts\build-native.py (+4 -1)
+-target_include_directories({game} PRIVATE "${{ENGINE}}/src" "${{ENGINE}}/libs/SDL2/include" "${{ENGINE}}/libs/SDL2_mixer/include" "${{ENGINE}}/libs/curl/include")
++target_include_directories({game} PRIVATE "${{ENGINE}}/src" "${{ENGINE}}/libs/SDL2/include" "${{ENGINE}}/libs/SDL2_mixer/include" "${{ENGINE}}/libs/curl/include"
+The desktop app now has activation, separate local profiles, profile switching, renaming, and backups. Adventure, Ponykart, and the leaderboard are also connected to the existing interface.
+
+I’m now testing the native builds and converted ponies. The reward bridge tracks cumulative pickups, which prevents repeated progress updates from paying out the same rings twice.
+• Ran curl.exe -L --fail --silent --show-error https://github.com/electron/electron/releases/download/v44.9.0/electron-v44.9.0-win32-x64.zip -o tmp/arcade/electron.zip
+  └ (no output)
+• Ran rg -n 'error :|error LNK|fatal error' tmp/arcade/kart-clang.log tmp/arcade/adventure-clang.log | Select-Object -First 18; Get-Content tmp/arcade/adventure-clang.l…
+  └ }
+    
+    module.exports = getElectronPath();
+• Ran npm test
+  └ # skipped 0
+    # todo 0
+    # duration_ms 1126.6342
+• Edited scripts\build-native.py (+14 -2)
++    # Recreate MSVC-compatible import libraries from the bundled DLL exports.
++    # The old MinGW import archives do not carry SafeSEH metadata.
++    toolsets=sorted(pathlib.Path(r'C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC').iterdir())
+• Ran python scripts/build-native.py ponykart *> tmp/arcade/kart-clang.log; Get-Content tmp/arcade/kart-clang.log -Tail 3
+  └ subprocess.CalledProcessError: Command '['cmake', '--build', 
+    'C:\\Users\\calla\\Desktop\\MLPKT\\tmp\\native-build\\ponykart\\out-clang', '--config', 'Release', '--parallel', '8']' 
+    returned non-zero exit status 1.
+• Ran @' …
+  └ 36:lld-link : error : undefined symbol: _HMS_compare_mod_version [C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\ponykart.vcxproj]
+    39:lld-link : error : undefined symbol: _HMS_unlist [C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\ponykart.vcxproj]
+    42:lld-link : error : undefined symbol: _HMS_register [C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\ponykart.vcxproj]
+• Ran python scripts/build-native.py ponykart *> tmp/arcade/kart-clang.log; Get-Content tmp/arcade/kart-clang.log -Tail 4
+  └ subprocess.CalledProcessError: Command '['cmake', '--build', 
+    'C:\\Users\\calla\\Desktop\\MLPKT\\tmp\\native-build\\ponykart\\out-clang', '--config', 'Release', '--parallel', '8']' 
+    returned non-zero exit status 1.
+• Ran rg 'undefined symbol' tmp/arcade/kart-clang.log; rg --files tmp/arcade/kart-native-source/Kart-Public-1.6/src | rg '(cd|mserv).*\.c$'; rg -n 'I_UpdateCD|cdUpdate'…
+  └ 
+      ph_zlib.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\adventure\out-clang\Release\ph_zlib.lib
+      ph_png.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\adventure\out-clang\Release\ph_png.lib
+• Edited 2 files (+2 -0)
+  └ scripts\build-native.py (+1 -0)
++        core += ['http-mserv.c','sdl/i_cdmus.c']
+
+  └ scripts\patch-native.py (+1 -0)
++        edit('src/sdl/i_main.c',lambda t:t.replace('ExcHndlInit();','/* Optional Dr. MinGW exception handler is not linked in this build. */'))
+• Ran npm run build
+  └ dist/assets/index-B8DTWuL-.js          210.07 kB │ gzip:  65.71 kB
+    dist/assets/firebase-data-CcssZ5vg.js  475.53 kB │ gzip: 142.92 kB
+    ✓ built in 30.68s
+• Ran rg -n 'M_CheckParm\("-(config|exec)|configfilename|CONFIGFILENAME' tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/m_misc.c tmp/arcade/srb2-native-sour…
+  └ 
+      ph_zlib.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\adventure\out-clang\Release\ph_zlib.lib
+      ph_png.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\adventure\out-clang\Release\ph_png.lib
+• Ran python scripts/build-native.py adventure *> tmp/arcade/adventure-clang.log; Get-Content tmp/arcade/adventure-clang.log -Tail 4
+  └   adventure.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\adventure\out-clang\Release\adventure.exe
+      Building Custom Rule C:/Users/calla/Desktop/MLPKT/tmp/native-build/adventure/CMakeLists.txt
+    Built C:\Users\calla\Desktop\MLPKT\native\adventure\adventure.exe
+• Ran python scripts/patch-native.py …
+  └   ponykart.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ponykart.exe
+      Building Custom Rule C:/Users/calla/Desktop/MLPKT/tmp/native-build/ponykart/CMakeLists.txt
+    Built C:\Users\calla\Desktop\MLPKT\native\ponykart\ponykart.exe
+• Ran Get-Process clang-cl,lld-link,MSBuild -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,CPU,StartTime; rg -n 'configfile|-config|-exec' tmp/arcade/srb2…
+  └ Built C:\Users\calla\Desktop\MLPKT\native\adventure\adventure.exe
+    
+    
+• Added scripts\qa-desktop.mjs (+54 -0)
++import { _electron as electron } from 'playwright';
++import assert from 'node:assert/strict';
++import fs from 'node:fs/promises';
+• Ran python scripts/prepare-native-assets.py …
+  └ I_ShutdownTcpDriver: shut down
+    I_ShutdownSystem(): end of logstream.
+    
+• Ran Get-Item Env:ELECTRON_RUN_AS_NODE -ErrorAction SilentlyContinue; Get-Content tmp/native-qa/adventure/game.log -Tail 22 -ErrorAction SilentlyContinue; Get-Content …
+  └ 10396 19/10/2026 7:04:04 AM
+    
+    
+■ You’ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 11:36 AM.
+
+continue, if within scope of your abilities and not too difficult in addition to the current work id also like a pastelisation of level/environment colours, this should be for all levels in both adventure and ponykart if possible (and generally if any levels are added in future so plan for this kind of level colour change on new level import maybe also an import level mechanism for custom levels, if not already present)
+
+I’ll add a gentle pastel palette treatment to both engines, so it applies consistently to existing levels and future imports. I’ll also add a local level-import option, keeping imported packs separate from the built-in courses.
+
+With these engines’ palette rendering, the colour treatment may also soften sprites and HUD colours. I’ll check the result with the pony characters and include an intensity control.
+• Ran Get-Content tmp/arcade/kart-clang.log -Tail 5; Get-Content native/ponykart/log.txt -Tail 26 -ErrorAction SilentlyContinue; rg -n 'I_SetPalette|localPalette.*\.(r|…
+  └ ponykart.dat     9422
+    
+    
+• Ran Get-Content 'C:\Users\calla\.codex\skills\playwright-interactive\SKILL.md' -TotalCount 90
+  └ - Prefer one named handle per surface you care about (`page`, `mobilePage`, `appWindow`) over repeatedly rediscovering pages from the context.
+    
+    Shared web helpers:
+• Context compacted · 3m 56s
+
+yeah it may be best to exclude the sprites from the treatment if possible as they are already quite pastely and we dont want to distort the characterisation colours
+
+I’ll aim the pastel treatment at level textures and scenery, preserving the ponies’ original colours. I’ll check where both engines can make that distinction before applying it.
+• Ran Get-Location; rg --files -g AGENTS.md -g package.json -g 'patch-native.py' -g 'prepare-native-assets.py' -g 'main.mjs' -g '*level*' -g '*arcade*' -g '*bridge*' -g…
+  └ C:\Users\calla\Desktop\MLPKT
+    
+    
+• Ran Get-Content desktop/main.mjs; Get-Content desktop/games.mjs; Get-Content package.json
+  └     "@grpc/grpc-js": "^1.13.6"
+      }
+    }
+• Ran Get-Content scripts/patch-native.py; Get-Content engines/ponyhaven_bridge.h; Get-Content scripts/prepare-native-assets.py
+  └     (ROOT/'native/manifest.json').write_text(json.dumps(manifest,indent=2))
+        (ROOT/'tmp/arcade/asset-changes.json').write_text(json.dumps(replaced,indent=2))
+        print('Prepared Adventure (7 ponies) and Ponykart (Mane 6). Original mods are unchanged.')
+• Ran rg -n 'R_Draw.*(Column|Span)|colormap|spr.*colormap|dc_colormap' tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/r_segs.c tmp/arcade/srb2-native-source…
+  └ vite.config.ts
+    
+    
+• Ran Get-Content scripts/qa-desktop.mjs; Get-Content scripts/build-native.py; Get-Content src/arcade.ts; Get-Content src/desktop.ts
+  └   if (desktop) desktopProfile = await desktop.status();
+      return desktopProfile;
+    }
+• Failed (exit 1) rg -n 'R_GenerateTexture|R_GetFlat|Cache.*Flat|flatlump|ds_source|texturecache|R_GetColumn|NearestColor|R_GetColor' tmp/arcade/srb2-native-source/SRB2…
+  └    ception
+        + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+     
+• Ran Get-Content scripts/prepare-native-assets.py; Get-Content desktop/profiles.mjs; Get-Content src/peer-party.ts
+  └   }
+    }
+    export const party = new PeerParty();
+• Ran Get-ChildItem tmp/native-qa -Recurse -Filter '*.png' | Select-Object FullName,Length; rg -n 'texturecache|ds_source|flatlump|NearestColor' tmp/arcade/srb2-native-…
+  └ C:\Users\calla\Desktop\MLPKT\tmp\native-qa\ponykart\srb2kart\kart0000.png  79737
+    
+    
+• Ran rg -n 'R_GenerateTexture|R_GetFlat|texturecache' tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/r_textures.c; Get-Content tmp/arcade/kart-native-sourc…
+  └ tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/r_segs.c:1302:        colfunc = colfuncs[COLDRAWFUNC_SHADOWED];
+    tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/r_segs.c:1863:    colfunc = colfuncs[BASEDRAWFUNC];
+    tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/r_segs.c:3098:    colfunc = colfuncs[BASEDRAWFUNC];
+• Ran Get-CimInstance Win32_Process -Filter "name='electron.exe'" | Select-Object ProcessId,CommandLine; Get-Content src/desktop.ts; Get-Content desktop/preload.cjs
+  └   relaySend: call('relay-send'), onPacket: listen('packet'),
+      fullscreen: call('fullscreen'),
+    });
+• Viewed image kart0000.png
+• Ran rg -n 'dc_colormap|ds_colormap' tmp/arcade/kart-native-source/Kart-Public-1.6/src/r_draw8.c | Select-Object -First 35; rg -n 'dc_colormap|ds_colormap' tmp/arcade/…
+  └ 240:setcontrol2 "brake" "SEC_JOY2"
+    241:setcontrol2 "fire" "SEC_JOY10"
+    242:setcontrol2 "lookback" "SEC_JOY3"
+• Failed (exit 1) .\node_modules\.bin\electron.cmd . --enable-logging=stderr
+  └ 
+Both engines keep world textures separate from character sprites, so I can soften the environment without recolouring the ponies or HUD. That will also cover imported levels. During the visual check, I spotted a separate issue: the engines’ default player colour was tinting Twilight blue. I’m correcting that too.
+• Edited desktop\main.mjs (+4 -2)
++import { readFileSync } from 'node:fs';
+   ⋮
+-const product=JSON.parse(await fs.readFile(path.join(here,'product.json'),'utf8'));
+• Ran Get-Content tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/r_textures.c -TotalCount 60; Get-Content tmp/arcade/kart-native-source/Kart-Public-1.6/src/…
+  └ 1209:            I_Error("Couldn't write game config.\nMake sure you've installed the game somewhere it has write permissions.");
+    
+    
+• Failed (exit 1) node scripts/qa-desktop.mjs
+  └ }
+    
+    Node.js v22.20.0
+• Ran icacls 'C:\Users\calla\Desktop\MLPKT\node_modules\electron\dist' /grant '*S-1-15-2-1:(OI)(CI)(RX)'
+  └ processed file: C:\Users\calla\Desktop\MLPKT\node_modules\electron\dist
+    Successfully processed 1 files; Failed processing 0 files
+• Ran Get-Content scripts/prepare-native-assets.py | Select-Object -Skip 30 -First 16; python -c "import zipfile;z=zipfile.ZipFile(r'C:\Users\calla\Downloads\forens\pon…
+  └ 2797:                CV_StealthSetValue(&cv_playercolor3, skin->prefcolor);
+    2799:                CV_StealthSetValue(&cv_playercolor4, skin->prefcolor);
+    3006:                skin->starttranscolor = atoi(value);
+• Ran python -c "import runpy,zipfile;d=runpy.run_path('scripts/prepare-native-assets.py');z=zipfile.ZipFile(d['MODS']/'ponykart mod/KC_MLP_Pack_v1a.pk3');print('\n'.jo…
+  └ rarity.wad []
+    trixie.wad []
+    twilightsparkle.wad []
+• Failed (exit 1) node scripts/qa-desktop.mjs
+  └ }
+    
+    Node.js v22.20.0
+• Edited 4 files (+84 -5)
+  └ engines\ponyhaven_bridge.h (+4 -4)
+-    static tic_t last = 0, finishat = 0;
++    static tic_t last = 0;
+   ⋮
+
+  └ engines\ponyhaven_pastel.h (+30 -0)
++/* Ponyhaven world texture treatment, GPL-2.0-or-later.
++ * Applied ONLY to private texture/flat caches, never sprite lumps, the shared
++ * PLAYPAL, lighting tables, or HUD graphics. New maps use the same cache path.
+
+  └ scripts\patch-native.py (+49 -0)
++    shutil.copy2(ROOT/'engines/ponyhaven_pastel.h',source/'src/ponyhaven_pastel.h')
++    if game=='adventure':
++        def textures(t):
+
+  └ scripts\prepare-native-assets.py (+1 -1)
+-        soc='MAINCFG\nGAMEDATA = ponyhaven.dat\nTITLE = Ponyhaven Adventure\n\n'
++        soc='MAINCFG\nGAMEDATA = ponyhaven.dat\n\n'
+• Ran python scripts/patch-native.py; python scripts/prepare-native-assets.py
+  └ Patched adventure
+    Patched ponykart
+    Prepared Adventure (7 ponies) and Ponykart (Mane 6). Original mods are unchanged.
+• Ran icacls 'C:\Users\calla\Desktop\MLPKT\node_modules\electron\dist'; Get-Content src/storage.ts | Select-String 'flush|flushing|pending' -Context 2,9
+  └     background: string | null;
+    
+    
+◦ Browsing the web
+• Ran python -c "import runpy;d=runpy.run_path('scripts/prepare-native-assets.py');[(print(p.name,[(n,b.decode(errors='replace')) for n,b in d['wadread'](p.read_bytes()…
+  └ 1636:        COM_ImmedExecute(va("exec \"%s"PATHSEP"adedserv.cfg\"\n", srb2home));
+    1638:        COM_ImmedExecute(va("exec \"%s"PATHSEP"autoexec.cfg\" -noerror\n", srb2home));
+    1714:        COM_BufExecute(); // ensure the command buffer gets executed before the map starts (+skin)
+• Opened https://raw.githubusercontent.com/electron/electron/v44.9.0/shell/browser/win/install_dir_access.cc
+• Ran python scripts/build-native.py adventure > tmp/native-build/adventure-pastel.log 2>&1
+  └ (no output)
+• Ran curl.exe -L --fail --silent https://raw.githubusercontent.com/electron/electron/v44.9.0/shell/browser/win/install_dir_access.cc -o tmp/arcade/electron-install-acc…
+  └ 
+      ph_zlib.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ph_zlib.lib
+      ph_png.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ph_png.lib
+• Ran python scripts/build-native.py ponykart > tmp/native-build/ponykart-pastel.log 2>&1
+  └ (no output)
+• Ran Get-Content tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/r_things.c | Select-Object -Skip 951 -First 135; Get-Content desktop/relay.mjs; Get-Content…
+  └   r.rings+=rings;r.bits+=bits;next.coins+=bits;
+      return {save:next,bits,xp:bits?Math.min(12,Math.max(1,Math.floor(bits/50))):0};
+    }
+• Ran curl.exe -L --fail https://raw.githubusercontent.com/electron/electron/main/shell/browser/win/install_dir_access.cc -o tmp/arcade/electron-install-access.cc
+  └   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                     Dload  Upload  Total   Spent   Left   Speed
+    
+• Failed (exit 1) Get-Content tmp/arcade/electron-install-access.cc; Get-Content tmp/native-build/ponykart-pastel.log -Tail 6; Get-Content src/main.ts | Select-String '…
+  └ rg: tmp/arcade/kart-native-source/Kart-Public-1.6/src/*.c: IO error for operation on tmp/arcade/kart-native-source/Kart-Public-1.6/src/*.c: The filename, directory …
+    
+    
+• Edited desktop\games.mjs (+13 -4)
++export const COLOURS = {twilight:'Dusk',applejack:'Tangerine',fluttershy:'Lemonade',rarity:'White',rainbowdash:'Cerulean',pinkiepie:'Pink'};
++export function controls(game) {
++  const bindings = game==='adventure' ? {forward:['w'],backward:['s'],strafeleft:['a'],straferight:['d'],turnleft:['LEFT ARROW'],turnright:['RIGHT ARROW'],jump:[
+• Ran icacls 'C:\Users\calla\Desktop\MLPKT\node_modules\electron\dist\icudtl.dat'; rg -n 'clipping|NearestColor' tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/…
+  └     );
+      });
+    try {
+• Edited scripts\patch-native.py (+1 -0)
++        edit('src/r_things.c',lambda t:t.replace('boolean is_player = mobj->skin && mobj->sprite == SPR_PLAY;', 'boolean is_player = mobj->skin && mobj->sprite == SPR_PLAY;\n\t/* The supplied pony art already carries its character colours. */\n\tif (is_player && !mobj->colorized) return NULL;'))
+• Ran python scripts/patch-native.py
+  └ Patched adventure
+    Patched ponykart
+• Added desktop\levels.mjs (+120 -0)
++import fs from 'node:fs/promises';
++import path from 'node:path';
++import { createHash } from 'node:crypto';
+The world-only pastel treatment is now in both engines, with an adjustable strength setting underway. The level importer will keep custom packs in each local profile and apply the same treatment automatically. For multiplayer, friends will need to import the same pack before joining.
+• Edited 5 files (+27 -8)
+  └ desktop\games.mjs (+5 -2)
+-  constructor(root, profileRoot, send) { this.root = root; this.profileRoot = profileRoot; this.send = send; }
++  constructor(root, profileRoot, send, levels) { this.root = root; this.profileRoot = profileRoot; this.send = send; this.levels=levels; }
+   ⋮
+
+  └ desktop\main.mjs (+12 -1)
++import { LevelLibrary } from './levels.mjs';
+   ⋮
+-  const games=new NativeGames(path.join(root,'native'),profileRoot,(event)=>send('game',event));
+
+  └ desktop\preload.cjs (+1 -0)
++  levels: call('levels'), importLevel: call('import-level'), removeLevel: call('remove-level'),
+
+  └ src\desktop.ts (+5 -1)
+-export interface GameLaunch { game: ArcadeGame; pony: string; map: number; mode: 'solo' | 'host' | 'join'; port?: number; fullscreen: boolean }
++export interface LevelPack {id:string;name:string;extension:string;maps:{id:number;name:string}[];bytes:number}
++export interface GameLaunch { game: ArcadeGame; pony: string; map: number; mode: 'solo' | 'host' | 'join'; port?: number; fullscreen: boolean; pastel?: number; p
+
+  └ src\peer-party.ts (+4 -4)
+-export interface PartyGame { game: ArcadeGame; map: number }
++export interface PartyGame { game: ArcadeGame; map: number; pack?:string }
+    ⋮
+• Ran python scripts/build-native.py adventure > tmp/native-build/adventure-pastel.log 2>&1
+  └ (no output)
+• Edited src\arcade.ts (+11 -1)
+-import { desktop, desktopProfile, type ArcadeEvent, type ArcadeGame } from './desktop';
++import { desktop, desktopProfile, type ArcadeEvent, type ArcadeGame, type LevelPack } from './desktop';
+   ⋮
+• Ran @' …
+  └ (no output)
+• Ran npm run build
+  └ dist/assets/index-DVeV89dQ.js          211.87 kB │ gzip:  66.37 kB
+    dist/assets/firebase-data-CcssZ5vg.js  475.53 kB │ gzip: 142.92 kB
+    ✓ built in 25.22s
+• Added scripts\qa-native.py (+26 -0)
++"""Run the real native engines using SDL's headless driver and engine screenshots."""
++import pathlib,subprocess,os,json,concurrent.futures
++ROOT=pathlib.Path(__file__).resolve().parents[1]
+• Ran Get-Content desktop/license.mjs; Get-Content src/storage.ts | Select-Object -Skip 120 -First 100; Get-Content src/main.ts -TotalCount 12; Get-Content scripts/pack…
+  └ }
+    await fs.writeFile(path.join(release,'build.json'),JSON.stringify({builtAt:new Date().toISOString(),engines:manifest},null,2));
+    console.log('Portable desktop build:',release);
+• Ran rg -n 'bestScore|function commit|renderWelcome|starter-grid' src/main.ts; Get-Content tests/game.test.ts -TotalCount 40; Get-Content src/storage.ts | Select-Objec…
+  └ d-----        19/10/2026   5:04 PM                ponykart-twilight-55                                                 
+    
+    
+• Edited src\storage.ts (+15 -12)
++  private desktopFlush: Promise<void> | null = null;
+    ⋮
+-      void this.flush();
+• Ran python scripts/qa-native.py --roster
+  └ ponykart rarity 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 1, 'elapsed': 0, 'laps': 0, 'finished': False}
+    ponykart rainbowdash 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 1, 'elapsed': 0, 'laps': 0, 'finished': False}
+    ponykart pinkiepie 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 1, 'elapsed': 0, 'laps': 0, 'finished': False}
+• Edited 2 files (+109 -0)
+  └ tests\arcade.test.ts (+29 -0)
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { freshSave, readSave } from '../src/game';
+
+  └ tests\desktop.test.mjs (+80 -0)
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import fs from 'node:fs/promises';
+• Ran npm test; node --test tests/desktop.test.mjs
+  └ # skipped 0
+    # todo 0
+    # duration_ms 289.5903
+• Ran @' …
+  └ (no output)
+• Viewed image comparison.png
+• Viewed image roster.png
+• Ran @' …
+  └ trixie.wad [] 183
+    twilightsparkle.wad [] 186
+    Archives ['adventure-build.log', 'adventure-clang.log', 'adventure-custom-build.log', 'adventure-index.html', 'adventure-source.zip', 'adventure-tree.json', 'asset-…
+• Ran rg -n 'SKINCOLOR_NONE|prefcolor =|Color_Names|skincolor_cons_t' tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/r_draw.c tmp/arcade/srb2-native-source/…
+  └ Wireshark User’s Guide.pdf
+    Wireshark-4.6.9-x64.exe
+    ZTDA_FinalProjectPackage.zip
+◦ Browsing the web
+• Searched the web for SRB2 2.0.7 download srb2win.exe palette 2.1 palette change, SRB2 2.0 palette PLAYPAL github
+• Ran rg --files tmp/arcade/adventure-source | Select-Object -First 8; Get-Content tmp/arcade/SRB2SDL2.package.json -TotalCount 5; rg -n 'palette|skincolors' tmp/arcade…
+  └ 615:    for (color = 1; color < numskincolors; color++)
+    616:        if (!stricmp(skincolors[color].name, name))
+    626:    for (i = 1; i < numskincolors; i++)
+• Browsing the web
+• Opened https://www.wiki.srb2.org/wiki/Version_2.0
+• Ran curl.exe -L --fail --silent https://api.github.com/repos/sirjuddington/SLADE/git/trees/master?recursive=1 -o tmp/arcade/slade-tree.json
+  └ (no output)
+• Ran python -c "import json;d=json.load(open('tmp/arcade/slade-tree.json'));print('\n'.join(x['path'] for x in d['tree'] if 'palettes' in x['path'] or ('srb' in x['pat…
+  └ dist/res/palettes/Witchaven.pal
+    dist/res/palettes/Wolfenstein 3D .pal
+    dist/res/palettes/Wolfenstein 3D SOD.pal
+◦ Browsing the web
+• Searched for 'palette'
+• Ran curl.exe -L --fail --silent 'https://raw.githubusercontent.com/sirjuddington/SLADE/master/dist/res/palettes/Sonic%20Robo%20Blast%202%20(legacy).pal' -o engines/sr…
+  └ (no output)
+• Ran @' …
+  └ 768 b'\xf7\xf7\xf7\xef\xef\xef\xe7\xe7\xe7\xdf\xdf\xdf'
+• Viewed image palette-comparison.png
+• Failed (exit 1) rg -n 'LIFE|SPR2_LIFE|faceprefix' tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/r_skins.c | Select-Object -First 25; Get-Content tmp/nati…
+  └ I_Joystick: SDL's Joystick system has been shutdown
+    I_ShutdownTcpDriver: shut down
+    I_ShutdownSystem(): end of logstream.
+• Edited scripts\prepare-native-assets.py (+23 -2)
++def legacy_mapping():
++    # SRB2 2.2 rearranged its palette. Translating the old indices directly
++    # without this step turns Applejack green and Luna magenta.
+• Ran python scripts/prepare-native-assets.py
+  └ Prepared Adventure (7 ponies) and Ponykart (Mane 6). Original mods are unchanged.
+• Ran rg -n 'SPR2_XTRA|SPR2_LIFE|"LIFE"|lifeicon|faceprefix|FACE' tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/st_stuff.c tmp/arcade/srb2-native-source/SR…
+  └ @media(max-width:1120px){.site-header{gap:14px}.site-header nav{gap:0}.nav-item{padding:11px 9px}.brand small{display:none}.arcade-layout{gap:18px}.race-rankings{gr…
+    @media(max-width:800px){.arcade-layout{grid-template-columns:1fr}.arcade-hero,.arcade-hero>div{min-height:330px}.arcade-hero h2{font-size:36px}.arcade-hero img{left…
+    @media(max-width:620px){.site-header nav{overflow-x:auto;justify-content:flex-start}.nav-item{min-width:70px;flex:0 0 70px}.arcade-hero h2{font-size:30px}.arcade-he…
+The side-by-side renders now show softer scenery with unchanged pony and HUD colours. I also found and corrected a legacy palette mismatch in the older Adventure sprites. I’m checking the full roster and continuing the save, import, and multiplayer tests.
+• Ran python scripts/qa-native.py --roster
+  └ ponykart rainbowdash 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 1, 'elapsed': 0, 'laps': 0, 'finished': False}
+    ponykart rarity 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 1, 'elapsed': 0, 'laps': 0, 'finished': False}
+    ponykart pinkiepie 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 1, 'elapsed': 0, 'laps': 0, 'finished': False}
+• Ran Get-Content src/main.ts | Select-Object -Skip 190 -First 15; rg -n 'faceprefix|faceprefix|face|SPR2_LIFE' tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/s…
+  └ srb20001.png
+    
+    
+• Edited desktop\levels.mjs (+2 -2)
+-    if(name.startsWith('LUA/') || /\.(?:LUA|DLL|EXE|BAT|CMD|PS1|COM|JS)$/i.test(name) || /^(?:LUA_|S_SKIN|P_SKIN)/.test(base) || name.startsWith('SKINS/') || name.startsWith('SPRITES/') || ['PLAYPAL','COLORMAP'].includes(base))
++    if(name.startsWith('LUA/') || /\.(?:LUA|DLL|EXE|BAT|CMD|PS1|COM|JS)$/i.test(name) || /^(?:LUA_|S_SKIN|P_SKIN|S_START|SS_START)/.test(base) || name.startsWith
+• Ran @' …
+  └ (no output)
+• Ran Get-Content tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/st_stuff.c | Select-Object -Skip 362 -First 28; Get-Content tmp/arcade/srb2-native-source/S…
+  └                 strlwr(value);
+                    if (skinnum == -1)
+    C:\Users\calla\Desktop\MLPKT\tmp\native-qa\adventure-twilight-55\srb2\screenshots\srb20001.png
+• Viewed image srb20001.png
+• Viewed image srb20001.png
+• Ran rg -n 'XTRA_LIFEPIC|XTRA_' tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/info.h | Select-Object -First 15; Get-Content src/main.ts | Select-Object -S…
+  └   assert.equal(await page.locator('[data-wallet]').innerText(), '750');
+      await page.reload();
+      await page.locator('#meadow-scene').waitFor();
+• Edited engines\ponyhaven_pastel.h (+14 -1)
+-            ph_pastel[i] = strength ? NearestColor((UINT8)r,(UINT8)g,(UINT8)b) : (UINT8)i;
++            if (!strength) ph_pastel[i] = (UINT8)i;
++            else {
+• Edited 3 files (+23 -4)
+  └ engines\ponyhaven_bridge.h (+5 -3)
++    unsigned connected = 0, pi;
++    for (pi = 0; pi < MAXPLAYERS; ++pi) if (playeringame[pi]) ++connected;
+   ⋮
+
+  └ scripts\patch-native.py (+17 -0)
++    def intermission(t):
++        # Keep a shared game open until friends have finished; do not advance
++        # into an unselected course or show the original story/results art.
+
+  └ scripts\prepare-native-assets.py (+1 -1)
+-            for animation in ['LIFE','SIGN']:z.writestr(base+animation+'A0',life)
++            for animation in ['LIFE','SIGN','XTRA']:z.writestr(base+animation+'A0',life)
+• Ran python scripts/patch-native.py; python scripts/prepare-native-assets.py
+  └ Patched adventure
+    Patched ponykart
+    Prepared Adventure (7 ponies) and Ponykart (Mane 6). Original mods are unchanged.
+• Ran Get-Content src/main.ts | Select-Object -Last 75; Get-Content src/social.ts | Select-Object -First 80; Get-Content tmp/arcade/srb2-native-source/SRB2-SRB2_release…
+  └             break;
+    
+            case ev_mouse: // buttons are virtual keys
+• Failed (exit 1) python scripts/build-native.py adventure > tmp/native-build/adventure-final.log 2>&1
+  └ (no output)
+• Failed (exit 1) python scripts/build-native.py ponykart > tmp/native-build/ponykart-final.log 2>&1
+  └ (no output)
+• Added scripts\qa-desktop-browser.mjs (+75 -0)
++// Browser integration harness for the desktop renderer. Files, saves and UDP
++// bridges use the real Node modules; activation uses an explicit test provider.
++// This does not replace the sandboxed Electron smoke test in qa-desktop.mjs.
+• Ran Get-Content tmp/native-build/adventure-final.log -Tail 6; Get-Content tmp/native-build/ponykart-final.log -Tail 6; Get-ChildItem tmp/qa/desktop-* -File | Select-O…
+  └ desktop-ponykart.png                255163
+    
+    
+• Edited 3 files (+9 -5)
+  └ desktop\games.mjs (+2 -2)
+-    const running = { child, game, session, port, progress, timer:null, last:'', stopped:false, stderr:'' };
++    const running = { child, game, session, port, progress, pack:options.pack, timer:null, last:'', stopped:false, stderr:'' };
+   ⋮
+
+  └ src\arcade-progress.ts (+6 -2)
+-      Object.keys(r.bestTimes).length<=100 && Object.values(r.bestTimes).every((v)=>count(v) && v>0);
++      Object.keys(r.bestTimes).length<=2048 && Object.values(r.bestTimes).every((v)=>count(v) && v>0);
+   ⋮
+
+  └ src\desktop.ts (+1 -1)
+-  laps?: number; finished?: boolean; message?: string;
++  laps?: number; finished?: boolean; message?: string; pack?:string;
+• Failed (exit 1) rg -n 'error:' tmp/native-build/adventure-final.log tmp/native-build/ponykart-final.log | Select-Object -First 16
+  └ (no output)
+• Viewed image desktop-adventure.png
+• Failed (exit 1) node scripts/qa-desktop-browser.mjs --network
+  └ }
+    
+    Node.js v22.20.0
+• Failed (exit 1) rg -n -i 'error|failed' tmp/native-build/adventure-final.log tmp/native-build/ponykart-final.log; rg -n 'SRB2 2.2|Activated invitation|Progress saves …
+  └ src/arcade.ts:54:    <section class="arcade-launch"><h2>Your next ${kart?'race':'adventure'}</h2><label class="field-label" for="arcade-pony">Bring a pony</label><s…
+    src/main.ts:269:    )}</div><button class="button primary begin-button" data-action="begin" ${selectedStarter ? '' : 'disabled'}>${selectedStarter ? `Meet ${e(pony(…
+    src/main.ts:475:    `<div class="settings-body"><div class="account-summary"><span class="avatar">${e(save.name[0])}</span><div><strong>${e(save.name)}</strong><p>$…
+• Edited 2 files (+4 -4)
+  └ scripts\patch-native.py (+1 -1)
+-        return '#include "m_argv.h"\n'+t
++        return t.replace('#include "doomdef.h"','#include "doomdef.h"\n#include "m_argv.h"',1)
+
+  └ src\peer-party.ts (+3 -3)
+-import Peer, { type DataConnection } from 'peerjs';
++import Peer, { type DataConnection, type PeerOptions } from 'peerjs';
+   ⋮
+• Ran @' …
+  └ Patched adventure
+    Patched ponykart
+• Ran npm install --save-dev peer
+  └   run `npm fund` for details
+    
+    found 0 vulnerabilities
+• Ran Get-Content node_modules/peer/dist/index.d.ts | Select-Object -Last 35; Get-Content tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/y_inter.c -TotalCou…
+  └ #include "y_inter.h"
+    #include "z_zone.h"
+    #include "m_menu.h"
+• Edited scripts\qa-desktop-browser.mjs (+5 -3)
++import { PeerServer } from 'peer';
+   ⋮
++const broker=process.argv.includes('--network')?PeerServer({port:19001,path:'/ponyhaven',host:'127.0.0.1'}):null;
+• Ran python scripts/build-native.py adventure > tmp/native-build/adventure-final.log 2>&1
+  └ (no output)
+• Ran rg -n 'PeerServer|callback' node_modules/peer/dist -g '*.d.ts' | Select-Object -First 12; rg --files node_modules/peer | Select-Object -First 10; Get-Content tmp/…
+  └ ## Fonts and original assets
+    
+    DM Sans and Nunito are self-hosted under the SIL Open Font License. Their license texts are in `public/assets/fonts`. The default `meadow.svg`, interface icons, pac…
+• Ran python scripts/build-native.py ponykart > tmp/native-build/ponykart-final.log 2>&1
+  └ (no output)
+• Ran rg -n 'bindaddr|advertise|allowdownload' tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/netcode/i_tcp.c tmp/arcade/kart-native-source/Kart-Public-1.6/…
+  └   ph_png.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ph_png.lib
+      ponykart.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ponykart.exe
+    Built C:\Users\calla\Desktop\MLPKT\native\ponykart\ponykart.exe
+• Edited 3 files (+15 -5)
+  └ desktop\games.mjs (+2 -2)
+-    const args = ['-home',folder,'-skipintro','-ph-progress',progress,'-ph-session',session,
++    const args = ['-home',folder,'-skipintro','-bindaddr','127.0.0.1','-ph-progress',progress,'-ph-session',session,
+-      '+skin',pony,'+usemouse','0','+showhud','1'];
+
+  └ desktop\profiles.mjs (+11 -1)
++    return this.mutateIndex(async()=>{
+   ⋮
++    });
+
+  └ scripts\prepare-native-assets.py (+2 -2)
+-import pathlib,struct,zipfile,shutil,io,re,json,hashlib
++import pathlib,struct,zipfile,shutil,io,re,json,hashlib,os
+-MODS=pathlib.Path(r'C:\Users\calla\Downloads\forens')
+• Ran @' …
+  └ (no output)
+• Failed (exit 1) node scripts/qa-desktop-browser.mjs --network
+  └ }
+    
+    Node.js v22.20.0
+The profile, reward, level-import, and desktop interface tests are passing. The native games also launch and report progress through the app. I’m now checking two-player connections; the public invite service wasn’t reachable from this test environment, so I’m using a local signaling server to verify the game connection separately.
+• Edited 2 files (+212 -0)
+  └ DESKTOP_SETUP.md (+173 -0)
++# Ponyhaven desktop setup
++
++Ponyhaven is a free personal fan game. Electron keeps the existing meadow, cards,
+
+  └ engines\README.md (+39 -0)
++# Native engine provenance and changes
++
++Adventure: [STJr/SRB2](https://github.com/STJr/SRB2), tag `SRB2_release_2.2.15`.
+• Ran @' …
+  └ Kart config [('SOC_MAIN', 21011)]
+    Kart maps [('MAP01', 0), ('MAP02', 0), ('MAP03', 0), ('MAP04', 0), ('MAP05', 0), ('MAP06', 0), ('MAP07', 0), ('MAP08', 0), ('MAP09', 0), ('MAP10', 0), ('MAP11', 0),…
+    
+⚠ Heads up, you have less than 25% of your weekly limit left. Run /status for a breakdown.
+• Edited 2 files (+7 -3)
+  └ scripts\qa-desktop-browser.mjs (+4 -3)
+-const broker=process.argv.includes('--network')?PeerServer({port:19001,path:'/ponyhaven',host:'127.0.0.1'}):null;
++let brokerServer;
++const broker=process.argv.includes('--network')?PeerServer({port:19001,path:'/ponyhaven',host:'127.0.0.1'},server=>brokerServer=server):null;
+
+  └ scripts\qa-server.mjs (+3 -0)
++import { createServer } from 'vite';
++const server=await createServer({server:{host:'127.0.0.1',port:5174,strictPort:true,hmr:false}});
++await server.listen();console.log('Stable QA preview: http://127.0.0.1:5174');
+• Ran @' …
+  └ LevelName = Grand Metropolis
+    NoZone = true
+    SubTitle = Sneaker Cup FINA
+• Ran @' …
+  └ N1 {'levelname': 'Midnight Abyss', 'nextlevel': 'N2', 'typeoflevel': 'Match,Tag'}
+    N2 {'levelname': 'Airborne Temple', 'nextlevel': 'N0', 'typeoflevel': 'Match,Tag'}
+    Z0 {'levelname': 'Tutorial', 'act': '0', 'nextlevel': '1', 'typeoflevel': 'Singleplayer'}
+• Ran @' …
+  └ (no output)
+• Edited 4 files (+47 -0)
+  └ scripts\native-manifest.py (+5 -0)
++import pathlib,json,hashlib
++ROOT=pathlib.Path(__file__).resolve().parents[1]
++manifest={game:{p.name:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in sorted((ROOT/'native'/game).iterdir()) if p.is_file
+
+  └ scripts\package-desktop.mjs (+3 -0)
++import { execFileSync } from 'node:child_process';
++execFileSync('python',['scripts/native-manifest.py'],{stdio:'inherit'});
+   ⋮
+
+  └ scripts\package-engine-sources.py (+18 -0)
++"""Bundle the corresponding upstream sources and exact Ponyhaven changes."""
++import pathlib,zipfile,os
++ROOT=pathlib.Path(__file__).resolve().parents[1]
+
+  └ scripts\prepare-native.py (+21 -0)
++"""Download verified upstream releases, curate pony assets and build both engines."""
++import pathlib,json,hashlib,subprocess,zipfile,sys
++ROOT=pathlib.Path(__file__).resolve().parents[1]
+• Ran node --test tests/desktop.test.mjs
+  └ # skipped 0
+    # todo 0
+    # duration_ms 315.8724
+• Failed (exit 1) Get-Content tmp/arcade/srb2-native-source/SRB2-SRB2_release_2.2.15/src/lua_baselib.c | Select-Object -Skip 1595 -First 20; rg -n 'setcontrol.*forward'…
+  └ static int lib_pInstaThrust(lua_State *L)
+    {
+    rg: tmp/desktop-browser-*/First Friend/profiles/*/adventure/srb2/autoexec.cfg: IO error for operation on tmp/desktop-browser-*/First Friend/profiles/*/adventure/srb…
+• Failed (exit 1) node scripts/qa-desktop-browser.mjs --network
+  └ }
+    
+    Node.js v22.20.0
+• Edited 2 files (+28 -4)
+  └ desktop\games.mjs (+3 -1)
++import { readFileSync } from 'node:fs';
+   ⋮
+-export const MAPS = { adventure: [1,2,4,5,7,8,10,11,12], ponykart: [1,2,3,4,5,6,7,8,9,10] };
+
+  └ scripts\prepare-native-assets.py (+25 -3)
++def course_catalog():
++    result={'adventure':[],'ponykart':[]}
++    with zipfile.ZipFile(ROOT/'tmp/arcade/srb2-windows/zones.pk3') as z:adventure=z.read('SOC/SOC_HEAD.txt').decode().replace('\r','')
+• Ran python scripts/prepare-native-assets.py
+  └ Prepared Adventure (7 ponies) and Ponykart (Mane 6). Original mods are unchanged.
+• Ran @' …
+  └ (no output)
+• Ran Get-Process adventure,ponykart -ErrorAction SilentlyContinue | Select-Object Id,StartTime; Get-Content desktop/courses.json -Tail 12; rg -n 'error|Unknown|WARNING…
+  └   ]
+    }
+    64:Sonic Robo Blast 2 v2.2.15 (Oct 19 2026 07:02:33 illegal Unknown) SDL Windows 32-bit 
+• Edited scripts\qa-desktop-browser.mjs (+7 -3)
+-const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe'});
++const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',args:['--disable-features=WebRtcHideLocalIpsWithMdns']});
+• Failed (exit 1) @' …
+  └   File "C:\Python314\Lib\subprocess.py", line 1607, in _wait
+        raise TimeoutExpired(self.args, timeout)
+    subprocess.TimeoutExpired: Command '['C:\\Users\\calla\\Desktop\\MLPKT\\native\\adventure\\adventure.exe', '-home', 'C:\\Users\\calla\\Desktop\\MLPKT\\tmp\\native-q…
+• Ran @' …
+  └ gfx.kart 1917 ['TTKBANNR', 'K_ITEGGM', 'K_ISEGGM', 'K_EGGN3', 'K_EGGN2', 'K_EGGN1', 'K_EGGN0', 'K_SONGCR', 'SIGNA0C0', 'SIGNB0', 'SIGND0', 'SIGNE0', 'SIGNF0', 'SIGN…
+    textures.kart 5054 ['BIGSONIC', 'EGGFACT1', 'EGGFACT2', 'EGGFACT3', 'EGGFACT4', 'EGGFACT5', 'EGGFACT6', 'EGGFIRE', 'EGGWALL', 'SCDS8EGG', 'SEGGW01', 'SIGN_SEV', 'SO…
+    maps.kart 1718 []
+• Failed (exit 1) npm run build
+  └   Overload 2 of 3, '(id: string, options?: PeerOptions | undefined): Peer', gave the following error.
+        Argument of type 'PeerOptions | undefined' is not assignable to parameter of type 'string'.
+          Type 'undefined' is not assignable to type 'string'.
+• Ran Get-Content tmp/native-qa/gameplay/process.log -Tail 25; Get-Content tmp/native-qa/gameplay/progress.json -ErrorAction SilentlyContinue
+  └     [C]: ?
+        ...LPKT\tmp\native-qa\gameplay\qa-pickup.pk3|Lua/qa.lua:2: in function <...LPKT\tmp\native-qa\gameplay\qa-pickup.pk3|Lua/qa.lua:1>
+    {"session":"00000000-0000-0000-0000-000000000099","rings":0,"score":0,"map":1,"elapsed":886,"laps":0,"players":1,"finished":false}
+• Edited src\peer-party.ts (+1 -1)
+-    const peer=id ? new Peer(id,this.peerOptions) : new Peer(this.peerOptions);
++    const peer=id ? new Peer(id,this.peerOptions) : new Peer(this.peerOptions || {});
+• Failed (exit 1) node scripts/qa-desktop-browser.mjs --network
+  └ }
+    
+    Node.js v22.20.0
+• Added scripts\qa-native-gameplay.py (+21 -0)
++"""Verify actual engine pickups/finish, without fabricating progress JSON."""
++import zipfile,pathlib,subprocess,os,json
++ROOT=pathlib.Path(__file__).resolve().parents[1]
+• Ran python scripts/qa-native-gameplay.py
+  └ Actual fresh-ring pickup, dropped ring excluded, and finish: 0 {'session': '00000000-0000-0000-0000-000000000099', 'rings': 1, 'score': 0, 'map': 1, 'elapsed': 70, …
+• Ran Get-Content scripts/prepare-native-assets.py | Select-Object -Skip 16 -First 21; node --input-type=module -e "import fs from 'node:fs';const c=JSON.parse(fs.readF…
+  └     im=Image.new('I',(48,72),-1);d=ImageDraw.Draw(im)
+        d.rectangle((22,35,26,71),fill=153);d.ellipse((4,2,44,42),fill=126)
+    { adventure: 19, ponykart: 60 }
+• Edited scripts\prepare-native-assets.py (+28 -3)
+-        data=bytearray();y=0
++        data=bytearray();y=0;previous=-1
+    ⋮
+• Ran Get-ChildItem 'tmp/desktop-browser-1792390922350' -Recurse -Filter '*.txt' | Select-Object FullName; Get-ChildItem 'tmp/desktop-browser-1792390922350' -Recurse -F…
+  └ (no output)
+• Ran python scripts/prepare-native-assets.py
+  └ Prepared Adventure (7 ponies) and Ponykart (Mane 6). Original mods are unchanged.
+■ You’ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 9:51 PM.
+
+continue, also in addition to current work, is there a way to have a synced mobile website version (likely through github pages) where a user can log in and utilize just the virtual pet and store (also a minor quality assurance check - ive experienced some stickyness with the card collection being up to date with purchased cards/not refreshing when opening)  regarding the synced site, keep it simple in terms of infrastructure, maybe validating credentials stored in a private github repo from both the mobile page and the app so that progress is synced across the board, consider it but focus on in flight work and then this
+
+I’ll finish the current desktop and game checks first, then investigate the collection refresh and add the mobile companion.
+
+A private GitHub repo would still need a backend to protect its access token and coordinate saves. The simplest choices are paired syncing while the desktop app is open, or a small free Firebase setup so the mobile site works independently.
+Should the mobile companion work and save progress when your desktop app is closed?
+
+- Yes — use a small free Firebase backend
+- No — paired syncing while the desktop app is open is enough
+• Ran Get-ChildItem 'tmp/desktop-browser-1792390922350' -Recurse -File | Select-Object -First 30 FullName,Length; Get-Content tmp/arcade/srb2-native-source/SRB2-SRB2_re…
+  └                                                                                                                        
+    
+    
+• Edited desktop\games.mjs (+4 -2)
+-      cwd:path.join(this.root,game), windowsHide:true, stdio:['ignore','ignore','pipe'],
++      cwd:path.join(this.root,game), windowsHide:true, stdio:['ignore','pipe','pipe'],
+   ⋮
+• Ran @' …
+  └ Join accepted, waiting for complete game state...
+    
+    PROGRESS []
+• Ran rg -n 'function renderCollection|function closeModal|function showPack|openPack|revealPack|collectionPage|collectionFilter|cardCount|pendingPack|function collecti…
+  └         if (desktop) { await desktop.rename(name); await refreshDesktop(); }
+            commit({ ...save, name: name.slice(0, 24) });
+            render();
+• Context compacted · 3m 45s
+
+> Should the mobile companion work and save progress when your desktop app is closed?
+
+Yes — use a small free Firebase backend
+
+
+and if no need for a private github repo its not a requirement
+
+I’ll use Firebase for the shared profile so the mobile site can work while the desktop app is closed. A private GitHub repository won’t be needed. I’m finishing the native game checks first, then fixing collection refresh and connecting desktop and mobile saves.
+• Ran rg --files -g AGENTS.md -g package.json -g '*SESSION*' -g '*STATUS*' -g '*TODO*' -g '*PLAN*' -g '!node_modules' -g '!tmp' -g '!native' -g '!release' -g '!public'
+  └ package.json
+• Ran Get-ChildItem -Force | Select-Object Mode,Name
+  └ -a---- vite.config.ts           
+    
+    
+• Ran Get-Content engines\ponyhaven_bridge.h; Get-Content scripts\patch-native.py
+  └         edit('src/p_enemy.c',lambda t:t.replace('P_GivePlayerRings(player, actor->info->reactiontime);','''P_GivePlayerRings(player, actor->info->reactiontime);
+        { extern UINT32 ph_rings[MAXPLAYERS]; if (actor->info->reactiontime > 0) ph_rings[player - players] += actor->info->reactiontime; }'''))
+        print('Patched',game)
+• Ran Get-Content package.json; Get-Content desktop\games.mjs
+  └     r.child.kill();
+      }
+    }
+• Failed (exit 1) rg -n 'use.?mouse|bindaddr6|advertise|starttranscolor|startcolor|R_GetTranslationColormap|R_GenerateTranslation' tmp\arcade\srb2-native-source\SRB2-SR…
+  └ tmp\arcade\srb2-native-source\SRB2-SRB2_release_2.2.15\src\st_stuff.c:867:        UINT8 *colormap = R_GetTranslationColormap(stplyr->skin, facecolor, GTC_CACHE);
+    tmp\arcade\srb2-native-source\SRB2-SRB2_release_2.2.15\src\st_stuff.c:1392:    colormap = R_GetTranslationColormap(TC_DEFAULT, colornum, GTC_CACHE);
+    tmp\arcade\srb2-native-source\SRB2-SRB2_release_2.2.15\src\st_stuff.c:1851:            colornum == 0 ? colormaps : R_GetTranslationColormap(TC_DEFAULT, colornum, GT…
+• Ran Get-Content src\storage.ts; Get-Content src\cloud.ts; Get-Content firestore.rules; Get-Content firebase.json
+  └   }
+    }
+    { "firestore": { "rules": "firestore.rules" } }
+• Ran Get-Content scripts\qa-native-gameplay.py; Get-Content scripts\qa-native.py; Get-Content tests\desktop.test.mjs
+  └     guest.send(Buffer.from('hello engine'),port,'127.0.0.1');assert.equal(await reply,'welcome pony');
+      } finally {a.close();b.close();host.close();guest.close();}
+    });
+• Ran rg -n 'function navigate|function commit|renderCollection|filteredCards|finish-pack|collectionMode|case.*pool|claim-reward|buy-pack' src\main.ts; Get-Content .env…
+  └   if (desktop) desktopProfile = await desktop.status();
+      return desktopProfile;
+    }
+• Browsing the web
+• Ran Get-Content scripts\accounts.mjs; Get-Content scripts\qa-cloud.mjs; Get-Content desktop\main.mjs
+  └   });
+      await win.loadURL('ponyhaven://app/');
+    }
+• Ran Get-Content scripts\build-native.py; Get-Content tmp\native-network-1792397015390\profiles\host\adventure\last-session.log -Tail 40; rg -n 'cv_usemouse|bindaddr|c…
+  └ tmp\arcade\srb2-native-source\SRB2-SRB2_release_2.2.15\src\netcode\i_tcp.c:1283:    // Combined -udpport and -clientport into -port
+    tmp\arcade\srb2-native-source\SRB2-SRB2_release_2.2.15\src\netcode\i_tcp.c:1293:    if (M_CheckParm("-clientport"))
+    tmp\arcade\srb2-native-source\SRB2-SRB2_release_2.2.15\src\netcode\i_tcp.c:1294:        clientport_name = M_GetNextParm();
+• Ran Get-Content src\main.ts -First 270; Get-Content scripts\qa-desktop-browser.mjs
+  └   for(const c of clients)assert.deepEqual(c.errors,[]);
+    } finally {for(const c of clients){await c.games.stop();c.relay.close();}await browser.close();brokerServer?.close();}
+    async function assertEventually(fn,timeout=18000){const until=Date.now()+timeout;let last;while(Date.now()<until){try{await fn();return;}catch(e){last=e;}await new …
+• Searched the web for site.firebase.google.com Firestore free quota transactions offline persistence Firebase Authentication email password Spark free, site.firebase.g…
+• Ran python scripts\qa-native-gameplay.py
+  └ Actual fresh-ring pickup, dropped ring excluded, and finish: 0 {'session': '00000000-0000-0000-0000-000000000099', 'rings': 1, 'score': 0, 'map': 1, 'elapsed': 70, …
+• Ran Get-ChildItem tmp -Filter '*network*'; Get-Content scripts\prepare-native-assets.py -First 120; Get-Content tmp\arcade\srb2-native-source\SRB2-SRB2_release_2.2.15…
+  └     \param    color    translation color
+    
+    
+• Ran node --input-type=module -e "import {NativeGames} from './desktop/games.mjs'; import fs from 'node:fs/promises'; import path from 'node:path'; process.env.SDL_VID…
+  └   game: 'adventure',
+      session: '7eb00cfa-4503-42d1-b46e-32fe4838c44c'
+    }
+The scenery tint is now separate from pony artwork, so it also applies to imported level textures without recolouring the characters. I’m checking a crash during native multiplayer joining before moving on to sync. Firebase will use invited accounts, with local backups retained on desktop.
+• Explored
+  └ Read qa-desktop-browser.mjs
+• Ran Get-Content scripts\accounts.mjs; Get-Content scripts\qa-cloud.mjs
+  └   for (const app of apps) await deleteApp(app);
+      await owner.terminate();
+    }
+• Failed (exit 1) Get-Command lldb,cdb,windbg -ErrorAction SilentlyContinue; rg --files 'C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\Llvm' -g '*lld…
+  └ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\Llvm\ARM64\bin\lldb-instr.exe
+    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\Llvm\ARM64\bin\lldb-dap.exe
+    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\Llvm\ARM64\bin\lldb-argdumper.exe
+• Edited 2 files (+34 -4)
+  └ desktop\games.mjs (+4 -4)
+-  return Object.entries(bindings).map(([action,keys])=>`setcontrol "${action}" ${keys.map((key)=>`"${key}"`).join(' ')}`).join('\n')+'\nusemouse 0\nshowhud 1\nchasecam 1\n';
++  return Object.entries(bindings).map(([action,keys])=>`setcontrol "${action}" ${keys.map((key)=>`"${key}"`).join(' ')}`).join('\n')+'\nuse_mouse 0\nshowhud 1\nc
+
+  └ scripts\qa-native-network.mjs (+30 -0)
++// End-to-end engine protocol test over the same UDP relay used by PeerJS.
++import { NativeGames } from '../desktop/games.mjs';
++import { LocalRelay } from '../desktop/relay.mjs';
+• Failed (exit 1) node scripts\qa-native-network.mjs
+  └     at async file:///C:/Users/calla/Desktop/MLPKT/scripts/qa-native-network.mjs:18:3
+    
+    Node.js v22.20.0
+• Ran Get-Content src\main.ts | Select-Object -Skip 380 -First 64; Get-Content src\main.ts | Select-Object -Skip 620 -First 55; Get-Content src\main.ts | Select-Object …
+  └   }
+    }
+    void boot();
+• Ran Get-Content desktop\profiles.mjs; Get-Content desktop\preload.cjs; Get-Content .github\workflows\deploy.yml; Get-Content scripts\qa-server.mjs; Get-Content fireba…
+  └ VITE_FIREBASE_APP_ID=1:123:web:localtest
+    VITE_REQUIRE_AUTH=true
+    VITE_USE_EMULATORS=true
+• Ran Get-Content tmp\native-network-1792397384240\profiles\host\adventure\last-session.log -Tail 20
+  └ Map is now "MAP01: Greenflower - 1"
+    *Sonic has joined the game (player 1)
+    *Sonic renamed to Guest
+• Ran rg -n 'SIGSEGV|Music|error|unknown|joined' tmp\native-network-1792397384240; Get-Content src\main.ts | Select-Object -Skip 525 -First 95; rg -n 'function refreshS…
+  └ 1161:      commit({ ...save, caster: el.value });
+    1222:      commit(migrateProgress(imported, catalog));
+    1425:        commit(result.xp ? awardXP(result.save,result.xp,catalog) : result.save);
+• Edited 2 files (+2 -2)
+  └ scripts\qa-desktop-browser.mjs (+1 -1)
+-process.env.SDL_VIDEODRIVER='dummy';process.env.SDL_RENDER_DRIVER='software';
++process.env.SDL_VIDEODRIVER='dummy';process.env.SDL_RENDER_DRIVER='software';process.env.SDL_AUDIODRIVER='dummy';
+
+  └ scripts\qa-native-network.mjs (+1 -1)
+-process.env.SDL_VIDEODRIVER='dummy';process.env.SDL_RENDER_DRIVER='software';
++process.env.SDL_VIDEODRIVER='dummy';process.env.SDL_RENDER_DRIVER='software';process.env.SDL_AUDIODRIVER='dummy';
+• Ran Get-Content tmp\native-network-1792397384240\profiles\host\ponykart\srb2kart\log.txt -Tail 35; Get-Content src\main.ts | Select-Object -Skip 330 -First 26; Get-Co…
+  └ tmp\emulator\node_modules\firebase\firebase-performance-standalone-compat.js
+    tmp\emulator\node_modules\firebase\firebase-performance-compat.js.map
+    tmp\emulator\node_modules\firebase\firebase-storage.js.map
+• Ran rg -n 'advertis|masterserver|cv_autorecord|autorecord|recordmultiplayer' tmp\arcade\kart-native-source\Kart-Public-1.6\src\d_netcmd.c tmp\arcade\kart-native-sourc…
+  └     steps:
+          - uses: actions/deploy-pages@v4
+            id: deployment
+• Failed (exit 1) node scripts\qa-native-network.mjs
+  └     at async file:///C:/Users/calla/Desktop/MLPKT/scripts/qa-native-network.mjs:18:3
+    
+    Node.js v22.20.0
+• Ran rg -n 'consvar_t.*advert|consvar_t.*master|cv_.*advert|GetMODVersion|MServ' tmp\arcade\kart-native-source\Kart-Public-1.6\src\http-mserv.c tmp\arcade\kart-native-…
+  └ tmp\arcade\kart-native-source\Kart-Public-1.6\src\http-mserv.c:45:consvar_t cv_masterserver_debug = {
+    tmp\arcade\kart-native-source\Kart-Public-1.6\src\http-mserv.c:50:consvar_t cv_masterserver_token = {
+    tmp\arcade\kart-native-source\Kart-Public-1.6\src\d_clisrv.c:4065:        if (serverrunning && netgame && cv_advertise.value) // see mserv.c Online()
+• Edited desktop\games.mjs (+4 -1)
+-    if(game==='ponykart')args.push('+color',COLOURS[pony]);
++    if(game==='ponykart')args.push('+color',COLOURS[pony],'+netdemo_record','0');
+   ⋮
+• Failed (exit 1) node scripts\qa-native-network.mjs
+  └     at async file:///C:/Users/calla/Desktop/MLPKT/scripts/qa-native-network.mjs:18:3
+    
+    Node.js v22.20.0
+• Ran rg -n 'Ph|Progress|GetMOD|GetVersion|advertise|masterserver' tmp\arcade\kart-native-source\Kart-Public-1.6\src\mserv.c | Select-Object -First 30; Get-Content tmp\…
+  └         a.click();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            break;
+• Ran python scripts\qa-native.py
+  └ adventure twilight 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 1, 'elapsed': 172, 'laps': 0, 'players': 1, 'finis…
+    ponykart twilight 0 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 1, 'elapsed': 0, 'laps': 0, 'players': 1, 'finished'…
+    ponykart twilight 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 1, 'elapsed': 0, 'laps': 0, 'players': 1, 'finished…
+I found a likely cause of the collection confusion: filters from “Explore this pack” stayed active when returning to the binder, and “Into the binder” left you in the shop. I’m correcting that flow and making new cards easier to spot, including rewards received while the collection is open.
+• Ran Get-Content src\main.ts | Select-Object -Skip 221 -First 16; rg -n 'function settings|clear-filters|dataset.nav' src\main.ts; Get-Content scripts\build-native.py …
+  └ 
+    if __name__ == '__main__':
+        p=argparse.ArgumentParser();p.add_argument('game',choices=SOURCES);args=p.parse_args();configure(args.game)
+• Edited scripts\build-native.py (+3 -1)
+-target_compile_options({game} PRIVATE /W0 /O2 /U_WINDOWS -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types)
++target_compile_options({game} PRIVATE /W0 /O2 /Z7 /U_WINDOWS -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types)
++target_link_options({game} PRIVATE /DEBUG)
+• Ran rg -n 'collection\[|freshSave|collection:|pendingPack|openedPacks' src\game.ts; Get-Content src\game.ts -First 120; Get-Content src\main.ts | Select-Object -Skip …
+  └         break;
+          case 'rip':
+            if (packRipped) break;
+• Ran Get-Content desktop\relay.mjs; Get-Content src\arcade.ts | Select-Object -Skip 135 -First 110; Get-Content tmp\native-build\ponykart-debug.log -Tail 10
+  └ 
+      ph_zlib.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ph_zlib.lib
+      ph_png.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ph_png.lib
+• Edited 3 files (+25 -4)
+  └ src\game.ts (+2 -0)
++    recentCards: [],
+   ⋮
++    recentCards: Array.isArray(v.recentCards) ? v.recentCards.filter(id => typeof id === 'string' && v.collection[id]).slice(0, 100) : Object.keys(v.collection).
+
+  └ src\main.ts (+22 -4)
++let collectionSort = 'recent';
+     ⋮
++  const added = Object.keys(next.collection).filter(id => next.collection[id] > (save.collection[id] || 0));
+
+  └ src\types.ts (+1 -0)
++  recentCards: string[];
+• Failed (exit 1) Get-Content tmp\native-build\ponykart-debug.log -Tail 6; Get-Content src\arcade.ts -Tail 80; Get-NetTCPConnection -State Listen -LocalPort 18080,19099…
+  └   }).join('');
+      return `<div class="page-heading"><div><p class="eyebrow">A FRIENDLY LITTLE RECORD BOOK</p><h1>Leaderboard</h1><p class="subheading">A place for personal bests an…
+    }
+• Ran python scripts\build-native.py ponykart > tmp\native-build\ponykart-debug.log 2>&1
+  └ (no output)
+• Ran curl.exe -I http://127.0.0.1:5174
+  └ Keep-Alive: timeout=5
+    
+          0   0      0   0      0      0      0                              0
+• Ran Get-Content tmp\native-build\ponykart-debug.log -Tail 10; Get-ChildItem tmp\emulator -Force | Select-Object Name; Get-Content QA.md -Tail 35; Get-Content vite.con…
+  └ });
+    
+    
+• Ran Get-Content src\main.ts | Select-Object -Skip 724 -First 10
+  └ 
+    document.addEventListener('click', async (ev) => {
+      const target = (ev.target as HTMLElement).closest<HTMLElement>('button,a,label');
+• Added tmp\debug-kart.py (+8 -0)
++import subprocess,pathlib,os
++root=pathlib.Path(__file__).resolve().parents[1]
++folder=root/'tmp/debug-kart';(folder/'srb2kart/screenshots').mkdir(parents=True,exist_ok=True)
+• Ran python tmp\debug-kart.py
+  └ 
+• Ran Get-Content tmp\arcade\kart-native-source\Kart-Public-1.6\src\win32\win_dbg.c -First 100; rg -n 'signal|exception|SIGSEGV' tmp\arcade\kart-native-source\Kart-Publ…
+  └ vcruntime140_1.dll                           
+    
+    
+• Ran npm run build
+  └ dist/assets/index-C4J4eOKA.js          215.36 kB │ gzip:  67.71 kB
+    dist/assets/firebase-data-CcssZ5vg.js  475.53 kB │ gzip: 142.92 kB
+    ✓ built in 28.98s
+• Edited 2 files (+18 -1)
+  └ scripts\build-native.py (+2 -1)
+-target_compile_options({game} PRIVATE /W0 /O2 /Z7 /U_WINDOWS -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types)
++target_compile_options({game} PRIVATE /W0 /O2 /Z7 /Oy- /U_WINDOWS -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types)
++target_link_libraries({game} PRIVATE dbghelp)
+
+  └ scripts\patch-native.py (+16 -0)
++        def diagnostics(t):
++            t=t.replace('#include <signal.h>', '#include <signal.h>\n#include <windows.h>\n#include <dbghelp.h>')
++            return t.replace('signal(num, SIG_DFL);               //default signal action', '''{
+• Ran python scripts\patch-native.py
+  └ Patched adventure
+    Patched ponykart
+• Ran python scripts\build-native.py ponykart > tmp\native-build\ponykart-debug.log 2>&1
+  └ (no output)
+Adventure’s two-player connection is now passing a local test. Ponykart still has a separate host-start crash under investigation. For mobile, I’m adding live save updates and conflict protection so an older desktop save cannot silently replace cards or bits earned on your phone.
+• Edited 4 files (+16 -3)
+  └ desktop\main.mjs (+1 -0)
++  handle('link-cloud',(uid)=>{if(games.running)throw new Error('Close your game before changing sync accounts.');return profiles.linkCloud(uid);});
+
+  └ desktop\preload.cjs (+1 -0)
++  linkCloud: call('link-cloud'),
+
+  └ desktop\profiles.mjs (+12 -2)
+-    await this.queue;
++    await this.queue.catch(()=>{});
+    ⋮
+
+  └ src\desktop.ts (+2 -1)
+-export interface DesktopProfile { id: string; name: string; createdAt: number }
++export interface DesktopProfile { id: string; name: string; createdAt: number; cloudUid?: string | null }
+   ⋮
+• Ran Get-Content tmp\native-build\ponykart-debug.log -Tail 8; Get-Content src\main.ts | Select-Object -Skip 302 -First 24
+  └       } catch {}
+        },
+        social.room?.customBackground || (!social.room && prefs.background === 'custom')
+• Edited src\storage.ts (+3 -1)
++  getDocFromServer,
+   ⋮
+-export const cloudConfigured = !desktop && !!(
+• Failed (exit 1) node scripts\qa-native-network.mjs
+  └     at async file:///C:/Users/calla/Desktop/MLPKT/scripts/qa-native-network.mjs:18:3
+    
+    Node.js v22.20.0
+• Edited 2 files (+249 -0)
+  └ src\cloud.ts (+27 -0)
++import { initializeApp } from 'firebase/app';
++import { getAuth, signInWithEmailAndPassword, connectAuthEmulator } from 'firebase/auth';
++import { getFirestore, connectFirestoreEmulator, doc, getDocFromServer } from 'firebase/firestore';
+
+  └ src\save-store.ts (+222 -0)
++import { collection, doc, getDocFromServer, onSnapshot, runTransaction, serverTimestamp, setDoc, deleteDoc, type DocumentData } from 'firebase/firestore';
++import { signOut } from 'firebase/auth';
++import { freshSave, readSave } from './game';
+• Failed (exit 1) python -c "from pathlib import Path; p=Path('src/storage.ts'); s=p.read_text(encoding='utf8'); s=s[s.index('export interface Preferences'):]; p.write_…
+  └     + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+        + FullyQualifiedErrorId : MissingArgument
+     
+• Added tmp\refactor-storage.py (+5 -0)
++from pathlib import Path
++p=Path('src/storage.ts')
++s=p.read_text(encoding='utf8')
+• Ran python tmp\refactor-storage.py
+  └ (no output)
+• Ran Get-Content tmp\native-network-1792397789219\profiles\host\ponykart\srb2kart\log.txt -Tail 35; Get-Content desktop\main.mjs -First 50
+  └   win.webContents.setWindowOpenHandler(({url})=>{
+        try { const u=new URL(url); if (u.protocol==='https:' && ['github.com','gumroad.com','phishwatcher.gumroad.com','mylittlecardcollection.com','creativecommons.or…
+        catch {}
+• Ran Get-Content tmp\arcade\kart-native-source\Kart-Public-1.6\src\sdl\i_system.c | Select-Object -Skip 300 -First 65; Get-Content tmp\native-network-1792397789219\pro…
+  └ release/
+    *service-account*.json
+    *admin.local.json
+• Ran npm run build
+  └ dist/assets/index-VRm1F2ds.js          219.11 kB │ gzip:  68.81 kB
+    dist/assets/firebase-data-OmRY4WFl.js  475.65 kB │ gzip: 142.94 kB
+    ✓ built in 29.99s
+• Edited src\main.ts (+25 -1)
++  companion,
+    ⋮
++const views = companion ? ['home','shop','collection'] : ['home','shop','collection','blocks','adventure','ponykart','leaderboard'];
+• Edited src\main.ts (+38 -2)
++  if (desktop) {
++    const body=modal.querySelector('.settings-body')!;
++    body.insertAdjacentHTML('beforeend', `<div class="sync-settings"><h3>Take your meadow with you</h3><p>${store.linked ? 'This profile is linked to your mobi
+• Edited 5 files (+12 -1)
+  └ .env.example (+2 -0)
++# Pages companion: pet care, shop and collection. Desktop always keeps all games.
++VITE_COMPANION=false
+
+  └ .github\workflows\pages.yml (+1 -0)
++          VITE_COMPANION: 'true'
+
+  └ desktop\main.mjs (+1 -1)
+-        'Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://*.peerjs.com wss://*.peerjs.com; media-src 'self' blob:; object-src 'none'; frame-src 'none'; base-uri 'self'"}});
++        'Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-
+
+  └ src\main.ts (+1 -0)
++import './sync.css';
+
+  └ src\sync.css (+7 -0)
++.sync-notice { position:sticky;top:0;z-index:80;display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 18px;background:#fff1ce;color:#534767;box-shadow:0 3px 12px #5b467a18;flex-wrap:wrap; }
++.sync-notice span { max-width:520px; }
+• Edited scripts\patch-native.py (+2 -2)
+-            return t.replace('signal(num, SIG_DFL);               //default signal action', '''{
++            return t.replace('D_QuitNetGame(); // Fix server freezes', '''{
+    ⋮
+• Ran python scripts\patch-native.py
+  └ Patched adventure
+    Patched ponykart
+• Ran Get-Content tmp\emulator\package.json; Get-Command java -ErrorAction SilentlyContinue; Get-ChildItem tmp -Directory | Select-Object Name
+  └ 
+    
+    
+• Ran python scripts\build-native.py ponykart > tmp\native-build\ponykart-debug.log 2>&1
+  └ (no output)
+• Ran npm run build
+  └ dist/assets/index-DFqnuT3E.js          222.46 kB │ gzip:  69.77 kB
+    dist/assets/firebase-data-OmRY4WFl.js  475.65 kB │ gzip: 142.94 kB
+    ✓ built in 31.57s
+• Ran Get-ChildItem tmp\java21; Get-Content tmp\native-build\ponykart-debug.log -Tail 5; Get-Content scripts\qa.mjs -First 28; Get-Content src\main.ts | Select-Object -…
+  └         game!.start();
+    
+    
+• Edited 2 files (+2 -1)
+  └ src\main.ts (+1 -0)
++    modal.close();
+
+  └ src\save-store.ts (+1 -1)
++    if(notify)this.onRemote(save);
+-    if(notify)this.onRemote(save);
+• Failed (exit 1) node scripts\qa-native-network.mjs
+  └     at async file:///C:/Users/calla/Desktop/MLPKT/scripts/qa-native-network.mjs:18:3
+    
+    Node.js v22.20.0
+• Ran Get-Content tmp\native-network-1792398096710\profiles\host\ponykart\srb2kart\log.txt -Tail 35; Get-Content scripts\prepare-native-assets.py -Tail 20; Get-Content …
+  └       savePreferences(prefs);
+          if (!prefs.quiet) sound.play('pet');
+        }
+• Ran rg -n 'StartupSystem|InitSystem|StartupConsole' tmp\arcade\kart-native-source\Kart-Public-1.6\src\sdl\i_system.c; Get-Content firestore-debug.log -Tail 5
+  └ Note: Support for Datastore Mode is in preview. If you encounter any bugs please file at https://github.com/firebase/firebase-tools/issues.
+    Dev App Server is now running.
+    
+• Added scripts\qa-sync-server.mjs (+3 -0)
++import { createServer } from 'vite';
++const server=await createServer({mode:'emulator',define:{'import.meta.env.VITE_COMPANION':'"true"'},server:{host:'127.0.0.1',port:5175,strictPort:true,hmr:false}});
+• Edited scripts\patch-native.py (+15 -0)
++            t=t.replace('INT32 I_StartupSystem(void)', '''static LONG CALLBACK PH_Exception(PEXCEPTION_POINTERS error) {
++    if(error->ExceptionRecord->ExceptionCode==EXCEPTION_ACCESS_VIOLATION) {
++        char storage[sizeof(SYMBOL_INFO)+256]; SYMBOL_INFO *s=(SYMBOL_INFO *)storage; DWORD64 offset=0;
+• Ran python scripts\patch-native.py
+  └ Patched adventure
+    Patched ponykart
+• Edited scripts\patch-native.py (+1 -1)
+-            t=t.replace('#include <signal.h>', '#include <signal.h>\n#include <windows.h>\n#include <dbghelp.h>')
++            t=t.replace('#include <signal.h>', '#include <signal.h>\n#include <windows.h>\n#include <dbghelp.h>\nstatic LONG CALLBACK PH_Exception(PEXCEPTION_POINTERS error);')
+• Ran Get-Content tmp\native-build\ponykart-debug.log -Tail 10
+  └ 
+      ph_zlib.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ph_zlib.lib
+      ph_png.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ph_png.lib
+• Failed (exit 1) python scripts\build-native.py ponykart > tmp\native-build\ponykart-debug.log 2>&1
+  └ (no output)
+• Added scripts\qa-sync.mjs (+81 -0)
++// Real Firebase Auth/Firestore emulators, two browsers and real desktop profile files.
++import { chromium } from 'playwright';
++import assert from 'node:assert/strict';
+• Ran Get-Content tmp\native-build\ponykart-debug.log -Tail 8
+  └ subprocess.CalledProcessError: Command '['cmake', '--build', 
+    'C:\\Users\\calla\\Desktop\\MLPKT\\tmp\\native-build\\ponykart\\out-clang', '--config', 'Release', '--parallel', '8']' 
+    returned non-zero exit status 1.
+• Ran rg -n 'error:|error [A-Z]|fatal error' tmp\native-build\ponykart-debug.log; rg -n 'cv_recordmultiplayerdemos|G_RecordDemo' tmp\arcade\kart-native-source\Kart-Publ…
+  └ (no output)
+• Ran python scripts\patch-native.py
+  └ Patched adventure
+    Patched ponykart
+The mobile companion now has the meadow, shop and collection, with a desktop account-linking screen. I’m testing purchases across two sessions, reopening the desktop after mobile play, and recovering safely when both devices changed progress while one was offline.
+• Ran curl.exe -I http://127.0.0.1:19099
+  └ Connection: keep-alive
+    Keep-Alive: timeout=5
+    
+• Ran Get-ChildItem tmp -Directory -Filter 'sync-test-*'; Get-Content tmp\native-build\ponykart-debug.log -Tail 10; Get-Content firestore-debug.log -Tail 5; Get-Content…
+  └   buyCard,
+    
+    
+• Ran npm test; node --test tests\desktop.test.mjs
+  └ # skipped 0
+    # todo 0
+    # duration_ms 355.189
+• Ran python scripts\build-native.py ponykart > tmp\native-build\ponykart-debug.log 2>&1
+  └ (no output)
+• Ran Get-Content tmp\sync-test-s1wt9L\profiles.json; Get-ChildItem tmp\sync-test-s1wt9L\profiles -Recurse -Filter save.json | Get-Content; Get-Content tmp\native-build…
+  └   ph_png.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ph_png.lib
+      ponykart.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ponykart.exe
+    Built C:\Users\calla\Desktop\MLPKT\native\ponykart\ponykart.exe
+• Failed (exit 1) curl.exe http://127.0.0.1:18080/v1/projects/demo-ponyhaven/databases/(default)/documents/players/qa-sync
+  └     + CategoryInfo          : ObjectNotFound: (default:String) [], CommandNotFoundException
+        + FullyQualifiedErrorId : CommandNotFoundException
+     
+• Ran curl.exe 'http://127.0.0.1:18080/v1/projects/demo-ponyhaven/databases/(default)/documents/players/qa-sync'
+  └                                  Dload  Upload  Total   Spent   Left   Speed
+    
+    {"error":{"code":403,"message":"\nfalse for 'get' @ L24, false for 'get' @ L75","status":"PERMISSION_DENIED"}}
+• Ran Get-Content firebase-debug.log -Tail 8; Get-Content firestore-debug.log -Tail 8
+  └ false for 'get' @ L24, false for 'get' @ L75
+    Oct 19, 2026 7:26:24 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+    INFO: Detected non-HTTP/2 connection.
+• Failed (exit 1) node scripts\qa-sync.mjs
+  └ }
+    
+    Node.js v22.20.0
+• Ran curl.exe -s -H 'Authorization: Bearer owner' 'http://127.0.0.1:18080/v1/projects/demo-ponyhaven/databases/(default)/documents/players/qa-sync'
+  └   "createTime": "2026-10-19T08:26:03.965202Z",
+      "updateTime": "2026-10-19T08:26:03.965202Z"
+    }
+• Ran Get-Content tmp\native-network-1792398382144\profiles\host\ponykart\srb2kart\log.txt -Tail 25; Get-Content scripts\prepare-native-assets.py | Select-Object -Skip …
+  └     return replaced
+    
+    def prepare_kart():
+• Failed (exit 1) node scripts\qa-native-network.mjs
+  └     at async file:///C:/Users/calla/Desktop/MLPKT/scripts/qa-native-network.mjs:18:3
+    
+    Node.js v22.20.0
+• Ran Get-Content tmp\arcade\kart-native-source\Kart-Public-1.6\src\sdl\i_system.c | Select-Object -Skip 693 -First 32; rg -n 'PH_Exception|AddVectored' tmp\arcade\kart…
+  └     # Keep the level data and game systems; replace launcher/title branding.
+        changes=[]
+        palette=dict(wadread((src/'srb2.srb').read_bytes()))['PLAYPAL'][:768]
+• Edited scripts\qa-sync.mjs (+1 -1)
+- await nav(p,'shop');await p.locator('[data-buy-pack]').nth(index).click();
++ await nav(p,'shop');await p.locator('[data-buy]').nth(index).click();
+• Ran rg -n 'SIGSEGV|I_RegisterSignals' tmp\arcade\kart-native-source\Kart-Public-1.6\src\sdl\i_system.c tmp\arcade\kart-native-source\Kart-Public-1.6\src\win32\win_dbg…
+  └ Built C:\Users\calla\Desktop\MLPKT\native\ponykart\ponykart.exe
+    
+    
+• Edited scripts\qa-sync.mjs (+1 -1)
+- await nav(p,'shop');await p.locator('[data-buy]').nth(index).click();
++ await nav(p,'shop');await p.locator('.pack-details [data-pack]').nth(index).click();
+• Ran Get-Item native\ponykart\SDL2_mixer.dll, tmp\arcade\kart-windows\SDL2_mixer.dll, native\adventure\SDL2_mixer.dll, tmp\arcade\srb2-windows\SDL2_mixer.dll | ForEach…
+  └ 
+    
+    
+• Edited scripts\build-native.py (+3 -2)
+-    for library in ['SDL2','SDL2_mixer']:
+-        for dll in (src/'libs'/library/'lib/x86').glob('*.dll'):shutil.copy2(dll,target/dll.name)
++    # Use the release's tested DLL set, including its music decoders. Mixing the
+• Ran Get-ChildItem -LiteralPath 'tmp\arcade\kart-windows' -Filter '*.dll' | Copy-Item -Destination 'native\ponykart'; Get-ChildItem -LiteralPath 'tmp\arcade\srb2-windo…
+  └ (no output)
+• Failed (exit 1) node scripts\qa-native-network.mjs
+  └     at async file:///C:/Users/calla/Desktop/MLPKT/scripts/qa-native-network.mjs:18:3
+    
+    Node.js v22.20.0
+• Edited 2 files (+2 -1)
+  └ desktop\games.mjs (+1 -0)
++    if(process.env.PONYHAVEN_QA_SILENT==='1')args.push('-nosound','-nomusic');
+
+  └ scripts\qa-native-network.mjs (+1 -1)
+-for(const game of ['adventure','ponykart']) {
++for(const game of process.argv.includes('--kart')?['ponykart']:['adventure','ponykart']) {
+• Failed (exit 1) node scripts\qa-sync.mjs
+  └ }
+    
+    Node.js v22.20.0
+• Ran Get-Content tmp\native-network-1792398509205\profiles\host\adventure\last-session.log -Tail 10; Get-Content tmp\native-network-1792398509205\profiles\host\ponykar…
+  └ 
+    Process killed by signal: SIGSEGV - segment violation
+    
+• Failed (exit 1) $env:PONYHAVEN_QA_SILENT='1'; node scripts\qa-native-network.mjs --kart
+  └     at async file:///C:/Users/calla/Desktop/MLPKT/scripts/qa-native-network.mjs:18:3
+    
+    Node.js v22.20.0
+• Failed (exit 1) Get-Content tmp\native-network-1792398544538\profiles\host\ponykart\srb2kart\log.txt -Tail 22; rg -n 'demos|RecordDemo|recordmultiplayer' tmp\arcade\k…
+  └ tmp\arcade\kart-native-source\Kart-Public-1.6\src\g_game.c:8586:    // DO NOT end metal sonic demos here
+    tmp\arcade\kart-native-source\Kart-Public-1.6\src\g_game.c:8592:        demotime = I_GetTime() - demostarttime;
+    tmp\arcade\kart-native-source\Kart-Public-1.6\src\g_game.c:8733:        demo.savemode = (cv_recordmultiplayerdemos.value == 2) ? DSM_WILLAUTOSAVE : DSM_NOTSAVING;
+• Ran rg -n 'stack|STACK' tmp\arcade\kart-native-source\Kart-Public-1.6\src\Makefile* tmp\arcade\kart-native-source\Kart-Public-1.6\src\CMakeLists.txt tmp\arcade\srb2-n…
+  └     for (i = mainwads; ++i < numwadfiles; )
+            if (wadfiles[i]->important)
+        {
+• Ran rg -n 'STACK|stack,' tmp\arcade\kart-native-source\Kart-Public-1.6 -g 'Makefile*' -g '*.vcxproj' -g '*.cmake' -g '*.txt' -g '*.vcproj'
+  └ tmp\arcade\kart-native-source\Kart-Public-1.6\libs\libpng-src\libpng-1.2.46.txt:1663:on the stack, unless you have stack space to spare.  Of course, you
+    tmp\arcade\kart-native-source\Kart-Public-1.6\libs\SDL2\WhatsNew.txt:514:* The hint SDL_HINT_THREAD_STACK_SIZE is now supported on Windows
+    tmp\arcade\kart-native-source\Kart-Public-1.6\libs\SDL2\WhatsNew.txt:576:* Added a hint SDL_HINT_THREAD_STACK_SIZE to set the stack size of SDL's threads
+• Ran Get-ChildItem tmp\arcade\kart-windows -Filter '*.exe' | Select-Object Name; Get-ChildItem tmp\arcade\srb2-windows -Filter '*.exe' | Select-Object Name; rg -n 'Sta…
+  └     demo_p += 16;
+    
+    
+• Edited scripts\patch-native.py (+2 -1)
+-    if(error->ExceptionRecord->ExceptionCode==EXCEPTION_ACCESS_VIOLATION) {
++    {
++        I_OutputMsg("Ponyhaven exception: %08x at %p\\n",(unsigned)error->ExceptionRecord->ExceptionCode,error->ExceptionRecord->ExceptionAddress);
+• Ran node --input-type=module -e "import fs from 'node:fs';for(const dir of ['native/ponykart','tmp/arcade/kart-windows','native/adventure','tmp/arcade/srb2-windows'])…
+  └ tmp/arcade/kart-windows/srb2kart.exe stack 2097152
+    native/adventure/adventure.exe stack 1048576
+    tmp/arcade/srb2-windows/srb2win.exe stack 2097152
+• Edited scripts\build-native.py (+1 -1)
+-target_link_options({game} PRIVATE /DEBUG)
++target_link_options({game} PRIVATE /DEBUG /STACK:2097152)
+• Ran python scripts\build-native.py ponykart > tmp\native-build\ponykart-stack.log 2>&1
+  └ (no output)
+• Edited scripts\qa-sync.mjs (+2 -0)
++ console.log('Sync QA: local starter ready');
+   ⋮
++ console.log('Sync QA: first upload verified');
+• Ran Get-Content scripts\package-engine-sources.py; Get-Content scripts\package-desktop.mjs
+  └ await fs.writeFile(path.join(release,'build.json'),JSON.stringify({builtAt:new Date().toISOString(),engines:manifest},null,2));
+    execFileSync('python',['scripts/package-engine-sources.py'],{stdio:'inherit'});
+    console.log('Portable desktop build:',release);
+• Ran node scripts\qa-sync.mjs
+  └ Linked desktop, mobile login, restricted mobile navigation, purchased cards, filter reset and live binder refresh passed.
+    Desktop closed/reopened sync, offline conflict backup, and safe cloud recovery passed.
+    Synced reset, mobile session persistence, local activation retention, and no browser errors passed.
+• Ran Get-ChildItem tmp\arcade\srb2-windows -File | Select-Object Name,Length; Get-ChildItem tmp\arcade\kart-windows -Filter '*.dll' | Format-Table Name,Length; Get-Con…
+  └   const c = cardById(pending.cardIds[packIndex])!;
+      openModal(
+        'A little magic inside',
+The sync test passed: mobile purchases appeared in the open desktop collection, mobile play continued with the desktop closed, and reopening loaded the latest progress. I also verified that conflicting offline changes keep a recoverable backup, and resetting progress syncs without removing activation.
+• Failed (exit 1) node scripts\qa-native-network.mjs --kart
+  └     at async file:///C:/Users/calla/Desktop/MLPKT/scripts/qa-native-network.mjs:18:3
+    
+    Node.js v22.20.0
+• Viewed image mobile-synced-binder.png
+• Ran Get-Content tmp\native-network-1792398656102\profiles\host\ponykart\srb2kart\log.txt -Tail 12
+  └ 
+    Process killed by signal: SIGSEGV - segment violation
+    
+• Failed (exit 1) rg -n 'nav|grid-template-columns' src\arcade.css src\style.css | Select-Object -Last 30; Get-Content tmp\arcade\kart-native-source\Kart-Public-1.6\src…
+  └   ponykart.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ponykart.exe
+    Built C:\Users\calla\Desktop\MLPKT\native\ponykart\ponykart.exe
+    rg: tmp\native-build\ponykart\out-clang\Release\ponykart.map: IO error for operation on tmp\native-build\ponykart\out-clang\Release\ponykart.map: The system cannot …
+• Ran rg -n 'MIXERX|MIXER_EXT|MIXER_X|HAVE_LIBGME|HAVE_MIXER' tmp\arcade\srb2-native-source\SRB2-SRB2_release_2.2.15\src\sdl\mixer_sound.c | Select-Object -First 20; rg…
+  └ 656:#ifdef HAVE_LIBGME
+    676:#ifdef HAVE_LIBGME
+    698:#ifdef HAVE_LIBGME
+• Edited 3 files (+3 -1)
+  └ scripts\patch-native.py (+1 -0)
++        edit('src/p_setup.c',lambda t:t.replace('if (!demo.playback && multiplayer && !dedicated)', 'if (!demo.playback && multiplayer && !dedicated && !M_CheckParm("-ph-progress"))'))
+
+  └ scripts\prepare-native-assets.py (+1 -0)
++    (ROOT/'desktop').mkdir(exist_ok=True)
+
+  └ src\sync.css (+1 -1)
+-@media(max-width:620px){.companion nav{grid-template-columns:repeat(3,1fr);} .sync-notice {font-size:13px;gap:6px;} .sync-notice .button{padding:9px 12px;}}
++@media(max-width:620px){.companion .site-header nav{justify-content:space-around;} .companion .nav-item{flex:1;} .sync-notice {font-size:13px;gap:6px;} .sync-notice .button{padding:9px 12px;}}
+• Ran python scripts\patch-native.py
+  └ Patched adventure
+    Patched ponykart
+• Ran python scripts\build-native.py ponykart > tmp\native-build\ponykart-final.log 2>&1
+  └ (no output)
+• Ran rg -n 'readlevelheader|P_AllocMapHeader|P_ClearSingleMapHeader' tmp\arcade\srb2-native-source\SRB2-SRB2_release_2.2.15\src\dehacked.c tmp\arcade\kart-native-sourc…
+  └     (ROOT/'native/manifest.json').write_text(json.dumps(manifest,indent=2))
+        (ROOT/'tmp/arcade/asset-changes.json').write_text(json.dumps(replaced,indent=2))
+        print('Prepared Adventure (7 ponies) and Ponykart (Mane 6). Original mods are unchanged.')
+• Ran rg --files tmp\arcade\srb2-native-source\SRB2-SRB2_release_2.2.15\libs -g '*mixer*' -g '*gme*' -g '*SDL*.lib'; rg --files tmp\arcade\kart-native-source\Kart-Publi…
+  └ ## Fonts and original assets
+    
+    DM Sans and Nunito are self-hosted under the SIL Open Font License. Their license texts are in `public/assets/fonts`. The default `meadow.svg`, interface icons, pac…
+• Edited 2 files (+27 -10)
+  └ scripts\build-native.py (+6 -4)
+-    for library in ['libcurl','exchndl']:
++    for library in ['libcurl','exchndl','SDL2_mixer_ext','libgme']:
+   ⋮
+
+  └ scripts\prepare-native-assets.py (+21 -6)
+-def course_catalog():
+-    result={'adventure':[],'ponykart':[]}
++def course_headers():
+• Ran Get-Content tmp\native-build\ponykart-final.log -Tail 7
+  └   ph_png.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ph_png.lib
+      ponykart.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ponykart.exe
+    Built C:\Users\calla\Desktop\MLPKT\native\ponykart\ponykart.exe
+• Failed (exit 1) node scripts\qa-native-network.mjs --kart
+  └     at async file:///C:/Users/calla/Desktop/MLPKT/scripts/qa-native-network.mjs:18:3
+    
+    Node.js v22.20.0
+• Ran Get-Content tmp\native-network-1792398835543\profiles\host\ponykart\srb2kart\log.txt -Tail 22
+  └ (no output)
+• Ran python scripts\prepare-native-assets.py
+  └ Prepared Adventure (7 ponies) and Ponykart (Mane 6). Original mods are unchanged.
+• Ran Get-Content scripts\patch-native.py | Select-Object -Skip 114 -First 90; Get-Content tmp\native-build\ponykart-final.log -Tail 8; Get-Content tmp\native-build\adv…
+  └ 
+      ph_zlib.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\adventure\out-clang\Release\ph_zlib.lib
+      ph_png.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\adventure\out-clang\Release\ph_png.lib
+• Ran python scripts\build-native.py ponykart > tmp\native-build\ponykart-final.log 2>&1
+  └ (no output)
+• Ran python scripts\build-native.py adventure > tmp\native-build\adventure-final.log 2>&1
+  └ (no output)
+• Edited 2 files (+5 -1)
+  └ package.json (+4 -0)
++    "test:sync": "node scripts/qa-sync.mjs",
++    "test:desktop": "node --test tests/desktop.test.mjs",
++    "test:desktop-browser": "node scripts/qa-desktop-browser.mjs",
+
+  └ scripts\qa-cloud.mjs (+1 -1)
+-    await page.goto('http://127.0.0.1:5174/');
++    await page.goto(process.env.QA_URL || 'http://127.0.0.1:5175/');
+• Added MOBILE_SYNC_SETUP.md (+71 -0)
++# Desktop and mobile sync
++
++Ponyhaven can share one profile between the Windows app and a mobile website on GitHub Pages. The phone has **Meadow, Little shop, and Collection**. Adventure, P
+• Ran Get-Content tmp\native-build\adventure-final.log -Tail 8; Get-Content tmp\native-build\ponykart-final.log -Tail 8
+  └   ph_png.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ph_png.lib
+      ponykart.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ponykart.exe
+    Built C:\Users\calla\Desktop\MLPKT\native\ponykart\ponykart.exe
+• Edited scripts\patch-native.py (+8 -23)
+-        p.write_text(fn(backup.read_text(encoding='utf8')),encoding='utf8')
++        changed=fn(backup.read_text(encoding='utf8'))
++        if p.read_text(encoding='utf8')!=changed:p.write_text(changed,encoding='utf8')
+• Ran python scripts\patch-native.py
+  └ Patched adventure
+    Patched ponykart
+• Ran python scripts\build-native.py ponykart > tmp\native-build\ponykart-final.log 2>&1
+  └ (no output)
+• Ran Get-Content tmp\native-build\ponykart-final.log -Tail 7
+  └   ph_png.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ph_png.lib
+      ponykart.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\ponykart\out-clang\Release\ponykart.exe
+    Built C:\Users\calla\Desktop\MLPKT\native\ponykart\ponykart.exe
+• Ran node scripts\qa-cloud.mjs
+  └   "checks": "local Firebase rules, password login, uninvited denial, separate cloud collections/wallets, reload persistence, online list, invitations, join codes, h…
+      "pageErrors": []
+    }
+• Ran Get-Content scripts\qa-desktop-browser.mjs | Select-Object -Skip 22 -First 14; Get-Content scripts\qa-care.mjs -First 20; Get-Content DESKTOP_SETUP.md -Last 30
+  └ The browser desktop integration harness also exercises the real filesystem and
+    native-process modules. Its `--network` mode runs a local PeerServer for repeatable
+    WebRTC tests; this is a test dependency, not a required production service.
+• Failed (exit 1) node scripts\qa-native-network.mjs
+  └     at async file:///C:/Users/calla/Desktop/MLPKT/scripts/qa-native-network.mjs:18:3
+    
+    Node.js v22.20.0
+• Ran Get-Content tmp\native-network-1792399055427\profiles\host\ponykart\srb2kart\log.txt -Tail 20; Get-Content tmp\native-network-1792399055427\profiles\host\adventur…
+  └ for game in ['adventure','ponykart']:
+        subprocess.run([sys.executable,str(ROOT/'scripts/build-native.py'),game],cwd=ROOT,check=True)
+    subprocess.run([sys.executable,str(ROOT/'scripts/native-manifest.py')],cwd=ROOT,check=True)
+• Edited scripts\patch-native.py (+3 -0)
++                DWORD *stack=(DWORD *)(uintptr_t)error->ContextRecord->Esp; unsigned i;
+    ⋮
++                for(i=0;i<20;i++) if(SymFromAddr(GetCurrentProcess(),(DWORD64)stack[i],&offset,symbol))
+• Ran python scripts\patch-native.py
+  └ Patched adventure
+    Patched ponykart
+• Ran python scripts\build-native.py ponykart > tmp\native-build\ponykart-final.log 2>&1
+  └ (no output)
+The Firebase access checks passed too: uninvited users and other accounts cannot read or overwrite a player’s save. I’ve written the setup guide, including your first invited email. In the native games, I also corrected the level-name overrides to preserve each course’s original music, sky and gameplay settings.
+• Failed (exit 1) node scripts\qa-native-network.mjs --kart
+  └     at async file:///C:/Users/calla/Desktop/MLPKT/scripts/qa-native-network.mjs:18:3
+    
+    Node.js v22.20.0
+• Ran Get-Content tmp\native-network-1792399147531\profiles\host\ponykart\srb2kart\log.txt -Tail 24; rg -n 'data-card|finish-pack|collection' scripts\qa.mjs | Select-Ob…
+  └ Extract its project files, set `PONYHAVEN_MODS` as described in `DESKTOP_SETUP.md`,
+    and run `python scripts/prepare-native.py` to reproduce the native build. The build
+    uses the upstream source lists and bundled library headers/import libraries.
+• Edited 4 files (+16 -3)
+  └ desktop\games.mjs (+8 -2)
+-    const running = { child, game, session, port, progress, pack:options.pack, timer:null, last:'', stopped:false, stderr:'' };
++    let readyResolve,readyReject;
++    const ready=new Promise((resolve,reject)=>{readyResolve=resolve;readyReject=reject;});
+
+  └ firebase.json (+1 -1)
+-{ "firestore": { "rules": "firestore.rules" } }
++{ "firestore": { "rules": "firestore.rules", "indexes": "firestore.indexes.json" } }
+
+  └ firestore.indexes.json (+6 -0)
++{
++  "indexes": [],
++  "fieldOverrides": [
+
+  └ src\main.ts (+1 -0)
++      if (store.conflicted) return 0;
+• Failed (exit 1) rg -n 'colfunc|wallcol|drawfunc|splatfunc' tmp\arcade\kart-native-source\Kart-Public-1.6\src\r_segs.c; rg -n 'colfunc|wallcolfunc|colfuncs' tmp\arcade…
+  └ 1494:                        colfunc();
+    1528:                        colfunc();
+    2810:    colfunc = wallcolfunc;
+• Edited scripts\patch-native.py (+3 -0)
++                IMAGEHLP_LINE64 line={0};DWORD displacement=0;line.SizeOfStruct=sizeof(line);
+    ⋮
++                if(SymGetLineFromAddr64(GetCurrentProcess(),(DWORD64)stack[0]-1,&displacement,&line))
+• Ran python scripts\patch-native.py
+  └ Patched adventure
+    Patched ponykart
+• Ran python scripts\build-native.py ponykart > tmp\native-build\ponykart-final.log 2>&1
+  └ (no output)
+• Ran rg -n 'wallcolfunc\s*=|basecolfunc\s*=|colfuncs\[' tmp\arcade\kart-native-source\Kart-Public-1.6\src -g '*.c' -g '*.h' | Select-Object -First 45; Get-Content tmp\…
+  └         M_Memcpy(lastopening, floorclip + start, 2*(rw_stopx-start));
+            ds_p->sprbottomclip = lastopening - start;
+            lastopening += rw_stopx - start;
+• Failed (exit 1) node scripts\qa-native-network.mjs --kart
+  └     at process.processTimers (node:internal/timers:523:7)
+    
+    Node.js v22.20.0
+• Ran Get-Content tmp\arcade\kart-native-source\Kart-Public-1.6\src\screen.c | Select-Object -Skip 90 -First 105; Get-Content tmp\arcade\kart-native-source\Kart-Public-…
+  └                 if (markceiling)
+    tmp\arcade\kart-native-source\Kart-Public-1.6\src\screen.c:107:void SCR_SetMode(void)
+    tmp\arcade\kart-native-source\Kart-Public-1.6\src\p_setup.c:2306:    R_SetupSkyDraw();
+• Edited scripts\patch-native.py (+3 -0)
++        # Direct network launches can load a sky before the first video-mode
++        # change. Initialize both aliases together, including later resizes.
++        edit('src/screen.c',lambda t:t.replace('walldrawerfunc = R_DrawWallColumn_8;', 'wallcolfunc = walldrawerfunc = R_DrawWallColumn_8;'))
+• Ran python scripts\patch-native.py
+  └ Patched adventure
+    Patched ponykart
+• Ran python scripts\build-native.py ponykart > tmp\native-build\ponykart-final.log 2>&1
+  └ (no output)
+• Ran Get-Content tmp\native-network-1792399266000\profiles\host\ponykart\srb2kart\log.txt -Tail 10; Get-Content README.md -Tail 40; Get-Content DESKTOP_SETUP.md -First…
+  └ 
+    See [Gumroad's license-key guide](https://gumroad.com/help/article/76-license-keys)
+    for the seller workflow. The app uses the documented license verification endpoint,
+• Failed (exit 1) node scripts\qa-native-network.mjs
+  └     at process.processTimers (node:internal/timers:523:7)
+    
+    Node.js v22.20.0
+• Ran Get-Content tmp\arcade\kart-native-source\Kart-Public-1.6\src\screen.c -First 100; rg -n 'GetModeForSize|960|600' tmp\arcade\kart-native-source\Kart-Public-1.6\sr…
+  └ tmp\arcade\kart-native-source\Kart-Public-1.6\src\sdl\i_video.c:1546:INT32 VID_GetModeForSize(INT32 w, INT32 h)
+    tmp\arcade\kart-native-source\Kart-Public-1.6\src\sdl\i_video.c:2035:    VID_SetMode(VID_GetModeForSize(BASEVIDWIDTH, BASEVIDHEIGHT));
+    tmp\arcade\kart-native-source\Kart-Public-1.6\src\sdl\i_video.c:2053:    VID_SetMode(VID_GetModeForSize(BASEVIDWIDTH, BASEVIDHEIGHT));
+• Ran Get-Content tmp\arcade\kart-native-source\Kart-Public-1.6\src\sdl\i_video.c | Select-Object -Skip 150 -First 26; Get-Content tmp\arcade\kart-native-source\Kart-Pu…
+  └     {
+            for (i=firstEntry; i<numVidModes; i++)
+            {
+• Edited desktop\games.mjs (+1 -1)
+-      '-ph-pastel',String(pastel),'-width','960','-height','600',fullscreen ? '-fullscreen' : '-win',
++      '-ph-pastel',String(pastel),'-width','1280','-height','800',fullscreen ? '-fullscreen' : '-win',
+• Ran $env:QA_URL='http://127.0.0.1:5174/'; node scripts\qa-care.mjs
+  └   "checks": "dirt, collision bath, brushing, sleep, 10-second transformations, no cameos, NPC friendship/XP, persistence, backgrounds, per-pony level rewards/switch…
+      "errors": []
+    }
+• Failed (exit 1) Get-Content tmp\native-network-1792399335008\profiles\host\ponykart\srb2kart\log.txt -Tail 12; Get-Content tmp\native-network-1792399335008\profiles\g…
+  └    ception
+        + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+     
+• Failed (exit 1) $env:QA_URL='http://127.0.0.1:5174/'; node scripts\qa.mjs
+  └ }
+    
+    Node.js v22.20.0
+• Failed (exit 1) node scripts\qa-native-network.mjs
+  └     at process.processTimers (node:internal/timers:523:7)
+    
+    Node.js v22.20.0
+• Ran rg -n 'F_StartWaitingPlayers|F_WaitingPlayers' tmp\arcade\kart-native-source\Kart-Public-1.6\src\f_finale.c; Get-Content tmp\arcade\kart-native-source\Kart-Public…
+  └ 966:    if (!ttbanner || (gamestate != GS_TITLESCREEN && gamestate != GS_WAITINGPLAYERS))
+    1146://  WAITINGPLAYERS
+    1181:        S_ChangeMusicInternal("WAIT2J", true);
+• Edited scripts\qa.mjs (+1 -0)
++  await page.locator('nav [data-nav="shop"]').click();
+• Ran Get-Content tmp\arcade\kart-native-source\Kart-Public-1.6\src\f_finale.c | Select-Object -Skip 1135 -First 130
+  └             Command_ExitGame_f();
+        }
+        else
+• Edited scripts\patch-native.py (+12 -0)
++        def waiting(t):
++            # Pony addons need not provide the stock character's waiting poses.
++            t=t.replace('void F_StartWaitingPlayers(void)\n{','void F_StartWaitingPlayers(void)\n{\n\twipegamestate = GS_TITLESCREEN; finalecount = 0; return;\n
+• Ran python scripts\patch-native.py
+  └ Patched adventure
+    Patched ponykart
+• Ran python scripts\build-native.py ponykart > tmp\native-build\ponykart-final.log 2>&1
+  └ (no output)
+• Ran $env:QA_URL='http://127.0.0.1:5174/'; node scripts\qa.mjs
+  └   "checks": "starter, care, daily gift, persistence, pack interruption/recovery, purchases, collection filters/details, Tetris controls/pause, background upload/per…
+      "pageErrors": []
+    }
+• Ran node scripts\qa-native-network.mjs
+  └     type: 'progress'
+      }
+    }
+• Ran rg -n 'waitforplayers|wait_for|waitplayers|join.*race|join.*game|join.*spect|cv_.*join|cv_.*wait' tmp\arcade\kart-native-source\Kart-Public-1.6\src\d_netcmd.c tmp…
+  └ Map is now "MAP01: Green Hills"
+    *Player 2 has joined the game (node 1)
+    *Player 2 renamed to Guest
+• Edited 3 files (+18 -4)
+  └ DESKTOP_SETUP.md (+3 -2)
+-native Windows game windows. There is no Supabase or Firebase dependency in the
+-desktop app. The older browser preview still works for the web games.
++native Windows game windows. Local solo play needs no backend after activation.
+
+  └ README.md (+6 -1)
+-A free personal My Little Pony fan game for friends, built as a static HTML/TypeScript site for GitHub Pages. Care for a Desktop Ponies companion, play Magic Blocks, collect Kayou cards, and visit a shared meadow.
++A free personal My Little Pony fan game for friends. The Electron desktop app includes the meadow, Kayou collection, Magic Blocks, native Adventure and Ponykart.
+
+  └ THIRD_PARTY.md (+9 -1)
+-DM Sans and Nunito are self-hosted under the SIL Open Font License. Their license texts are in `public/assets/fonts`. The default `meadow.svg`, interface icons, pack illustrations, CSS rarity effects and synthesized sound effects were made for Ponyhaven. No third-party audio recordings are used.
++DM Sans and Nunito are self-hosted under the SIL Open Font License. Their license texts are in `public/assets/fonts`. The default `meadow.svg`, interface icons, 
+Both native games now pass the two-player connection test. Ponykart’s failures came from an unsupported launch resolution and a waiting-screen animation that some pony mods don’t provide; both are corrected. I’m checking the full invite-code flow next, then packaging the desktop build and setup documents.
+• Edited scripts\qa-native.py (+6 -3)
+-def run(game,pony='twilight',strength=55):
+-    folder=ROOT/'tmp/native-qa'/f'{game}-{pony}-{strength}'
++def run(game,pony='twilight',strength=55,map_id=1):
+• Ran python scripts\qa-native-gameplay.py
+  └ Actual fresh-ring pickup, dropped ring excluded, and finish: 0 {'session': '00000000-0000-0000-0000-000000000099', 'rings': 1, 'score': 0, 'map': 1, 'elapsed': 70, …
+• Ran Get-Content DESKTOP_SETUP.md | Select-Object -Skip 45 -First 52; Get-Content QA.md -First 12
+  └ - Pack cards staying in their exact pool, duplicate handling, awards before reveals, and interruption recovery.
+    - Prices, insufficient funds, stale stock, single-card daily limits, caster unlocks and daily gifts.
+    - Unlimited pet switching, deduplicated rarity variants, and separate pony care/XP records.
+The sync code and local tests are ready. Have you created a Firebase project yet? If so, you can share its four public Web app values: apiKey, authDomain, projectId and appId. Otherwise, the new MOBILE_SYNC_SETUP.md guide walks through setup. Please don’t send passwords, license keys or Admin credentials.
+
+- Use the setup guide for now
+- I have Firebase Web app settings to share
+• Ran Get-Content tmp\native-qa\final-review.log -Tail 6
+  └ adventure trixie 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 1, 'elapsed': 172, 'laps': 0, 'players': 1, 'finishe…
+    ponykart fluttershy 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 1, 'elapsed': 0, 'laps': 0, 'players': 1, 'finish…
+    ponykart applejack 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 1, 'elapsed': 0, 'laps': 0, 'players': 1, 'finishe…
+
+> The sync code and local tests are ready. Have you created a Firebase project yet? If so, you can share its four public Web app values: apiKey, authDomain, projectId and appId. Otherwise, the new MOBILE_SYNC_SETUP.md guide walks through setup. Please don’t send passwords, license keys or Admin credentials.
+
+Use the setup guide for now
+
+I’ll leave the live Firebase connection for the setup guide. The full desktop invite-code test has now passed for the shared meadow, host-controlled backgrounds, Adventure and Ponykart. I’m doing the final course preview checks and packaging the build.
+• Edited 3 files (+4 -2)
+  └ MOBILE_SYNC_SETUP.md (+2 -0)
++   Recommended: in Firestore **Indexes → Single field → Add exemption**, use collection group `players`, field `save`, and disable ascending, descending and array indexes. Saves are read by account ID and never searched. This avoids indexing every card and pony. The same exemption is in `firestore.indexes.json` for CLI deployment with `firebase deploy --only firestore`.
+
+  └ QA.md (+1 -1)
+-`npm test` — 21 passing tests covering:
++`npm test` — 24 passing tests covering:
+
+  └ scripts\package-desktop.mjs (+1 -1)
+-for(const file of ['DESKTOP_SETUP.md','THIRD_PARTY.md'])await fs.copyFile(path.join(root,file),path.join(release,file));
++for(const file of ['DESKTOP_SETUP.md','MOBILE_SYNC_SETUP.md','FIREBASE_SETUP.md','THIRD_PARTY.md','QA.md'])await fs.copyFile(path.join(root,file),path.join(release,file));
+• Edited engines\README.md (+11 -0)
++- Safe software drawer initialization, a simple pony-independent multiplayer
++  waiting screen, and no automatic multiplayer replay recording in launcher runs.
++- The same 2 MiB process stack reserve as the upstream Windows releases. Native
+• Failed (exit 1) Get-Content tmp\native-qa\final-review.log -Tail 8; Get-ChildItem scripts -Filter '*prepare*' | Select-Object Name; Get-ChildItem -Path release -Error…
+  └ prepare-native.py       
+    
+    
+• Context compacted · 2m 54s
+
+maybe give me the code to set up what is needed in firebase console in a text file
+
+I’ll add a copy-and-paste text file with the Firebase rules and setup steps, and clearly mark the values you need to fill in.
+• Ran Get-Location; Get-Content MOBILE_SYNC_SETUP.md; Get-Content firestore.rules; Get-Content firebase.json; Get-Content firestore.indexes.json
+  └ }
+    
+    
+◦ Browsing the web
+• Ran rg --files -g AGENTS.md -g package.json -g '*qa*' -g '*.md' -g '*.txt' -g '*package*' -g '!node_modules/**' -g '!tmp/**' -g '!native/**' -g '!public/**'; Get-Cont…
+  └ ponykart twilight 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 33, 'elapsed': 0, 'laps': 0, 'players': 1, 'finishe…
+    ponykart twilight 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 34, 'elapsed': 0, 'laps': 0, 'players': 1, 'finishe…
+    ponykart twilight 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 35, 'elapsed': 0, 'laps': 0, 'players': 1, 'finishe…
+• Opened https://firebase.google.com/docs/rules/manage-deploy
+• Failed (exit 1) python scripts\qa-native.py --roster --courses > tmp\native-qa\final-review.log 2>&1
+  └ (no output)
+• Edited 3 files (+178 -1)
+  └ MOBILE_SYNC_SETUP.md (+2 -0)
++For a single copy-and-paste text file with the full rules and Console settings, open [FIREBASE_CONSOLE_SETUP.txt](FIREBASE_CONSOLE_SETUP.txt).
++
+
+  └ scripts\package-desktop.mjs (+2 -1)
++execFileSync(process.execPath,['scripts/write-firebase-setup.mjs'],{stdio:'inherit'});
+   ⋮
+-for(const file of ['DESKTOP_SETUP.md','MOBILE_SYNC_SETUP.md','FIREBASE_SETUP.md','THIRD_PARTY.md','QA.md'])await fs.copyFile(path.join(root,file),path.join(relea
+
+  └ scripts\write-firebase-setup.mjs (+174 -0)
++import fs from 'node:fs/promises';
++
++// Keep the copy-and-paste guide's rules identical to the tested source file.
+• Ran node scripts/write-firebase-setup.mjs; Get-Content FIREBASE_SETUP.md -TotalCount 28; Get-Content tests/desktop.test.mjs; Get-Content desktop/profiles.mjs; Get-Con…
+  └     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+            shots=list(pool.map(lambda a:run(*a),jobs))
+        (ROOT/'tmp/native-qa/screenshots.json').write_text(json.dumps(shots,indent=2))
+The text file is ready: FIREBASE_CONSOLE_SETUP.txt (FIREBASE_CONSOLE_SETUP.txt). It includes the full rules to paste, your first account’s invitation fields, and the app configuration template. I’ll also include it with the desktop build.
+• Failed (exit 1) rg -n 'setInterval|setTimeout|clearInterval|close\(' node_modules/peer/dist/index.cjs desktop/relay.mjs scripts/qa-desktop-browser.mjs; Get-Content RE…
+  └         for p in (mods/folder).iterdir():
+                if p.suffix.lower() in ['.wad','.pk3','.txt','.md']:z.write(p,'original-pony-assets/'+folder+'/'+p.name)
+    print('Bundled engine source, build scripts, palette and original supplied mods.')
+• Failed (exit 1) Get-Content tmp/native-qa/final-review.log -Tail 55; Get-Content node_modules/peer/dist/index.cjs | Select-Object -Skip 90 -First 105; Get-Content nod…
+  └     + CategoryInfo          : PermissionDenied: (root\cimv2:Win32_Process:String) [Get-CimInstance], CimException
+        + FullyQualifiedErrorId : HRESULT 0x80041003,Microsoft.Management.Infrastructure.CimCmdlets.GetCimInstanceCommand
+     
+• Ran Get-Content tmp/native-qa/ponykart-twilight-55-map36/process.log -Tail 70; Get-Content tmp/native-qa/ponykart-twilight-55-map37/process.log -Tail 35; Get-Content …
+  └     /* Return to the MLP launcher before the engine's original story/intermission. */
+        if (finished && connected <= 1) I_Quit();
+    }
+• Ran rg -n 'need to unlock this level|UNLOCKREQUIRED|unlockrequired|M_MapLocked' tmp/arcade/kart-source/src/d_main.c tmp/arcade/kart-source/src/deh_soc.c tmp/arcade/ka…
+  └  }
+    }
+    async function until(fn,ms) {const end=Date.now()+ms;while(Date.now()<end){if(fn())return;await new Promise(r=>setTimeout(r,200));}throw Error('Native network timed…
+• Ran Get-Content scripts/build-native.py -TotalCount 35; rg -n 'need to unlock this level|UNLOCKREQUIRED|unlockrequired|M_MapLocked' tmp/arcade -g d_main.c -g deh_soc.…
+  └   }
+    }
+    export const party = new PeerParty();
+• Failed (exit 1) node scripts\qa-desktop-browser.mjs --network
+  └ adventure: two actual native engines joined over PeerJS/WebRTC + loopback UDP.
+    ponykart: two actual native engines joined over PeerJS/WebRTC + loopback UDP.
+    Shared meadow invite, host background authority, friend presence, and both engine network handshakes passed.
+• Ran rg -n -C 5 'unlockrequired =' tmp/arcade/kart-native-source/Kart-Public-1.6/src/dehacked.c; Get-Content scripts/qa-sync.mjs -TotalCount 65; Get-Content .github/wo…
+  └ #sync-form { display:grid;gap:12px; }
+    .companion [data-nav="blocks"],.companion [data-nav="adventure"],.companion [data-nav="ponykart"],.companion [data-nav="leaderboard"] { display:none!important; }
+    @media(max-width:620px){.companion .site-header nav{justify-content:space-around;} .companion .nav-item{flex:1;} .sync-notice {font-size:13px;gap:6px;} .sync-notice…
+• Edited 2 files (+13 -4)
+  └ scripts\qa-desktop-browser.mjs (+7 -4)
+-import { PeerServer } from 'peer';
++import { fork } from 'node:child_process';
+   ⋮
+
+  └ scripts\qa-peer-server.mjs (+6 -0)
++// Isolate PeerServer's internal recurring timers in a disposable QA process.
++import { PeerServer } from 'peer';
++
+The final course checks found a few Ponykart tracks still gated by the original game’s unlock system. I’m removing that restriction from the launcher’s course list, then checking those tracks before packaging.
+• Edited 4 files (+18 -6)
+  └ FIREBASE_SETUP.md (+2 -0)
++For desktop-to-phone progress sync, start with [MOBILE_SYNC_SETUP.md](MOBILE_SYNC_SETUP.md), or use the complete [Console copy-and-paste text file](FIREBASE_CONSOLE_SETUP.txt). This document also covers the optional local account administration tool and the browser's shared meadows. Desktop invite parties use PeerJS separately.
+
+  └ README.md (+3 -1)
+-| `src/storage.ts`, `src/social.ts` | Local/cloud saves, accounts, rooms, invitations and shared backgrounds |
++| `src/save-store.ts`, `src/cloud.ts`, `src/storage.ts` | Revisioned local/cloud saves, invited accounts and device preferences |
++| `src/social.ts`, `src/peer-party.ts` | Firebase browser rooms and desktop peer parties |
+
+  └ scripts\prepare-native-assets.py (+1 -1)
+-        fields.update(LEVELNAME=title,NOZONE='1')
++        fields.update(LEVELNAME=title,NOZONE='1',UNLOCKABLE='0')
+
+  └ scripts\qa-native.py (+12 -4)
+-    shots=list(user.rglob('*.png'));assert shots,(game,pony,'no engine screenshot')
++    assert d['map']==map_id,(game,pony,'wrong course',d)
++    shots=sorted(user.rglob('*.png'),key=lambda p:p.stat().st_mtime);assert shots,(game,pony,'no engine screenshot')
+• Ran python scripts/prepare-native-assets.py
+  └ Prepared Adventure (7 ponies) and Ponykart (Mane 6). Original mods are unchanged.
+• Ran npm test; npm run test:desktop; Get-ChildItem native/adventure,native/ponykart | Select-Object DirectoryName,Name,Length; Get-Content .gitignore; Get-Content scri…
+  └ await server.listen();console.log('Sync QA preview: http://127.0.0.1:5175');
+    
+    
+• Ran Get-Content scripts/native-manifest.py; Get-Content desktop/games.mjs -TotalCount 175; Get-Content tmp/native-qa/remaining-review.log -Tail 8; Get-Content README.…
+  └ VITE_REQUIRE_AUTH=false
+    # Pages companion: pet care, shop and collection. Desktop always keeps all games.
+    VITE_COMPANION=false
+• Edited 3 files (+32 -5)
+  └ QA.md (+30 -3)
+-`npm run test:cloud` connects **only** to the local demo project `demo-ponyhaven`, Auth port 19099 and Firestore port 18080. It never targets a real project. It expects the game running in emulator mode on port 5174.
++`npm run test:cloud` connects **only** to the local demo project `demo-ponyhaven`, Auth port 19099 and Firestore port 18080. It never targets a real project. It 
+
+  └ scripts\native-manifest.py (+1 -1)
+-manifest={game:{p.name:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in sorted((ROOT/'native'/game).iterdir()) if p.is_file()} for game in ['adventure','ponykart']}
++manifest={game:{p.name:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in sorted((ROOT/'native'/game).iterdir()) if p.is_file
+
+  └ scripts\package-desktop.mjs (+1 -1)
+-for(const dir of ['desktop','dist','native'])await fs.cp(path.join(root,dir),path.join(resource,dir),{recursive:true});
++for(const dir of ['desktop','dist','native'])await fs.cp(path.join(root,dir),path.join(resource,dir),{recursive:true,filter:p=>path.basename(p)!=='latest-log.txt'&&!p.endsWith('.log')});
+• Ran python scripts/qa-native.py --courses --game ponykart --min-map 36 > tmp/native-qa/remaining-review.log 2>&1
+  └ (no output)
+• Ran Get-Content tmp/native-qa/remaining-review.log -Tail 10; Get-Content src/cloud.ts -TotalCount 95; Get-Content scripts/qa-desktop.mjs -TotalCount 50; Get-Content s…
+  └ import { createServer } from 'vite';
+    const server=await createServer({server:{host:'127.0.0.1',port:5174,strictPort:true,hmr:false}});
+    await server.listen();console.log('Stable QA preview: http://127.0.0.1:5174');
+• Ran node scripts/qa-desktop-browser.mjs --network
+  └ adventure: two actual native engines joined over PeerJS/WebRTC + loopback UDP.
+    ponykart: two actual native engines joined over PeerJS/WebRTC + loopback UDP.
+    Shared meadow invite, host background authority, friend presence, and both engine network handshakes passed.
+• Ran npm run build
+  └ dist/assets/index-CMS13tY8.js          222.50 kB │ gzip:  69.78 kB
+    dist/assets/firebase-data-OmRY4WFl.js  475.65 kB │ gzip: 142.94 kB
+    ✓ built in 26.50s
+• Edited 2 files (+40 -0)
+  └ tmp\native-qa\contact-sheets.py (+28 -0)
++import pathlib,json
++from PIL import Image,ImageDraw,ImageFont
++root=pathlib.Path(__file__).resolve().parents[2]
+
+  └ tmp\verify-companion-nav.mjs (+12 -0)
++import {chromium} from 'playwright';
++import assert from 'node:assert/strict';
++const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe'});
+■ You’ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 9:51 PM.
+
+continue with your work ,"C:\Users\calla\Desktop\MLPKT\.env.local" is created, i confirm firebase is configured per C:\Users\calla\Desktop\MLPKT\FIREBASE_CONSOLE_SETUP.txt  please continue and arrange for the github page/companion (ive not created the repo yet so you can go ahead with that) and any outstanding items my firebase project is https://console.firebase.google.com/u/0/project/mlp4kt/overview
+
+I’ll use the new Firebase configuration to rebuild the app and publish the mobile companion on GitHub Pages. I’ll also check that .env.local and private account files stay out of the repository.
+• Browsing the web
+• Ran git status -sb; Get-Command gh -ErrorAction SilentlyContinue | Select-Object Source; Get-Content vite.config.ts; Get-Content .github/workflows/pages.yml; Get-Cont…
+  └     if (this.linked && local?.pending && local.cloudUid===this.cloudUid) this.pending=local.save;
+        if (!this.linked) {this.setStatus(desktop?'Saved to your local profile':'Saved on this device');return this.latest;}
+        if (!this.canSync) {this.setStatus('Sync paused Â· reconnect this profile in settings');return this.latest;}
+• Opened https://console.firebase.google.com/u/0/project/mlp4kt/overview
+• Ran Get-Content C:\Users\calla\.codex\plugins\cache\openai-bundled\computer-use\26.1013.31256\skills\computer-use\SKILL.md; git config --global --get user.name; git c…
+  └ 
+    
+    
+• Failed (exit 1) node --input-type=module -e 'import fs from "node:fs"; import {loadEnv} from "vite"; const e=loadEnv("production",process.cwd(),"VITE_"); const keys=[…
+  └     at node:internal/main/eval_string:38:3
+    
+    Node.js v22.20.0
+• Ran git credential-manager github list; Get-Content tmp/native-qa/remaining-review.log -Tail 3
+  └ ponykart twilight 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 58, 'elapsed': 0, 'laps': 0, 'players': 1, 'finishe…
+    ponykart twilight 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 59, 'elapsed': 0, 'laps': 0, 'players': 1, 'finishe…
+    ponykart twilight 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 60, 'elapsed': 0, 'laps': 0, 'players': 1, 'finishe…
+• Called codex_apps.github.get_user_login
+  └ Action completed.
+• Added tmp\check-firebase-config.mjs (+6 -0)
++import fs from 'node:fs';
++import {loadEnv} from 'vite';
++const e=loadEnv('production',process.cwd(),'VITE_');
+• Ran node tmp/check-firebase-config.mjs
+  └ {"exists":true,"keys":{"VITE_FIREBASE_API_KEY":true,"VITE_FIREBASE_AUTH_DOMAIN":true,"VITE_FIREBASE_PROJECT_ID":true,"VITE_FIREBASE_APP_ID":true},"projectId":"mlp4k…
+• Used computer · 1 action
+  └ Find the signed-in GitHub browser
+• Ran Get-Content C:\Users\calla\.codex\plugins\cache\openai-curated-remote\plugin-management\0.1.0\skills\plugin-management\SKILL.md; Get-Content scripts/qa-cloud.mjs …
+  └     anonymous = await client('anonymous');
+      const save = { version: 1, coins: 600, collection: {}, ponyProgress: {}, petUnlocks: [], name: 'Host' };
+      await setDoc(doc(host, 'players', 'qa-host'), { save, revision: 1, updatedAt: serverTimestamp() });
+Firebase’s four public settings are present and point to mlp4kt. The connected GitHub account is fowlong; I’m using the plugin-management skill to check for repository-creation access while I finish the build.
+• Called codex_apps.plugin_management.search_plugins
+  └ Action completed.
+• Viewed image review-adventure-1.png
+• Viewed image review-adventure-2.png
+• Viewed image review-ponykart-1.png
+• Viewed image review-ponykart-2.png
+• Viewed image review-ponykart-3.png
+• Viewed image review-ponykart-4.png
+• Viewed image review-roster.png
+• Used computer · 1 action · 1 failed
+  └ Failed: Open GitHub repository creation — Browser is not available: iab
+• Ran curl.exe --fail --silent --show-error --location https://api.github.com/repos/cli/cli/releases/latest --output tmp/gh-release.json; $releaseInfo = Get-Content tmp…
+  └         try{await desktop.save(snapshot);}catch{this.localPending=this.localPending||snapshot;this.setStatus('Save needs attention Â· export a backup');throw new Er…
+          }
+          if(!this.linked)this.setStatus('Saved to your local profile');
+• Browsing the web
+• Opened https://cli.github.com/manual/gh_auth_login
+• Ran python -c "import zipfile; z=zipfile.ZipFile(r'C:\Users\calla\Downloads\forens\ponykart mod\KC_MLP_Pack_v1a.pk3'); print('\n'.join(n+'\n'+z.read(n).decode() for n…
+  └ DSKBOST2 = DSPKIEB2
+    DSKHITEM = DSPKIEI
+    
+• Edited 2 files (+3 -1)
+  └ tmp\check-firebase-config.mjs (+1 -1)
+-const e=loadEnv('production',process.cwd(),'VITE_');
++const e=loadEnv(process.argv[2]||'production',process.cwd(),'VITE_');
+
+  └ tmp\verify-companion-nav.mjs (+2 -0)
++  await page.locator('nav, .starter-grid').first().waitFor();
++  if(await page.locator('.starter-grid').count()){await page.locator('[data-starter="twilight-sparkle"]').click();await page.locator('[data-action="begin"]').click();}
+• Failed (exit 1) rg -n 'SKINCOLOR_PINK|\{"Pink|skincolors|colortranslation|starttranscolor' tmp/arcade/kart-native-source/Kart-Public-1.6/src/r_draw.c tmp/arcade/kart-…
+  └     }
+        for (n = 0; n < count; ++n) pixels[n] = ph_pastel[pixels[n]];
+    }
+• Ran rg -n 'Dusk|Pink|Lemonade|starttranscolor|colortranslations' tmp/arcade/kart-native-source/Kart-Public-1.6/src -g '*.c' -g '*.h' | Select-Object -First 40; Get-Co…
+  └ vite.config.ts                466
+    
+    
+All 79 courses now load, and both native games passed the local two-player connection tests. Publishing needs one step outside this session: the GitHub connector cannot create repositories, and this terminal cannot reach GitHub or use Windows’ credential store. I’m preparing a single publishing command that will create fowlong/ponyhaven, configure Pages, and upload the source from your normal terminal.
+• Ran node tmp/check-firebase-config.mjs emulator; node tmp/verify-companion-nav.mjs
+  └ {"exists":true,"keys":{"VITE_FIREBASE_API_KEY":true,"VITE_FIREBASE_AUTH_DOMAIN":true,"VITE_FIREBASE_PROJECT_ID":true,"VITE_FIREBASE_APP_ID":true},"projectId":"demo-…
+    Three mobile tabs evenly spaced: [ { x: 15, w: 120 }, { x: 135, w: 120 }, { x: 255, w: 120 } ]
+• Edited 3 files (+164 -0)
+  └ Publish-Ponyhaven.cmd (+5 -0)
++@echo off
++cd /d "%~dp0"
++node scripts\publish-github.mjs
+
+  └ package.json (+1 -0)
++    "publish:github": "node scripts/publish-github.mjs",
+
+  └ scripts\publish-github.mjs (+158 -0)
++// Run from an ordinary Windows terminal: npm run publish:github
++// No tokens are accepted by this script. GitHub CLI handles its own sign-in.
++import fs from 'node:fs/promises';
+• Ran node --check scripts/publish-github.mjs; node scripts/publish-github.mjs --prepare-only
+  └ Prepared 9001 source/art files (342.5 MB).
+    Excluded local environment files, account lists, credentials, saves, native runtimes and release builds.
+    Preparation only; no GitHub requests or publication.
+• Ran Get-Content tmp/arcade/kart-native-source/Kart-Public-1.6/src/r_draw.c | Select-Object -Skip 130 -First 40; Get-Content tmp/arcade/kart-native-source/Kart-Public-…
+  └         R_FlushTranslationColormapCache();
+    
+    
+• Edited 2 files (+69 -5)
+  └ GITHUB_PUBLISHING.txt (+63 -0)
++PONYHAVEN - PUBLISH THE PHONE COMPANION
++======================================
++
+
+  └ scripts\publish-github.mjs (+6 -5)
+-const rootFiles = ['.env.example', '.gitignore', '.prettierrc.json', 'package.json', 'package-lock.json', 'index.html', 'tsconfig.json', 'vite.config.ts', 'firebase.json', 'firebase.test.json', 'firestore.rules', 'firestore.indexes.json'];
++const rootFiles = ['.env.example', '.gitignore', '.prettierrc.json', 'package.json', 'package-lock.json', 'index.html', 'tsconfig.json', 'vite.config.ts', 'fire
+• Ran node --check scripts/publish-github.mjs; node scripts/publish-github.mjs --prepare-only
+  └ Prepared 9003 source/art files (342.5 MB).
+    Excluded local environment files, account lists, credentials, saves, native runtimes and release builds.
+    Preparation only; no GitHub requests or publication.
+Please double-click C:\Users\calla\Desktop\MLPKT\Publish-Ponyhaven.cmd and complete GitHub’s sign-in as fowlong, then let me know whether it finishes successfully. The script creates the repository and deploys Pages; this step needs your normal terminal because the connected GitHub tool cannot create repositories and this session cannot access GitHub or Windows credentials. I’ll continue the desktop build meanwhile.
+
+- Publisher finished successfully
+- Publisher reported an error
+• Ran python -c "import importlib.util,re; s=importlib.util.spec_from_file_location('assets','scripts/prepare-native-assets.py'); m=importlib.util.module_from_spec(s); …
+  └ srb2.srb:SRBOA3A7
+    srb2.srb:SRBOA4A6
+    srb2.srb:SRBOA5
+• Viewed image mobile-companion-final.png
+• Edited 4 files (+7 -4)
+  └ MOBILE_SYNC_SETUP.md (+1 -1)
+-There is no repository URL or live Firebase project configured in this checkout yet. The local build does not create or publish either service automatically.
++The local build does not create either service automatically. In the owner's Windows workspace, [Publish-Ponyhaven.cmd](Publish-Ponyhaven.cmd) can create `fowlong/ponyhaven`, copy the four public variables, and publish the companion; see [GITHUB_PUBLISHING.txt](GITHUB_PUBLISHING.txt).
+
+  └ QA.md (+2 -2)
+-The Firebase rules in `FIREBASE_CONSOLE_SETUP.txt` are generated directly from the tested `firestore.rules` file. Production Firebase remains unconfigured at the owner's request; the text file and mobile setup guide cover that final setup.
++The Firebase rules in `FIREBASE_CONSOLE_SETUP.txt` are generated directly from the tested `firestore.rules` file. The owner has configured project `mlp4kt` and s
+
+  └ scripts\package-desktop.mjs (+1 -1)
+-for(const file of ['DESKTOP_SETUP.md','MOBILE_SYNC_SETUP.md','FIREBASE_SETUP.md','FIREBASE_CONSOLE_SETUP.txt','THIRD_PARTY.md','QA.md'])await fs.copyFile(path.join(root,file),path.join(release,file));
++for(const file of ['DESKTOP_SETUP.md','MOBILE_SYNC_SETUP.md','FIREBASE_SETUP.md','FIREBASE_CONSOLE_SETUP.txt','GITHUB_PUBLISHING.txt','THIRD_PARTY.md','QA.md'])a
+
+  └ scripts\prepare-native-assets.py (+3 -0)
++    # Shared starting-line banners repeat the old logo across many tracks.
++    branded.update(f'FINISH{i:02}' for i in range(1,31))
++    branded.update({'BILSRBTD','COLOSSRB'})
+• Ran python scripts/prepare-native-assets.py
+  └ Prepared Adventure (7 ponies) and Ponykart (Mane 6). Original mods are unchanged.
+The mobile layout check is complete, including the three evenly spaced tabs. I’ve also replaced the repeated original race-logo banners in Ponykart. The desktop package is now building with your mlp4kt configuration, so mobile sync can be linked from Settings once you launch it.
+
+> Please double-click C:\Users\calla\Desktop\MLPKT\Publish-Ponyhaven.cmd and complete GitHub’s sign-in as fowlong, then let me know whether it finishes successfully. The script creates the repository and deploys Pages; this step needs your normal terminal because the connected GitHub tool cannot create repositories and this session cannot access GitHub or Windows credentials. I’ll continue the desktop build meanwhile.
+
+Prepared 9003 source/art files (342.5 MB).
+Excluded local environment files, account lists, credentials, saves, native runtimes and release builds.
+Downloading the official portable GitHub CLI into tmp/github-cli (no system installation).
+Complete GitHub CLI's browser sign-in as fowlong. Do not paste tokens into chat.
+? Authenticate Git with your GitHub credentials? Yes
+
+! One-time code (E971-745A) copied to clipboard
+Press Enter to open https://github.com/login/device in your browser...
+✓ Authentication complete.
+- gh config set -h github.com git_protocol https
+✓ Configured git protocol
+✓ Logged in as fowlong
+✓ Created repository fowlong/ponyhaven on github.com
+  https://github.com/fowlong/ponyhaven
+git remote failed (128). fatal: detected dubious ownership in repository at 'C:/Users/calla/Desktop/MLPKT/tmp/github-publish'
+'C:/Users/calla/Desktop/MLPKT/tmp/github-publish' is owned by:
+        CHBEEF/CodexSandboxOffline (S-1-5-21-218028841-2515948516-3226731953-1010)
+but the current user is:
+        CHBEEF/calla (S-1-5-21-218028841-2515948516-3226731953-1004)
+To add an exception for this directory, call:
+
+        git config --global --add safe.directory C:/Users/calla/Desktop/MLPKT/tmp/github-publish
+
+
+Press any key to continue . . .
+
+The repository was created successfully. The upload stopped because Git sees the prepared folder as owned by the agent’s Windows account. I’m fixing the publisher to trust that exact folder for its own commands, without changing your global Git settings.
+• Edited scripts\publish-github.mjs (+3 -1)
+-  const git = (args, options = {}) => run('git', args, { cwd: stage, ...options });
++  // This exact folder may have been prepared by Codex's separate Windows user.
++  // Trust only it for this invocation; never alter global safe.directory settings.
+The ownership fix is in place. Please run C:\Users\calla\Desktop\MLPKT\Publish-Ponyhaven.cmd again and tell me the result. It will reuse your GitHub login and the repository it already created.
+
+- Publisher finished successfully
+- Publisher reported another error
+• Called codex_apps.github.get_repo
+  └ Action completed.
+• Ran python -c "import runpy; m=runpy.run_path('scripts/qa-native.py'); m['run']('ponykart',map_id=1); m['run']('ponykart',map_id=59)"
+  └ ponykart twilight 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 1, 'elapsed': 0, 'laps': 0, 'players': 1, 'finished…
+    ponykart twilight 55 rendered {'session': '00000000-0000-0000-0000-000000000001', 'rings': 0, 'score': 0, 'map': 59, 'elapsed': 0, 'laps': 0, 'players': 1, 'finishe…
+• Ran node --check scripts/publish-github.mjs; npm run desktop:package
+  └ Updated native runtime SHA-256 manifest.
+    Bundled engine source, build scripts, palette and original supplied mods.
+    Portable desktop build: C:\Users\calla\Desktop\MLPKT\release\Ponyhaven-win32-x64
+• Edited scripts\publish-github.mjs (+1 -1)
+-  const r = spawnSync(command, args, { cwd: root, encoding: 'utf8', windowsHide: true, ...options });
++  const r = spawnSync(command, args, { cwd: root, encoding: 'utf8', windowsHide: true, maxBuffer: 64 * 1024 * 1024, ...options });
+• Ran Get-ChildItem tmp/native-qa/ponykart-twilight-55-map1 -Recurse -Filter '*.png' | Sort-Object LastWriteTime -Descending | Select-Object -First 1 -ExpandProperty Fu…
+  └ vulkan-1.dll                  939520
+    
+    
+• Viewed image kart0001.png
+• Viewed image kart0001.png
+• Called codex_apps.github.fetch
+  └ Action completed.
+• Ran Get-ChildItem tmp -Filter '*prod*'; Get-ChildItem tmp -Filter '*serve*'; Get-Content package-lock.json -TotalCount 22; Test-Path 'C:\Program Files\7-Zip\7z.exe'
+  └ True
+    
+    
+• Ran rg -n 'def (decode|readpatch|patch_image|image_from|decode_patch)' scripts tmp -g '*.py' -g '!tmp/arcade/**' -g '!tmp/java21/**' -g '!tmp/github-publish/**' -g '!…
+  └ Extract its project files, set `PONYHAVEN_MODS` as described in `DESKTOP_SETUP.md`,
+    and run `python scripts/prepare-native.py` to reproduce the native build. The build
+    uses the upstream source lists and bundled library headers/import libraries.
+• Added tmp\verify-release.mjs (+21 -0)
++import fs from 'node:fs/promises';
++import path from 'node:path';
++import {createHash} from 'node:crypto';
+• Called codex_apps.github.fetch
+  └ Action completed.
+• Ran node tmp/verify-release.mjs; & 'C:\Program Files\7-Zip\7z.exe' a -tzip -mx=5 -bso0 -bsp0 'release\Ponyhaven-Windows.zip' '.\release\Ponyhaven-win32-x64'
+  └ Portable app verified: 57 native files match SHA-256, correct live public Firebase config, current rules, and no private/local files.
+
+> The ownership fix is in place. Please run C:\Users\calla\Desktop\MLPKT\Publish-Ponyhaven.cmd again and tell me the result. It will reuse your GitHub login and the repository it already created.
+
+Publisher finished successfully
+
+The publisher finished successfully. I’m checking the GitHub Actions deployment now, then I’ll verify the live mobile page. The desktop package has also passed its file-integrity checks and is being compressed for sharing.
+• Called codex_apps.github.fetch
+  └ Action completed.
+• Ran Get-Content tmp/github-publication.json; Get-ChildItem release/Ponyhaven-Windows.zip -ErrorAction SilentlyContinue | Select-Object Length,LastWriteTime
+  └ 988487701 19/10/2026 10:10:42 PM
+    
+    
+• Called codex_apps.github.fetch_workflow_run_jobs
+  └ Action completed.
+• Ran Get-Content tests/catalog.test.ts -TotalCount 12; Get-Content index.html; Get-Content tmp/github-publish/.git/config
+  └ [branch "main"]
+        remote = origin
+        merge = refs/heads/main
+• Added tmp\check-live-companion.mjs (+16 -0)
++import {chromium} from 'playwright';
++import assert from 'node:assert/strict';
++const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe'});
+◦ Browsing the web
+• Opened https://fowlong.github.io/ponyhaven/
+• Called codex_apps.github.fetch_workflow_run_jobs
+  └ Action completed.
+• Ran node tmp/check-live-companion.mjs; & 'C:\Program Files\7-Zip\7z.exe' t -bso0 -bsp0 release/Ponyhaven-Windows.zip
+  └ }
+    
+    Node.js v22.20.0
+• Ran Get-Item release/Ponyhaven-Windows.zip | Select-Object Length; Get-Content src/main.ts | Select-String 'login-account|accountLogin' -Context 2,2 | Select-Object -…
+  └          
+    
+    
+GitHub Pages has deployed successfully: open the mobile companion. The cloud build and tests passed. This session’s browser is blocked from opening external sites, so the final production sign-in check will need your browser; I’m finishing the packaged-app checks here.
+• Called codex_apps.github.fetch
+  └ Action completed.
+◦ Browsing the web
+• Opened https://fowlong.github.io/ponyhaven/
+• Ran python -c "import importlib.util,re; s=importlib.util.spec_from_file_location('assets','scripts/prepare-native-assets.py'); m=importlib.util.module_from_spec(s); …
+  └ TAILSTXE
+    TAILSTXF
+    TM64EGG2
+• Called codex_apps.github.fetch_workflow_job_logs
+  └ Action completed.
+• Ran Get-FileHash release/Ponyhaven-Windows.zip -Algorithm SHA256 | Select-Object Hash; node --test tests/desktop.test.mjs > tmp/desktop-final-tests.txt; Get-Content t…
+  └ # duration_ms 287.6038
+    
+    
+• Ran $archiveDigest = (Get-FileHash -LiteralPath release/Ponyhaven-Windows.zip -Algorithm SHA256).Hash.ToLowerInvariant(); Set-Content -LiteralPath release/Ponyhaven-W…
+  └ (no output)
+Published successfully:
+
+- Mobile companion
+- GitHub repository
+- Windows app ZIP — 988 MB (release/Ponyhaven-Windows.zip)
+
+Extract the entire ZIP and run Ponyhaven.exe. After activation, choose Settings → Connect mobile sync and use the same invited Firebase account as the website.
+
+Collection refresh and sync checks passed, alongside 29 automated tests, local multiplayer checks, and all 79 course previews.
+
+Real Gumroad activation and production sign-in still need checking on your computer; this session’s restrictions prevented the final Electron UI and live-site browser checks.
+  Worked for 19m 55s • 10:15 PM
+
+might be a dumb question but is it deployed as a packaged electron app as requested for easy downloading and running?
+
+• Model interrupted to submit steer instructions.
+
+oh i see, zip should be fine
+
+• Model interrupted to submit steer instructions.
+
+do we still need 5 background terminals running?
+
+• Context compacted · 1m 59s
+I’ll check what those terminals are running and close any leftover preview or test services. The Electron app is packaged locally, but its ZIP hasn’t yet been published as a downloadable GitHub release.
+• Failed (exit 1) Get-CimInstance Win32_Process | Where-Object { $_.Name -match '^(node|java|cmd|powershell|pwsh|electron|chrome|srb2|srb2kart).*' } | Select-Object Pro…
+  └     + CategoryInfo          : PermissionDenied: (root\cimv2:Win32_Process:String) [Get-CimInstance], CimException
+        + FullyQualifiedErrorId : HRESULT 0x80041003,Microsoft.Management.Infrastructure.CimCmdlets.GetCimInstanceCommand
+     
+• Failed (exit 1) netstat -ano -p tcp | Select-String 'LISTENING' | Select-String ':5173 |:5174 |:5175 |:18080 |:19099 |:4400 |:4500 |:9000 |:9001 |:9222 |:9223 |:3000 …
+  └ 86780 powershell  19/10/2026 7:22:09 PM  C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe                     
+    
+    
+
+firebase needs an email in user and initial activation wont accept an email as username
+
+The Firebase email and the activation profile name are currently separate, which makes that setup confusing. I’ll check the fields and make the flow clearer. I’m also closing the leftover local test services; the published site doesn’t need them.
+• Failed (exit 1) node scripts/qa-server.mjs
+  └ Instead of /public/assets/meadow.svg, use /assets/meadow.svg.
+    Files in the public directory are served at the root path.
+    Instead of /public/assets/meadow.svg, use /assets/meadow.svg.
+• Failed (exit 1) node scripts\qa-sync-server.mjs
+  └ Sync QA preview: http://127.0.0.1:5175
+• Failed (exit 1) $env:JAVA_HOME=(Resolve-Path 'tmp\java21\jdk-21.0.12.1+1-jre').Path; $env:PATH=$env:JAVA_HOME+'\bin;'+$env:PATH; $env:FIREBASE_EMULATORS_PATH=(Resolve…
+  └ 
+    Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+     
+• Ran rg --files -g AGENTS.md -g '!node_modules' -g '!tmp' -g '!native' -g '!release' -g '!public'; rg -n 'username|Connect mobile|connect mobile|activation|license' sr…
+  └ src\main.ts:1391:  app.innerHTML = `<main class="login-screen"><span class="brand-mark">${icon('spark')}</span><p class="eyebrow">YOUR LITTLE WORLD IS WAITING</p><h…
+    src\main.ts:1470:  if ((ev.target as HTMLElement).id === 'activation-form') {
+    src\types.ts:36:  activation: string;
+• Ran Get-Content desktop\license.mjs; Get-Content src\cloud.ts; Get-Content desktop\profiles.mjs; Get-Content package.json
+  └     "@grpc/grpc-js": "^1.13.6"
+      }
+    }
+• Failed (exit 1) Get-Content MOBILE_SYNC_SETUP.md; Get-Content DESKTOP_SETUP.md; Get-Content scripts\package-desktop.mjs; rg -n 'username|sync-account|activation-name|…
+  └ rg: scripts\qa*: The filename, directory name, or volume label syntax is incorrect. (os error 123)
+    tests\desktop.test.mjs:6:import { verifyLicense, username } from '../desktop/license.mjs';
+    tests\desktop.test.mjs:24:  assert.throws(()=>username('../profile'));assert.throws(()=>username('a'));assert.equal(username('  Friend  '),'Friend');
+• Ran $agentPaths = @('C:\AGENTS.md', 'C:\Users\AGENTS.md', 'C:\Users\calla\AGENTS.md', 'C:\Users\calla\Desktop\AGENTS.md', 'C:\Users\calla\Desktop\MLPKT\AGENTS.md'); f…
+  └   TCP    127.0.0.1:5173         0.0.0.0:0              LISTENING       31776
+    
+    
+
+i mean i tried with charris as username and it didnt work its just hanging
+
+charris is a valid profile name, so that sounds like activation is hanging rather than rejecting the username. I’ll trace the activation request and check how the app handles a stalled connection.
+After you click “Activate my invitation,” does the welcome screen stay visible with a disabled button, show an error, or turn blank? Please don’t share your license key.
+
+- Welcome screen stays; button stops responding
+- An error appears
+- The screen turns blank
+
+> After you click “Activate my invitation,” does the welcome screen stay visible with a disabled button, show an error, or turn blank? Please don’t share your license key.
+
+Welcome screen stays; button stops responding
+
+• Ran Stop-Process -Id 31776 -ErrorAction SilentlyContinue; Get-Content -Encoding UTF8 desktop\main.mjs; Get-Content -Encoding UTF8 desktop\preload.cjs; Get-Content -En…
+  └     guest.send(Buffer.from('hello engine'),port,'127.0.0.1');assert.equal(await reply,'welcome pony');
+      } finally {a.close();b.close();host.close();guest.close();}
+    });
+• Failed (exit 1) npm run dev -- --host 127.0.0.1
+  └ 8:58:02 pm [vite] .env.local changed, restarting server...
+    8:58:02 pm [vite] server restarted.
+    10:07:50 pm [vite] (client) page reload release/Ponyhaven-win32-x64/LICENSES.chromium.html
+• Ran Get-Content -Encoding UTF8 src\main.ts | Select-Object -Skip 1060 -First 80; Get-Content -Encoding UTF8 src\main.ts | Select-Object -Skip 1330 -First 220; Get-Con…
+  └ } finally {for(const c of clients){await c.games.stop();c.relay.close();}await browser.close();if(broker){const stopped=new Promise(resolve=>broker.once('exit',reso…
+    async function assertEventually(fn,timeout=18000){const until=Date.now()+timeout;let last;while(Date.now()<until){try{await fn();return;}catch(e){last=e;}await new …
+    [(10396, 76728, 'electron.exe', 'C:\\Users\\calla\\Desktop\\MLPKT\\node_modules\\electron\\dist\\electron.exe'), (43804, 92712, 'Ponyhaven.exe', 'C:\\Users\\calla\\…
+◦ Browsing the web
+• Ran $profileRoots = @('C:\Users\calla\AppData\Roaming\Ponyhaven\Ponyhaven','C:\Users\calla\AppData\Roaming\Electron\Ponyhaven'); foreach ($profileRoot in $profileRoot…
+  └ 
+    if (appWindow?.isClosed()) appWindow = undefined;
+    
+• Searched the web for site.electronjs.org docs webContents will-navigate location.reload reload cancel
+Your computer already has a saved activation and an active profile. The app appears to be getting stuck while refreshing after activation; I found a navigation rule that blocks that refresh.
+
+Close Ponyhaven and reopen it—the saved activation should let you continue. I’m fixing the transition and clarifying that Firebase email sign-in happens separately under Connect mobile sync.
+• Failed (exit 1) node scripts/qa-desktop.mjs
+  └ }
+    
+    Node.js v22.20.0
+• Ran Stop-Process -Id 10396 -ErrorAction SilentlyContinue; Get-Content -Encoding UTF8 src\main.ts | Select-Object -Skip 740 -First 55; Get-Content -Encoding UTF8 src\m…
+  └ profiles.json  19/10/2026 10:19:11 PM
+    
+    
+
+does firebase intelligently pickup credentials or is it more weird bad design?
+
+No—it doesn’t automatically connect charris to your Firebase email. The current build treats the license, local profile name, and Firebase login separately, and I made that unnecessarily confusing.
+
+I’ll make mobile sync an explicit step after activation: enter your Firebase email and password once, or choose local-only play. After linking, the app will remember that account for the profile.
+• Ran Get-Content -Encoding UTF8 src\main.ts | Select-Object -Skip 510 -First 40; rg -n 'connect-sync|sync-account|disconnect-sync|openModal|close-modal|function toast'…
+  └ 
+    ## Desktop profiles and native games
+    
+
+oh it makes sense as is thats fine if it works
+
+Understood—I’ll keep the existing setup and fix the activation hang. charris is fine as the profile name; your Firebase email and password go into Connect mobile sync.
+
+The five leftover preview/test processes are now stopped.
+• Edited 4 files (+44 -3)
+  └ desktop\main.mjs (+2 -1)
++import { guardNavigation } from './navigation.mjs';
+   ⋮
+-  win.webContents.on('will-navigate',(event)=>event.preventDefault());
+
+  └ desktop\navigation.mjs (+16 -0)
++/** Keep the renderer on the bundled entry page while allowing its own reloads. */
++export function isAppPage(value) {
++  try {
+
+  └ src\main.ts (+8 -2)
+-      case 'activate':
++      case 'activate': {
++        const form = document.querySelector<HTMLFormElement>('#activation-form')!;
+
+  └ tests\desktop.test.mjs (+18 -0)
++import { guardNavigation } from '../desktop/navigation.mjs';
+   ⋮
++test('desktop permits activation/profile reloads and still blocks leaving the bundled app',()=>{
+• Ran Get-Content -Encoding UTF8 src\arcade.ts | Select-Object -First 110; Get-Content -Encoding UTF8 src\main.ts | Select-Object -Skip 870 -First 20; Get-Content -Enco…
+  └  const cards=await pack(b,1);assert.ok(cards.length>=1);
+     assert.equal(await b.locator('#series-filter').inputValue(),'');
+     assert.ok((await b.locator('.collection-count').innerText()).includes('6 cards in your binder'));
+• Ran npm run test:desktop; npm run build
+  └ dist/assets/index-B8I7aUu6.js          221.98 kB │ gzip:  69.65 kB
+    dist/assets/firebase-data-OmRY4WFl.js  475.65 kB │ gzip: 142.94 kB
+    ✓ built in 35.91s
+• Added scripts\qa-activation.mjs (+80 -0)
++// Isolated renderer/profile regression; no real key, account, or user save is used.
++import { chromium } from 'playwright';
++import { createServer } from 'vite';
+⚠ Heads up, you have less than 10% of your weekly limit left. Run /status for a breakdown.
+• Ran Get-Content -Encoding UTF8 package-lock.json | Select-Object -First 24; rg -n '5 |passing|activation|reload' QA.md | Select-Object -Last 16; rg -n 'cp\(|copyFile|…
+  └ 15:await fs.writeFile(path.join(resource,'package.json'),JSON.stringify({name:'ponyhaven',productName:'Ponyhaven',version:'0.2.0',type:'module',main:'desktop/main.m…
+    16:await fs.copyFile(path.join(release,'electron.exe'),path.join(release,'Ponyhaven.exe'));
+    19:for(const file of ['DESKTOP_SETUP.md','MOBILE_SYNC_SETUP.md','FIREBASE_SETUP.md','FIREBASE_CONSOLE_SETUP.txt','GITHUB_PUBLISHING.txt','THIRD_PARTY.md','QA.md'])a…
+• Failed (exit 1) node scripts\qa-activation.mjs
+  └ }
+    
+    Node.js v22.20.0
+The fix now allows the app’s own refresh while keeping navigation to outside pages blocked. The desktop checks and build have passed. I’m checking the activation screen’s retry behavior and updating the portable package with the fix.
+
+please add magic blocks as a tab for mobile page
+
+I’ll add Magic Blocks to the mobile companion’s tabs and check that its board and touch controls fit the screen. I’ll include it with the activation fix in this update.
+• Ran rg -n 'companion|const views|Magic Blocks|data-nav="blocks"' src\main.ts src\*.css MOBILE_SYNC_SETUP.md scripts\qa-sync.mjs; python -c "import psutil; print([(p.p…
+  └   toastTimer = setTimeout(() => el.classList.remove('show'), 4200);
+    }
+    function commit(next: Save) {
+• Ran rg -n 'animation|transition|login-screen|button.primary' src\style.css | Select-Object -Last 32; $qaLines = Get-Content scripts\qa-activation.mjs; for ($lineNumbe…
+  └   const release = await response.json();
+      const archive = release.assets.find(a => /_windows_amd64\.zip$/.test(a.name));
+      const checksums = release.assets.find(a => /_checksums\.txt$/.test(a.name));
+• Edited 9 files (+21 -11)
+  └ MOBILE_SYNC_SETUP.md (+1 -1)
+-Ponyhaven can share one profile between the Windows app and a mobile website on GitHub Pages. The phone has **Meadow, Little shop, and Collection**. Adventure, Ponykart and Magic Blocks stay in the desktop app. Your phone works while the desktop app is closed.
++Ponyhaven can share one profile between the Windows app and a mobile website on GitHub Pages. The phone has **Meadow, Magic Blocks, Little shop, and Collection**.
+
+  └ package-lock.json (+2 -2)
+-  "version": "0.1.0",
++  "version": "0.2.1",
+   ⋮
+
+  └ package.json (+1 -1)
+-  "version": "0.1.0",
++  "version": "0.2.1",
+
+  └ scripts\package-desktop.mjs (+2 -1)
+-await fs.writeFile(path.join(resource,'package.json'),JSON.stringify({name:'ponyhaven',productName:'Ponyhaven',version:'0.2.0',type:'module',main:'desktop/main.mjs'}));
++const {version}=JSON.parse(await fs.readFile(path.join(root,'package.json'),'utf8'));
+
+  └ scripts\qa-activation.mjs (+10 -2)
++  page.setDefaultTimeout(10000);
+   ⋮
++  console.log('Activation form ready:', await activate.isEnabled(), await activate.boundingBox());
+
+  └ scripts\qa-sync.mjs (+2 -1)
+- assert.equal(await b.locator('nav [data-nav]').count(),3);
++ assert.equal(await b.locator('nav [data-nav]').count(),4);
++ assert.equal(await b.locator('nav [data-nav="blocks"]').isVisible(),true);
+
+  └ scripts\write-firebase-setup.mjs (+1 -1)
+-The phone's Meadow, Little shop and Collection work while desktop is closed.
++The phone's Meadow, Magic Blocks, Little shop and Collection work while desktop is closed.
+
+  └ src\main.ts (+1 -1)
+-const views = companion ? ['home','shop','collection'] : ['home','shop','collection','blocks','adventure','ponykart','leaderboard'];
++const views = companion ? ['home','shop','collection','blocks'] : ['home','shop','collection','blocks','adventure','ponykart','leaderboard'];
+
+  └ src\sync.css (+1 -1)
+-.companion [data-nav="blocks"],.companion [data-nav="adventure"],.companion [data-nav="ponykart"],.companion [data-nav="leaderboard"] { display:none!important; }
++.companion [data-nav="adventure"],.companion [data-nav="ponykart"],.companion [data-nav="leaderboard"] { display:none!important; }
+• Ran rg -n 'data-action=".*game|data-control|touch-controls|data-game|game.start|board-wrap|key.*Down' src\main.ts scripts\qa-care.mjs scripts\qa.mjs | Select-Object -…
+  └ scripts\qa-care.mjs:142:  await page.keyboard.press('Space');
+    scripts\qa-care.mjs:152:    const fit = await page.locator('.touch-controls').evaluate((el) => {
+    scripts\qa-care.mjs:162:    await page.screenshot({ path: `tmp/qa/18-blocks-${width}.png` });
+• Called codex_apps.github.fetch
+  └ Action completed.
+• Ran node scripts\qa-activation.mjs
+  └ Activation form ready: true { x: 555, y: 567.921875, width: 330, height: 44 }
+    Activation regression passed: empty-form validation, busy feedback, failure/retry, charris activation, transition to starter selection, and restart persistence.
+• Ran Get-Content -Encoding UTF8 scripts\qa-care.mjs | Select-Object -Skip 136 -First 40; Get-Content -Encoding UTF8 scripts\qa.mjs | Select-Object -Skip 74 -First 15; …
+  └ 
+    Playable default characters and title/pause/result screens are replaced. Named Sonic/Eggman branding textures are replaced with simple star artwork. The original le…
+    
+• Ran rg -n 'touch-controls|data-game|function renderBlocks' src\main.ts; Get-Content -Encoding UTF8 src\main.ts | Select-Object -Skip 805 -First 30; Get-Content -Encod…
+  └   }
+      .magic-companion {
+        padding: 11px 14px;
+• Called codex_apps.github.fetch
+  └ Action completed.
+• Ran npm run desktop:package
+  └ Updated native runtime SHA-256 manifest.
+    Bundled engine source, build scripts, palette and original supplied mods.
+    Portable desktop build: C:\Users\calla\Desktop\MLPKT\release\Ponyhaven-win32-x64
+• Edited 3 files (+73 -3)
+  └ QA.md (+4 -2)
+-- The phone signs in and exposes only Meadow, Little shop and Collection.
++- The phone signs in and exposes Meadow, Magic Blocks, Little shop and Collection.
+   ⋮
+
+  └ scripts\publish-github.mjs (+5 -1)
+-    if (git(['merge-base', '--is-ancestor', 'origin/main', 'HEAD'], { allowFailure: true }).status !== 0) throw new Error('GitHub has changes absent from the generated checkout. Merge them before publishing; no force-push was attempted.');
++    if (git(['merge-base', '--is-ancestor', 'origin/main', 'HEAD'], { allowFailure: true }).status !== 0) {
+
+  └ scripts\qa-mobile-blocks.mjs (+64 -0)
++// Companion navigation and touch layout, using a disposable local browser save.
++import { chromium } from 'playwright';
++import { createServer } from 'vite';
+• Ran node tmp\verify-release.mjs; node --check scripts\publish-github.mjs; Copy-Item -LiteralPath QA.md -Destination release\Ponyhaven-win32-x64\QA.md; Get-Item releas…
+  └ {"name":"ponyhaven","productName":"Ponyhaven","version":"0.2.1","type":"module","main":"desktop/main.mjs"}
+    
+    
+• Ran node scripts\qa-mobile-blocks.mjs
+  └ Mobile Magic Blocks passed: four tabs, touch controls, XP persistence, and board/control fit at 390×844, 320×740 and 844×390.
+The activation retry check passed, and the corrected Windows package is built. Magic Blocks is now enabled in the companion; I’m checking the four-tab layout in portrait and landscape before publishing the page update.
+• Viewed image companion-blocks-390.png
+• Viewed image companion-blocks-320.png
+• Viewed image companion-blocks-844.png
+• Ran & 'C:\Program Files\7-Zip\7z.exe' a -tzip -mx=5 -bso0 -bsp0 'release\Ponyhaven-Windows.zip' '.\release\Ponyhaven-win32-x64'
+  └ (no output)
+• Edited QA.md (+2 -0)
++`node scripts/qa-mobile-blocks.mjs` verifies the companion's four tabs, touch movement/rotation/drop/hold, pony XP persistence, and board/control fit at 390 × 844, 320 × 740 and 844 × 390. The portrait and landscape screenshots were reviewed. This targeted check uses an isolated local save; the existing save/sync implementation is shared with desktop Magic Blocks.
+• Ran $updatePaths = @('desktop/main.mjs','desktop/navigation.mjs','src/main.ts','src/sync.css','tests/desktop.test.mjs','scripts/qa-activation.mjs','scripts/qa-mobile-…
+  └ [{"path":"desktop/main.mjs","mode":"100644","type":"blob","content":{"value":"import { app, BrowserWindow, ipcMain, protocol, safeStorage, shell, dialog } from \u00…
+• Ran $updatePaths = @('desktop/main.mjs','desktop/navigation.mjs','src/main.ts','src/sync.css','tests/desktop.test.mjs','scripts/qa-activation.mjs','scripts/qa-mobile-…
+  └ 823842
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(0,18000))
+  └ [{"path":"desktop/main.mjs","mode":"100644","type":"blob","content":{"value":"import { app, BrowserWindow, ipcMain, protocol, safeStorage, shell, dialog } from \u00…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(36000,18000))
+  └ laringMethod":null,"BaseType":"System.Management.Automation.Provider.NavigationCmdletProvider","UnderlyingSystemType":"Microsoft.PowerShell.Commands.FileSystemProvi…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(54000,18000))
+  └  GetParentPath(System.String, System.String) Boolean IsUNCPath(System.String) Boolean IsUNCRoot(System.String) Boolean IsPathRoot(System.String) System.String Norma…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(18000,18000))
+  └ ng, System.Management.Automation.PowerShell) Boolean PerformCopyFileToRemoteSession(System.IO.FileInfo, System.String, System.Management.Automation.PowerShell) Bool…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(72000,18000))
+  └ yhaven\u003csmall\u003eA LITTLE MAGIC, EVERY DAY\u003c/small\u003e\u003c/span\u003e\u003c/a\u003e\u003cnav aria-label=\"Main navigation\"\u003e${[\r\n    [\u0027hom…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(90000,18000))
+  └   () =\u003e save.dirt,\r\n    () =\u003e {\r\n      try {\r\n        commit(awardXP(care(save, \u0027bath\u0027), 1, catalog));\r\n        refreshStats();\r\n     …
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(108000,18000))
+  └ -link\" href=\"${e(c.source)}\" target=\"_blank\" rel=\"noopener noreferrer\"\u003eView original card listing ↗\u003c/a\u003e\u003c/div\u003e\u003c/div\u003e`,\r\n …
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(126000,18000))
+  └ n\u003e\u003c/div\u003e\u003cdiv class=\"game-stat-row\"\u003e\u003cdiv\u003e\u003cp\u003eLINES\u003c/p\u003e\u003cstrong id=\"game-lines\"\u003e0\u003c/strong\u003…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(144000,18000))
+  └ clabel class=\"field-label\" for=\"reset-confirm\"\u003eType RESET to start again with 0 bits\u003c/label\u003e\u003cinput id=\"reset-confirm\" autocomplete=\"off\"…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(162000,18000))
+  └ 27,\r\n    C: \u0027hold\u0027,\r\n    x: \u0027rotate\u0027,\r\n    X: \u0027rotate\u0027,\r\n  };\r\n  if (actions[ev.key]) {\r\n    ev.preventDefault();\r\n    g…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(198000,18000))
+  └ g), typeof(System.IO.FileInfo) }, ProviderCmdlet = \"New-Item\")] [System.Management.Automation.OutputTypeAttribute(typeof(System.Security.AccessControl.FileSecurit…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(180000,18000))
+  └ ct GetPropertyDynamicParameters(System.String, System.Collections.ObjectModel.Collection`1[System.String]) System.Object SetPropertyDynamicParameters(System.String,…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(216000,18000))
+  └ ynamicParameters(System.String) Int32 SafeGetFileAttributes(System.String) System.Security.AccessControl.ObjectSecurity NewSecurityDescriptorFromPath(System.String,…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(288000,18000))
+  └ tem.String), typeof(System.IO.FileInfo) }, ProviderCmdlet = \"New-Item\")] [System.Management.Automation.OutputTypeAttribute(typeof(System.Security.AccessControl.Fi…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(270000,18000))
+  └ stem.Object GetPropertyDynamicParameters(System.String, System.Collections.ObjectModel.Collection`1[System.String]) System.Object SetPropertyDynamicParameters(Syste…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(234000,18000))
+  └ \u0027loopback bridge carries an engine UDP exchange in both directions\u0027,async()=\u003e{\n  const host=dgram.createSocket(\u0027udp4\u0027),guest=dgram.createS…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(252000,18000))
+  └ Item(System.IO.DirectoryInfo, System.String, Boolean, Boolean, System.Management.Automation.PowerShell) Void CopyFileInfoItem(System.IO.FileInfo, System.String, Boo…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(306000,18000))
+  └ .Security.AccessControl.AccessControlSections) Void \u003cRemoveDirectoryInfoItem\u003eg__WriteErrorHelper|43_0(System.Exception, \u003c\u003ec__DisplayClass43_0 By…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(324000,18000))
+  └ \ntry {\n await a.goto(url);await a.locator(\u0027[data-starter=\"twilight-sparkle\"]\u0027).click();await a.locator(\u0027[data-action=\"begin\"]\u0027).click();\n…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(342000,18000))
+  └ s(System.String, Boolean) Void RemoveFileInfoItem(System.IO.FileInfo, Boolean) Boolean ItemExists(System.String) System.Object ItemExistsDynamicParameters(System.St…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(360000,18000))
+  └ String) Void InvokeDefaultAction(System.String) Void GetChildItems(System.String, Boolean, UInt32) Void GetChildNames(System.String, System.Management.Automation.Re…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(378000,18000))
+  └ stemProvider+InodeTracker Microsoft.PowerShell.Commands.FileSystemProvider+\u003c\u003ec__DisplayClass43_0","DeclaredProperties":"","ImplementedInterfaces":"System.…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(396000,18000))
+  └ os/${repo}/pages`, \u0027--input\u0027, \u0027-\u0027], { input: JSON.stringify({ build_type: \u0027workflow\u0027 }) });\n  // An explicit dispatch also rebuilds a…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(414000,18000))
+  └ FileInfoItem(System.IO.FileInfo, System.String, Boolean, System.Management.Automation.PowerShell) Void CopyDirectoryFromRemoteSession(System.String, System.String, …
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(432000,18000))
+  └ ypeDefinition":false,"IsGenericParameter":false,"GenericParameterPosition":null,"IsGenericType":false,"IsConstructedGenericType":false,"ContainsGenericParameters":f…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(450000,18000))
+  └ d(System.String) Void MoveItem(System.String, System.String) Void MoveFileInfoItem(System.IO.FileInfo, System.String, Boolean, Boolean) Void MoveDirectoryInfoItem(S…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(468000,18000))
+  └ perty(System.String, System.Management.Automation.PSObject) Void ClearProperty(System.String, System.Collections.ObjectModel.Collection`1[System.String]) System.Man…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(486000,18000))
+  └ rm64/-/android-arm64-0.28.2.tgz\",\n      \"integrity\": \"sha512-5YfKeeI8qWfBZIX+u2xZC3Zlb3Os/gLS2sbEKM+I4ZOcsWmHS2WLysCcQZDAFRslDUU5Oiq44gf6PYN1vGwG5A==\",\n     …
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(504000,18000))
+  └ ,\n      \"resolved\": \"https://registry.npmjs.org/@firebase/app-check-interop-types/-/app-check-interop-types-0.3.5.tgz\",\n      \"integrity\": \"sha512-qId34pVZ…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(522000,18000))
+  └ s\": {\n        \"@firebase/component\": \"0.7.5\",\n        \"@firebase/installations\": \"0.6.24\",\n        \"@firebase/logger\": \"0.5.2\",\n        \"@firebase…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(540000,18000))
+  └     },\n    \"node_modules/@isaacs/cliui/node_modules/emoji-regex\": {\n      \"version\": \"9.2.2\",\n      \"resolved\": \"https://registry.npmjs.org/emoji-regex/…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(576000,18000))
+  └ fq6x0ryhQV/2b/KwFe21cMpmHtPOSij8K99/wSfoEuTObmuMQ==\",\n      \"dev\": true,\n      \"license\": \"MIT\",\n      \"dependencies\": {\n        \"es-errors\": \"^1.3.…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(558000,18000))
+  └     \"os\": [\n        \"linux\"\n      ]\n    },\n    \"node_modules/@rollup/rollup-openbsd-x64\": {\n      \"version\": \"4.64.9\",\n      \"resolved\": \"https:/…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(594000,18000))
+  └ tag\": \"~1.8.1\",\n        \"finalhandler\": \"~1.3.1\",\n        \"fresh\": \"~0.5.2\",\n        \"http-errors\": \"~2.0.0\",\n        \"merge-descriptors\": \"1.…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(612000,18000))
+  └ BmOYjAtkjaD1A7qA==\",\n      \"dev\": true,\n      \"license\": \"Apache-2.0\",\n      \"dependencies\": {\n        \"base64-js\": \"^1.3.0\",\n        \"ecdsa-sig-…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(630000,18000))
+  └ s/lodash.once\": {\n      \"version\": \"4.1.1\",\n      \"resolved\": \"https://registry.npmjs.org/lodash.once/-/lodash.once-4.1.1.tgz\",\n      \"integrity\": \"s…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(648000,18000))
+  └ wright-core\": {\n      \"version\": \"1.64.1\",\n      \"resolved\": \"https://registry.npmjs.org/playwright-core/-/playwright-core-1.64.1.tgz\",\n      \"integrit…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(666000,18000))
+  └ ^1.13.4\"\n      },\n      \"engines\": {\n        \"node\": \"\u003e= 0.4\"\n      },\n      \"funding\": {\n        \"url\": \"https://github.com/sponsors/ljharb\…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(684000,18000))
+  └ 03e=0.8.0\"\n      }\n    },\n    \"node_modules/which\": {\n      \"version\": \"2.0.2\",\n      \"resolved\": \"https://registry.npmjs.org/which/-/which-2.0.2.tgz…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(702000,18000))
+  └ tModel.Collection`1[System.Management.Automation.PSDriveInfo] InitializeDefaultDrives() System.Object GetItemDynamicParameters(System.String) Void InvokeDefaultActi…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(720000,18000))
+  └ rowser\u0027s menu.\n\nThe local build does not create either service automatically. In the owner\u0027s Windows workspace, [Publish-Ponyhaven.cmd](Publish-Ponyhave…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(738000,18000))
+  └ Drive(System.Management.Automation.PSDriveInfo) Void MapNetworkDrive(System.Management.Automation.PSDriveInfo) System.Management.Automation.PSDriveInfo RemoveDrive(…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(756000,18000))
+  └ ION_UID_HERE\r\n\r\nAdd these fields using the Console\u0027s field editor:\r\n\r\n  Field       Type       Value\r\n  enabled     boolean    true\r\n  name        …
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(774000,18000))
+  └ micParameters(System.String, Boolean) System.Object CopyItemDynamicParameters(System.String, System.String, Boolean) Boolean IsNetworkMappedDrive(System.Management.…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(810000,13842))
+  └ ation.WildcardPattern] excludeMatcher System.Management.Automation.PSTraceSource tracer Char[] s_remoteCopyNameInvalidChars Int32 FILETRANSFERSIZE System.String Pro…
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\tmp\companion-update.json').Substring(792000,18000))
+  └ des, or change another host\u0027s room background.\n- Anonymous and uninvited clients cannot read online presence.\n- Two browser contexts see online friends, send…
+• Failed codex_apps.github.create_tree
+  └ 
+    Caused by:
+        Mcp error: -32603: Internal error
+Magic Blocks passed the touch-control and screen-fit checks at both phone sizes and in landscape. I’m publishing the companion update now and finishing the Windows ZIP update.
+• Ran Copy-Item -LiteralPath QA.md -Destination release\Ponyhaven-win32-x64\QA.md; & 'C:\Program Files\7-Zip\7z.exe' a -tzip -mx=5 -bso0 -bsp0 'release\Ponyhaven-Window…
+  └ (no output)
+• Called codex_apps.github.create_tree
+  └ Action completed.
+• Called codex_apps.github.create_commit
+  └ Action completed.
+• Called codex_apps.github.update_ref
+  └ Action completed.
+• Ran & 'C:\Program Files\7-Zip\7z.exe' t -bso0 -bsp0 'release\Ponyhaven-Windows.zip'; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; $zipHash = (Get-FileHash -Algori…
+  └ ef9b35df3348eae10fa2ce25c848f53a7eae972e861ae6d0ddf59338393d13e8
+    
+    
+• Called codex_apps.github.fetch
+  └ Action completed.
+• Ran netstat -ano -p tcp | Select-String 'LISTENING' | Select-String ':5173 |:5174 |:5175 |:18080 |:19099 |:4400 |:4500 '; python -c "import psutil; print([(p.info['pi…
+  └ Windows credential store. Running the publisher in your ordinary terminal
+    provides that missing authenticated connection; it needs no Firebase
+    Admin key and no private GitHub repository for credentials.
+• Failed (exit 1) Get-Content -Encoding UTF8 GITHUB_PUBLISHING.txt | Select-Object -First 70; Get-Content -Encoding UTF8 scripts\publish-github.mjs | Select-Object -Ski…
+  └   if (origin.status !== 0) git(['remote', 'add', 'origin', remote]);
+      // Scope authentication to this generated checkout; do not change global Git settings.
+      git(['config', '--local', 'credential.https://github.com.helper', '']);
+• Called codex_apps.github.fetch_workflow_run_jobs
+  └ Action completed.
+• Ran $publication = [ordered]@{repository='https://github.com/fowlong/ponyhaven';companion='https://fowlong.github.io/ponyhaven/';commit='9b4960b4b6f08eba30fd2cbfe8aa6…
+  └ ef9b35df3348eae10fa2ce25c848f53a7eae972e861ae6d0ddf59338393d13e8  Ponyhaven-Windows.zip
+⚠ Heads up, you have less than 5% of your weekly limit left. Run /status for a breakdown.
+• Edited GITHUB_PUBLISHING.txt (+6 -5)
+-Planned repository: https://github.com/fowlong/ponyhaven
+-Planned companion: https://fowlong.github.io/ponyhaven/
+-These URLs become live only after the publisher and GitHub Actions succeed.
+• Ran [Console]::Write([System.IO.File]::ReadAllText('C:\Users\calla\Desktop\MLPKT\GITHUB_PUBLISHING.txt'))
+  └ Windows credential store. Running the publisher in your ordinary terminal
+    provides that missing authenticated connection; it needs no Firebase
+    Admin key and no private GitHub repository for credentials.
+• Called codex_apps.github.fetch
+  └ Action completed.
+• Called codex_apps.github.fetch
+  └ Action completed.
+• Called codex_apps.github.update_file
+  └ Action completed.
+• Ran Copy-Item -LiteralPath GITHUB_PUBLISHING.txt -Destination release\Ponyhaven-win32-x64\GITHUB_PUBLISHING.txt; & 'C:\Program Files\7-Zip\7z.exe' a -tzip -mx=5 -bso0…
+  └ 7f9a79f82c4b9d06b135de7742853f068d4ecb10508983ad65e7c3e0d7785f0f
+    
+    
+• Called codex_apps.github.fetch_workflow_run_jobs
+  └ Action completed.
+Magic Blocks is now live on the mobile companion. Refresh the page to see its tab. Touch controls passed portrait and landscape checks.
+
+The activation fix is included in the updated Windows ZIP (release/Ponyhaven-Windows.zip). Close the old app, extract the updated ZIP, and run Ponyhaven.exe; your saved profile remains intact. This ZIP is currently local—there’s no hosted Windows download yet.
+
+All five leftover test processes are stopped.
+  Worked for 8h 45m 9s • 7:03 AM
+
+not seeing adventure windows open
+
+I’ll check the Adventure launch path and logs to see why its window isn’t appearing.
+• Failed (exit 1) Get-Content -Encoding UTF8 desktop\games.mjs; Get-Content -Encoding UTF8 src\arcade.ts | Select-Object -Last 120; Get-Content -Encoding UTF8 desktop\m…
+  └     try { filename=path.resolve(base,'.'+decodeURIComponent(url.pathname==='/'?'/index.html':url.pathname)); }
+        catch { return new Response('Bad path',{status:400}); }
+        if (!filename.startsWith(base+path.sep)) return new Response('Not found',{status:404});
+• Ran $profileRoot = 'C:\Users\calla\AppData\Roaming\Ponyhaven\Ponyhaven'; Get-ChildItem -LiteralPath $profileRoot -Force | Select-Object Name,LastWriteTime; Get-ChildI…
+  └                        20/10/2026 7:04:33 AM 
+    
+    
+• Ran $profileRoot = 'C:\Users\calla\AppData\Roaming\Ponyhaven\Ponyhaven'; $gameLogs = @(Get-ChildItem -LiteralPath $profileRoot -Recurse -File -ErrorAction SilentlyCon…
+  └         "Length":  18503511
+        }
+    ]
+• Ran Get-Content -Encoding UTF8 scripts\qa-native.py | Select-Object -First 180; rg -n 'log|error|Windows|CreateWindow|ShowWindow|windowsHide|CREATE_NO_WINDOW|GUIMAIN|…
+  └ desktop\main.mjs:84:    const answer=await dialog.showOpenDialog(win,{title:'Import a '+(game==='adventure'?'SRB2 2.2':'SRB2Kart 1.6')+' level pack',properties:['op…
+    desktop\relay.mjs:23:    socket.on('error', () => this.close(id));
+    desktop\relay.mjs:25:      socket.once('error', reject);
+• Browsing the web
+• Ran Get-Content -Encoding UTF8 'C:\Users\calla\AppData\Roaming\Ponyhaven\Ponyhaven\profiles\10987f2c-9826-4ccb-859d-aa40938b0132\adventure\progress-de17ff8e-219a-476a…
+  └ }
+    async function until(fn,ms) {const end=Date.now()+ms;while(Date.now()<end){if(fn())return;await new Promise(r=>setTimeout(r,200));}throw Error('Native network timed…
+    node_modules\@types\node\child_process.d.ts:652:        windowsHide?: boolean | undefined;
+• Searched the web for site.nodejs.org api child_process windowsHide hide subprocess console window, site.github.com/libuv/libuv UV_PROCESS_WINDOWS_HIDE_GUI STARTF_USES…
+
+also seeing sonic menu's everywhere for kart, ensure this isnt the case for both adventure and card,
+
+
+we dont want any sonic menus or characters
+
+I found that the launcher starts the games with a Windows setting that can hide their windows. I’ll correct that and check both games’ startup, character-selection, pause, and results screens for Sonic menus and characters.
+
+I’m using the computer-use skill to inspect the game windows as well as their logs.
+• Ran Get-Content -Encoding UTF8 'C:\Users\calla\.codex\plugins\cache\openai-bundled\computer-use\26.1013.40934\docs\guidance.md'; Get-Content -Encoding UTF8 'C:\Users\…
+  └ - **[7]** Download files from the Internet (inbound transfer)
+    - Any action outside this taxonomy
+    - Any non-UI action that does not alter the state of an app.
+• Ran Get-Content -Encoding UTF8 scripts\patch-native.py; rg --files engines; Get-Content -Encoding UTF8 engines\README.md; Get-Content -Encoding UTF8 scripts\build-nat…
+  └ 
+    if __name__ == '__main__':
+        p=argparse.ArgumentParser();p.add_argument('game',choices=SOURCES);args=p.parse_args();configure(args.game)
+• Ran Get-Content -Encoding UTF8 'C:\Users\calla\.codex\plugins\cache\openai-bundled\computer-use\26.1013.40934\docs\confirmations.md'; Get-Content -Encoding UTF8 scrip…
+  └     /* Return to the MLP launcher before the engine's original story/intermission. */
+        if (finished && connected <= 1) I_Quit();
+    }
+◦ Browsing the web
+• Opened https://raw.githubusercontent.com/libuv/libuv/v1.x/src/win/process.c
+• Failed Initialize game-window inspection
+  └ failed to write kernel assets: The system cannot find the path specified. (os error 3)
+• Ran rg -n 'boolean M_Responder|void M_Drawer|A LITTLE PAUSE|PONYKART|void F_.*Drawer|void F_StartTitleScreen|void F_TitleScreenTicker|IntroDrawer|CreditDrawer|GameEnd…
+  └     (ROOT/'native/manifest.json').write_text(json.dumps(manifest,indent=2))
+        (ROOT/'tmp/arcade/asset-changes.json').write_text(json.dumps(replaced,indent=2))
+        print('Prepared Adventure (7 ponies) and Ponykart (Mane 6). Original mods are unchanged.')
+• Ran Get-Content -Encoding UTF8 desktop\courses.json | Select-Object -First 100; Get-Content -Encoding UTF8 tmp\arcade\kart-native-source\Kart-Public-1.6\src\f_finale.…
+  └ 697:        if (demo.playback && gamestate == GS_LEVEL)
+    1425:    wipegamestate = gamestate;
+    1589:        wipegamestate = GS_NULL;
+• Edited desktop\games.mjs (+2 -1)
+-      cwd:path.join(this.root,game), windowsHide:true, stdio:['ignore','pipe','pipe'],
++      // These are interactive GUI games. windowsHide also hides their SDL window.
++      cwd:path.join(this.root,game), windowsHide:false, stdio:['ignore','pipe','pipe'],
+Adventure’s log confirms it loaded a level and ran for about 45 seconds despite the missing window. I also found stock Kart title-screen rendering still active beneath the custom menu. I’m replacing those remaining menu screens and disabling the original title demos in both games.
+
+The window-inspection tool failed to initialize, so I’m using native render captures and launch diagnostics to verify the changes.
+• Ran Get-Content -Encoding UTF8 tmp\arcade\kart-native-source\Kart-Public-1.6\src\d_main.c | Select-Object -Skip 270 -First 36; Get-Content -Encoding UTF8 tmp\arcade\s…
+  └ 825:// D_StartTitle
+    827:void D_StartTitle(void)
+    1680:        F_StartIntro(); // Tails 03-03-2002
+• Ran rg -n 'V_PURPLEMAP|V_GRAYMAP|V_DrawCenteredString' tmp\arcade\kart-native-source\Kart-Public-1.6\src\v_video.h tmp\arcade\srb2-native-source\SRB2-SRB2_release_2.2…
+  └             break;
+        }
+    
+• Ran rg -n '^void Y_.*(Drawer|Ticker)' tmp\arcade\kart-native-source\Kart-Public-1.6\src\y_inter.c tmp\arcade\srb2-native-source\SRB2-SRB2_release_2.2.15\src\y_inter.c…
+  └   return {save:next,bits,xp:bits?Math.min(12,Math.max(1,Math.floor(bits/50))):0};
+    }
+    {'adventure': [144, 160, 1, 194], 'ponykart': [224, 201, 0, 250]}
+• Edited 6 files (+174 -37)
+  └ engines\ponyhaven_bridge.h (+6 -0)
++extern INT32 I_PHWindowVisible(void);
+   ⋮
++    static boolean windowReported = false;
+
+  └ engines\ponyhaven_icon.xpm (+23 -0)
++/* Ponyhaven star window icon. */
++static const char *SDL_icon_xpm[] = {
++"16 16 3 1",
+
+  └ engines\ponyhaven_ui.h (+35 -0)
++/* Ponyhaven native interface. GPL-2.0-or-later. */
++#ifndef PONYHAVEN_UI_H
++#define PONYHAVEN_UI_H
+
+  └ engines\ponyhaven_ui_test.h (+27 -0)
++/* Optional native render regression; no effect without the explicit test flag. */
++static boolean PH_DrawUIAudit(void)
++{
+
+  └ scripts\build-native.py (+1 -1)
+-    audio_definitions='HAVE_MIXERX' if game=='adventure' else 'HAVE_LIBGME'
++    audio_definitions='HAVE_MIXERX' if game=='adventure' else 'HAVE_LIBGME PONYHAVEN_KART'
+
+  └ scripts\patch-native.py (+82 -36)
++def prepend_function(text, signature, body):
++    pattern=re.compile(r'^'+re.escape(signature)+r'\s*\{',re.M)
++    if len(pattern.findall(text))!=1:
+• Ran python scripts\patch-native.py
+  └ Patched adventure
+    Patched ponykart
+• Ran python scripts\build-native.py adventure *> tmp\adventure-menu-build.log; if ($LASTEXITCODE -ne 0) { Get-Content tmp\adventure-menu-build.log -Tail 55; exit $LAST…
+  └   ph_png.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\adventure\out-clang\Release\ph_png.lib
+      adventure.vcxproj -> C:\Users\calla\Desktop\MLPKT\tmp\native-build\adventure\out-clang\Release\adventure.exe
+    Built C:\Users\calla\Desktop\MLPKT\native\adventure\adventure.exe
+• Edited 5 files (+14 -9)
+  └ desktop\games.mjs (+6 -2)
+-    const running = { child, game, session, port, progress, pack:options.pack, timer:null, last:'', stopped:false, stderr:'', readyResolve, readyReject };
++    const running = { child, game, session, port, progress, pack:options.pack, timer:null, last:'', stopped:false, ready:false, stderr:'', readyResolve, readyReject };
+
+  └ package-lock.json (+2 -2)
+-  "version": "0.2.1",
++  "version": "0.2.2",
+   ⋮
+
+  └ package.json (+1 -1)
+-  "version": "0.2.1",
++  "version": "0.2.2",
+
+  └ src\arcade.ts (+4 -3)
+-export let running: {game:ArcadeGame;session:string;earned:number} | null=null;
++export let running: {game:ArcadeGame;session:string;earned:number;ready:boolean} | null=null;
+   ⋮
+
+  └ src\desktop.ts (+1 -1)
+-  type: 'started' | 'progress' | 'ended' | 'error'; game: ArcadeGame;
++  type: 'loading' | 'started' | 'progress' | 'ended' | 'error'; game: ArcadeGame;
+■ Error running remote compact task: You’ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at Oct 25th, 2026 11:14 AM
+=== COMPLETED: Ponyhaven 0.2.3 — 21 October 2026 ===
+User authorized proceeding after their successful Malwarebytes-clean rebuild/test.
+Final portable package: release\Ponyhaven-Windows.zip (1,000,341,366 bytes).
+Extract All then run Ponyhaven-0.2.3-win32-x64\Ponyhaven.exe.
+ZIP SHA-256: a1b5664eb221204151858a91af842c3543f3a5a5fc7050fd68449d21a4af8d31
+All 9,054 payload hashes, archive checksum, paths and embedded executable hashes verified.
+Changes: SDL startup loading/log windows hidden until first game frame; retain windowsHide:false so real native window is visible. Adventure intro is only a small pink level name, retaining original timer. Level-up cards and pet drops reserved until opening, persistence/legacy/reopen handling tested. Shared eight-tier saturated auras, distinct rings/halos, and a light 3-CSS-pixel scenery-only canvas finish in desktop and companion. Images and curated floor/crop metadata preserved.
+Native progress uses stdout pipe, not repeatedly replaced progress JSON. Bounded session parser lives in desktop/native-progress.mjs. Source/DLL/Electron audit passes. New exe SHA-256 values are in release\Ponyhaven-0.2.3-win32-x64\build.json. No exclusions, protection changes or quarantine restoration were used.
+Validation: 26 game tests; nine desktop tests; production TypeScript/Vite build; reward/aura/scenery desktop+390px companion browser check; both games windowed and fullscreen launch checks; Adventure actual pink-title capture. Prior full desktop/network browser harness passed both real engines with two peers. Final packaged-runtime safety test sustained 224 Adventure / 195 Kart updates and clean stops; all runtime and four unrelated test-document hashes unchanged (tmp/native-safety-1792523621958/report.json). Latest Malwarebytes ArwDetections still only original 19:02 20-Oct event; not an independent malware-free certification. Defender custom scan unavailable because Defender disabled under Malwarebytes.
+Packaged Electron UI automation still blocked by restricted Windows runtime ACL checks (tmp/packaged-electron-023.log); do not disable renderer sandbox or security software. User reported ordinary-user app testing succeeds. Full 79-course preview sweep was not repeated for these small fixes.
+Companion shared changes deployed successfully: https://fowlong.github.io/ponyhaven/
+Commit c47b17e2422998d62e87ffc6bfe60504ca5efb9f; Actions run 39481513499 succeeded.
+Only companion/shared frontend files and tests/version were pushed; native desktop engine patch files remain local and in the ZIP's engine-sources.zip.
+Old release folders retained; current one is release\Ponyhaven-0.2.3-win32-x64. START_HERE.txt, QA.md and security review inside ZIP explain usage and verification scope.
+Build Python: C:\Users\calla\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe (system Python access denied). Build root tmp/native-build-022 works for both engines. Use scripts/patch-native.py then scripts/build-native.py <game> --build-root tmp/native-build-022. Set PYTHON env to above for packaging. Package needs a fresh version directory. Do not overwrite or repackage old extracted folder over new.
+
+=== COMPLETED: Ponyhaven 0.2.4 - 21 October 2026 ===
+User requested fixing the upside-down Cloud Rock 2 view and rebuilding the ZIP.
+Cloud Rock 2 is Adventure map 23 and starts in reverse gravity. The old flipcam No default kept the pony upside down on screen. desktop/games.mjs now applies flipcam 1 and flipcam2 1 for Adventure at every launch, including existing profiles. The camera follows the pony's up direction while retaining course gravity mechanics and horizontal movement. Ponykart is unaffected.
+Native executables and course data are unchanged from 0.2.3. No security settings were changed, and the latest Malwarebytes ransomware event remained the original 20-Oct report.
+Added scripts/qa-native-gravity.mjs: real engine checks on map 23 and normal-gravity map 1, starting with old flipcam No saved settings, assert camera activation and unchanged gravity, inject actual left/right movement and check displacement, capture the render, and quit cleanly. Both passed; screenshots reviewed. Evidence: tmp/native-gravity-1792526573471/report.json and tmp/gravity-024.log.
+Production TypeScript/Vite build and all nine desktop tests passed. Updated START_HERE.txt, DESKTOP_SETUP.md, QA.md, engines/README.md and security review. Version is 0.2.4. Companion frontend is unchanged and retains the successful 0.2.3 deployment above.
+Final portable package: release\Ponyhaven-Windows.zip (1,000,342,321 bytes).
+Extract All then run Ponyhaven-0.2.4-win32-x64\Ponyhaven.exe.
+ZIP SHA-256: 37c9f08638abece5a0d7963f8e64058b857c77634eb6faa5cf50ccebe7d0eca5
+All 9,054 payload hashes, ZIP CRCs, safe paths, native executable hashes, app entry point, shipped launcher/web contents and archive checksum verified. Packaging and verification log: tmp/package-024.log.
+Current extracted release: release\Ponyhaven-0.2.4-win32-x64. Older release folders are retained. No further changes or packaging work are pending for this request.
+
+=== COMPLETED: Ponyhaven 0.2.5 - 21 October 2026 ===
+User requested making Ponykart's actual controls match the UI, then rebuilding and packaging.
+Root cause: SRB2Kart 1.6 executes srb2kart/kartexec.cfg, but desktop/games.mjs wrote autoexec.cfg for both engines. Kart ignored that file and retained its original A accelerate, S drift, D brake, Space item defaults. The launcher now writes kartexec.cfg for Ponykart and retains autoexec.cfg for Adventure. All advertised bindings are applied after the saved engine config on each launch, automatically fixing existing profiles.
+Added scripts/qa-native-controls.mjs. It uses the real launcher and native engine with a temporary Lua addon to save effective loaded controls and quit normally. The test reproduced the old A-to-accelerate mapping before the fix (tmp/controls-025-before.log), then passed fresh, existing and relaunch cases after the fix. All six actions and both keyboard alternatives match the UI: W/up accelerate, S/down brake, A/D or left/right steer, Space drift, X item. Evidence: tmp/native-controls-1792527171549/report.json and tmp/controls-025.log. This validates actual engine bindings, not synthetic movement commands. Test addons stay in tmp.
+Production TypeScript/Vite build and all nine desktop tests passed. Updated START_HERE.txt, DESKTOP_SETUP.md, QA.md and security review. Native executables and level data remain unchanged from audited 0.2.3; Cloud Rock 2 correction and all prior features are retained. No companion frontend change or deployment needed. No security settings changed.
+Final package: release\Ponyhaven-Windows.zip (1,000,342,972 bytes), version 0.2.5.
+Extract All then run Ponyhaven-0.2.5-win32-x64\Ponyhaven.exe.
+ZIP SHA-256: 3f0aad116e70baf090e5090a090d0570a62ca171e520171384218ee0cdd6690d
+Verified all 9,054 payload hashes, ZIP CRCs, safe paths, native binaries, app entry point, shipped launcher/web contents and archive checksum. Log: tmp/package-025.log.
+Current extracted release: release\Ponyhaven-0.2.5-win32-x64. Older releases retained. This request is complete.

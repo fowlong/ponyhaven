@@ -63,7 +63,7 @@ a string. The conceptual document is:
 The Console field editor does not need this JSON pasted into it.
 Repeat for each friend with their own Auth user, UID and name.
 To revoke access, set enabled to boolean false and disable their Auth user.
-No passwords, license keys or Admin credentials belong in Firestore.
+No passwords or Admin credentials belong in Firestore.
 The app creates players, rooms, meadow and invitations documents itself;
 you do not need to create empty collections for them.
 
@@ -96,7 +96,7 @@ VITE_FIREBASE_APP_ID=REPLACE_WITH_appId
 VITE_REQUIRE_AUTH=true
 
 These four Web app identifiers are public. Do not use service-account JSON,
-Admin credentials, account passwords or Gumroad keys in this file.
+Admin credentials or account passwords in this file.
 Keep .env.local out of Git; the project already ignores it.
 Do not set VITE_COMPANION=true in the desktop .env.local.
 
@@ -105,9 +105,9 @@ project folder:
 
   npm run desktop:package
 
-Launch the rebuilt Ponyhaven.exe, activate it with your Gumroad key,
-then use Account and settings > Connect mobile sync with the invited
-Firebase email and password. Existing local progress uploads on first link
+Launch the rebuilt Ponyhaven.exe and sign in with the invited Firebase account.
+New installations create and link a local profile automatically. For an existing
+unlinked save, use Account and settings > Connect mobile sync. Existing local progress uploads on first link
 if the account has no cloud save. If it has one, the cloud save loads and
 the current device copy is backed up first.
 
@@ -134,8 +134,8 @@ Add your custom hostname too if you later use one. For local browser testing,
 add localhost and 127.0.0.1 if they are not already authorized.
 
 Open the resulting Pages URL and sign in with the invited Firebase account.
-The phone's Meadow, Little shop and Collection work while desktop is closed.
-Gumroad activation stays in the desktop app; mobile uses the Firebase login.
+The phone's Meadow, Magic Blocks, Little shop and Collection work while desktop is closed.
+Desktop and mobile both use Firebase login; no licence key is required.
 
 7. QUICK CHECK
 ----------------

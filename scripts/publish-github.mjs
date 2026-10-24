@@ -10,12 +10,12 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const stage = path.join(root, 'tmp', 'github-publish');
 const owner = 'fowlong', name = 'ponyhaven', repo = `${owner}/${name}`;
 const website = `https://${owner}.github.io/${name}/`;
-const folders = ['.github', 'src', 'public', 'desktop', 'engines', 'scripts', 'tests'];
+const folders = ['.github', 'src', 'public', 'desktop', 'engines', 'equestria', 'scripts', 'tests'];
 const rootFiles = ['.env.example', '.gitignore', '.prettierrc.json', 'package.json', 'package-lock.json', 'index.html', 'tsconfig.json', 'vite.config.ts', 'firebase.json', 'firebase.test.json', 'firestore.rules', 'firestore.indexes.json', 'Publish-Ponyhaven.cmd'];
 const firebaseKeys = ['VITE_FIREBASE_API_KEY', 'VITE_FIREBASE_AUTH_DOMAIN', 'VITE_FIREBASE_PROJECT_ID', 'VITE_FIREBASE_APP_ID'];
 
 function run(command, args, options = {}) {
-  const r = spawnSync(command, args, { cwd: root, encoding: 'utf8', windowsHide: true, ...options });
+  const r = spawnSync(command, args, { cwd: root, encoding: 'utf8', windowsHide: true, maxBuffer: 64 * 1024 * 1024, ...options });
   if (r.error) throw r.error;
   if (r.status !== 0 && !options.allowFailure) throw new Error(`${path.basename(command)} ${args[0]} failed (${r.status}). ${r.stderr || ''}`);
   return r;
@@ -140,7 +140,11 @@ try {
   const remoteMain = git(['ls-remote', 'origin', 'refs/heads/main']).stdout.trim();
   if (remoteMain) {
     git(['fetch', 'origin', 'main']);
-    if (git(['merge-base', '--is-ancestor', 'origin/main', 'HEAD'], { allowFailure: true }).status !== 0) throw new Error('GitHub has changes absent from the generated checkout. Merge them before publishing; no force-push was attempted.');
+    if (git(['merge-base', '--is-ancestor', 'origin/main', 'HEAD'], { allowFailure: true }).status !== 0) {
+      // Keep changes published through the connected GitHub app as well as this CLI.
+      const merged = git(['merge', '--no-edit', 'origin/main'], { allowFailure: true });
+      if (merged.status !== 0) throw new Error('The publishing checkout has a merge conflict with GitHub. Resolve it in tmp/github-publish before retrying; nothing was force-pushed.');
+    }
   }
   git(['push', '-u', 'origin', 'main'], { stdio: 'inherit' });
   const pages = run(gh, ['api', `repos/${repo}/pages`], { allowFailure: true });

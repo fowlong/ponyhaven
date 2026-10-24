@@ -1,8 +1,10 @@
 # Ponyhaven
 
-A free personal My Little Pony fan game for friends. The Electron desktop app includes the meadow, Kayou collection, Magic Blocks, native Adventure and Ponykart. A small GitHub Pages companion shares pet care, the shop and collection through optional Firebase sync.
+A free personal My Little Pony fan game for friends. The Electron desktop app includes the meadow, Kayou collection, Magic Blocks, native Adventure, Equestria and Ponykart. A small GitHub Pages companion shares pet care, the shop and collection through optional Firebase sync.
 
-Start with [DESKTOP_SETUP.md](DESKTOP_SETUP.md) for activation, local profiles, native games and packaging. Follow [MOBILE_SYNC_SETUP.md](MOBILE_SYNC_SETUP.md) to connect a phone. No private GitHub repository is needed for credentials or saves.
+Version 0.3.0 adds [Equestria Adventure](EQUESTRIA_0.3.0.md) using the included open-source Luanti engine and the included, converted Equestria 6 world. It supports the existing invite-code parties, pony abilities, town quests and 50 daily treasure chests. Minecraft is not required.
+
+Start with [DESKTOP_SETUP.md](DESKTOP_SETUP.md) for account login, local profiles, native games and packaging. Follow [MOBILE_SYNC_SETUP.md](MOBILE_SYNC_SETUP.md) to connect a phone. No private GitHub repository is needed for credentials or saves.
 
 ## Run locally
 
@@ -27,7 +29,7 @@ npm run preview
 
 Follow [FIREBASE_SETUP.md](FIREBASE_SETUP.md) for free Firebase setup, owner-created password accounts, local account management, GitHub Pages deployment, and shared meadow codes. No Google sign-in is required. A static GitHub site cannot itself securely store passwords or synchronize private accounts, so Firebase handles those small backend tasks.
 
-The desktop activates once with the owner's Gumroad product and saves locally. Linking an invited Firebase account is optional. The mobile companion requires that account and the same public Firebase configuration. Saves update live; competing offline changes keep a recovery copy instead of overwriting cloud progress. “Into the binder” opens the refreshed collection, ordinary binder navigation clears old preview filters, and recently acquired cards appear first.
+The desktop signs in with an invited Firebase account and keeps local profile saves. New installs link progress automatically; existing unlinked profiles can connect through settings. Gumroad activation is removed. The mobile companion requires that account and the same public Firebase configuration. Saves update live; competing offline changes keep a recovery copy instead of overwriting cloud progress. “Into the binder” opens the refreshed collection, ordinary binder navigation clears old preview filters, and recently acquired cards appear first.
 
 The website and game remain free. There are no payments, ads, analytics, or paid currency. The included workflow publishes only built website files. Personal account allowlists and Admin credentials are never included in the site.
 
@@ -37,7 +39,7 @@ The website and game remain free. There are no payments, ads, analytics, or paid
 - **3,197 collectible cards across 31 pack pools**, excluding the playable card-game series. Card art is cached locally. Pack membership uses source tags and marked code-based inferences; unclassified specials use a labelled fan assortment.
 - **52 curated backgrounds:** the original Ponyhaven meadow plus 51 scenery images from your PonyPonyParadise copy. Each has a reviewed floor, pony scale and walking lane that follow the image crop on desktop and phones. Left/right arrows, day/night, uploadable local backgrounds, and host-selected shared views.
 - Food, energy, wellbeing, friendship, and happiness. Play consumes food/energy and adds pixel dirt; brushing and pointer/touch bathing clean it. All needs contribute to happiness.
-- Unlimited switching among unlocked pets. Each pony keeps their care, dirt and XP across rarity variants. Every level-up awards one random tier 4–7 card, already saved before its reveal.
+- Unlimited switching among unlocked pets. Each pony keeps their care, dirt and XP across rarity variants. Every level-up reserves one random tier 4–7 card; the card and any pet unlock enter your collection when you open the gift. Reopening cannot grant it twice.
 - NPC playdates last 20 minutes with a one-hour invitation cooldown. Nearby NPCs and room friends award friendship and XP at most once per minute.
 - Two pack choices each UTC day, drawn from shuffled series bags without repeating yesterday’s choices. Buy as many as you can afford, opening each before buying the next. Five rare singles and three unicorn casters also rotate daily.
 - Packs contain five weighted random cards from that exact pool. One bonus pet roll per pack has a 20% chance when eligible ordinary cards appear. Tier 6/7 cards guarantee a matching pet when a sprite exists. Duplicate variants stay unlocked, without duplicate sprite files.
@@ -60,6 +62,7 @@ The catalog is a dated source snapshot, not a promise that every card ever relea
 ```powershell
 npm run catalog:import
 python scripts/prepare-assets.py
+npm run sprites:measure
 npm run cards:cache
 python scripts/optimize-cards.py
 ```
@@ -79,7 +82,7 @@ The game does not crop or remove watermarks from source card images. Card-to-pon
 | `src/main.ts` | Screens, controls and interaction feedback |
 | `src/save-store.ts`, `src/cloud.ts`, `src/storage.ts` | Revisioned local/cloud saves, invited accounts and device preferences |
 | `src/social.ts`, `src/peer-party.ts` | Firebase browser rooms and desktop peer parties |
-| `desktop/`, `engines/` | Activation, profile files, native game launch/import and engine modifications |
+| `desktop/`, `engines/` | Account access, profile files, native game launch/import and engine modifications |
 | `src/finishes.css`, `src/expansion.css` | Rarity finishes and extended game visuals |
 | `public/data`, `public/assets` | Catalog metadata and local artwork |
 | `scripts/accounts.mjs` | Owner-only terminal account administration |

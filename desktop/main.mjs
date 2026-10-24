@@ -1,16 +1,15 @@
-import { app, BrowserWindow, ipcMain, protocol, safeStorage, shell, dialog } from 'electron';
+import { app, BrowserWindow, ipcMain, protocol, shell, dialog } from 'electron';
 import fs from 'node:fs/promises';
-import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Profiles } from './profiles.mjs';
-import { verifyLicense, username } from './license.mjs';
 import { LocalRelay } from './relay.mjs';
 import { NativeGames } from './games.mjs';
+import { EquestriaGame } from './equestria/runtime.mjs';
 import { LevelLibrary } from './levels.mjs';
+import { guardNavigation } from './navigation.mjs';
 
 const here=path.dirname(fileURLToPath(import.meta.url)), root=path.dirname(here);
-const product=JSON.parse(readFileSync(path.join(here,'product.json'),'utf8'));
 // Separate test/dev storage is explicit and unavailable in distributed builds.
 if (!app.isPackaged && process.env.PONYHAVEN_USER_DATA) app.setPath('userData',path.resolve(process.env.PONYHAVEN_USER_DATA));
 app.setName('Ponyhaven');
@@ -20,12 +19,13 @@ else void start().catch((error)=>{console.error(error);app.quit();});
 async function start() {
   await app.whenReady();
   const profileRoot=path.join(app.getPath('userData'),'Ponyhaven');
-  const profiles=new Profiles(profileRoot,safeStorage,product.productId);
+  const profiles=new Profiles(profileRoot);
   await profiles.init();
   let win;
   const send=(topic,value)=>{ if(win && !win.isDestroyed()) win.webContents.send('ponyhaven:'+topic,value); };
   const levels=new LevelLibrary(profileRoot);
   const games=new NativeGames(path.join(root,'native'),profileRoot,(event)=>send('game',event),levels);
+  const equestria=new EquestriaGame(path.join(root,'native','equestria'),profileRoot,(event)=>send('equestria',event));
   const relay=new LocalRelay((packet)=>send('packet',packet));
   const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.gif':'image/gif','.png':'image/png','.svg':'image/svg+xml','.webp':'image/webp','.ttf':'font/ttf','.txt':'text/plain'};
   protocol.handle('ponyhaven',async(request)=>{
@@ -44,9 +44,9 @@ async function start() {
   win=new BrowserWindow({width:1440,height:960,minWidth:760,minHeight:600,backgroundColor:'#f9f7ff',title:'Ponyhaven',autoHideMenuBar:true,
     webPreferences:{preload:path.join(here,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true,webSecurity:true,backgroundThrottling:false}});
   win.webContents.session.setPermissionRequestHandler((_web,permission,callback)=>callback(permission==='fullscreen'));
-  win.webContents.on('will-navigate',(event)=>event.preventDefault());
+  win.webContents.on('will-navigate',guardNavigation);
   win.webContents.setWindowOpenHandler(({url})=>{
-    try { const u=new URL(url); if (u.protocol==='https:' && ['github.com','gumroad.com','phishwatcher.gumroad.com','mylittlecardcollection.com','creativecommons.org'].includes(u.hostname)) void shell.openExternal(u.href); }
+    try { const u=new URL(url); if (u.protocol==='https:' && ['github.com','mylittlecardcollection.com','creativecommons.org','www.planetminecraft.com','eaglecraft.fr','www.luanti.org'].includes(u.hostname)) void shell.openExternal(u.href); }
     catch {}
     return {action:'deny'};
   });
@@ -57,17 +57,12 @@ async function start() {
     catch(e) { throw new Error(e instanceof Error?e.message:'The action could not be completed.'); }
   });
   handle('status',()=>profiles.status(),false);
-  handle('activate',async(key,name)=>{
-    username(name);
-    const receipt=await verifyLicense(key,product.productId);
-    return profiles.activate(receipt,name);
-  },false);
   handle('load',()=>profiles.read());
   handle('save',(save)=>profiles.write(save));
   handle('rename',(name)=>profiles.rename(name));
-  handle('link-cloud',(uid)=>{if(games.running)throw new Error('Close your game before changing sync accounts.');return profiles.linkCloud(uid);});
-  handle('create-profile',async(name)=>{ if(games.running) throw new Error('Close your game first.'); return profiles.create(name); });
-  handle('select-profile',async(id)=>{ if(games.running) throw new Error('Close your game first.'); relay.close(); return profiles.select(id); });
+  handle('link-cloud',(uid)=>{if(games.running||equestria.running)throw new Error('Close your game before changing sync accounts.');return profiles.linkCloud(uid);});
+  handle('create-profile',async(name)=>{ if(games.running||equestria.running) throw new Error('Close your game first.'); return profiles.create(name); },false);
+  handle('select-profile',async(id)=>{ if(games.running||equestria.running) throw new Error('Close your game first.'); relay.close(); return profiles.select(id); },false);
   handle('backup',()=>profiles.backup('before-reset'));
   handle('export',async(save)=>{
     if(JSON.stringify(save).length>4_000_000) throw new Error('Save is too large.');
@@ -85,10 +80,16 @@ async function start() {
     return levels.add(profiles.requireActive(),game,answer.filePaths[0]);
   });
   handle('remove-level',(game,id)=>{if(games.running)throw new Error('Close the game first.');return levels.remove(profiles.requireActive(),game,id);});
-  handle('launch',(options)=>games.launch(options,profiles.requireActive()));
-  handle('stop-game',()=>games.stop());
+  handle('launch',(options)=>{if(equestria.running)throw new Error('Return from Equestria before starting another game.');return games.launch(options,profiles.requireActive());});
+  handle('stop-game',async()=>{await equestria.stop();await games.stop();});
+  handle('equestria-status',()=>equestria.status());
+  handle('equestria-launch',(options)=>{if(games.running)throw new Error('Close your current game first.');return equestria.launch(options,profiles.requireActive());});
+  handle('equestria-invite',(peer,identity)=>equestria.invite(peer,identity));
+  handle('equestria-revoke',(peer)=>equestria.revoke(peer));
+  handle('equestria-ack',(player,state)=>equestria.acknowledge(player,state));
+  handle('equestria-input',(peer,book,session)=>equestria.input(peer,book,session));
   handle('relay-open',(options)=>{
-    if(options?.role==='host' && (!games.running || games.running.port!==options.port)) throw new Error('Host a game first.');
+    if(options?.role==='host' && games.running?.port!==options.port && equestria.running?.port!==options.port) throw new Error('Host a game first.');
     return relay.open(options);
   });
   handle('relay-send',(id,bytes)=>relay.send(id,bytes));
@@ -99,7 +100,7 @@ async function start() {
   win.on('close',(event)=>{
     if(closing)return;
     event.preventDefault(); closing=true;
-    void (async()=>{await games.stop();relay.close();await profiles.queue.catch(()=>{});win.destroy();app.quit();})();
+    void (async()=>{await equestria.stop();await games.stop();relay.close();await profiles.queue.catch(()=>{});win.destroy();app.quit();})();
   });
   await win.loadURL('ponyhaven://app/');
 }

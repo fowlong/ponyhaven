@@ -1,5 +1,7 @@
 import type { Card, CardSet, Catalog, PetChoice, Save } from './types';
 import { freshArcade, validArcade } from './arcade-progress';
+import { freshEquestria, validEquestria } from './equestria-state';
+import {validAdventureSaves} from './equestria-saves';
 export const DAY = 86_400_000;
 export const HOUR = 3_600_000;
 export const VISIT_DURATION = 20 * 60_000;
@@ -39,6 +41,7 @@ export function freshSave(name = 'Friend', now = Date.now()): Save {
     npc: null,
     npcCooldownUntil: 0,
     arcade: freshArcade(),
+    equestria: freshEquestria(),
   };
 }
 export function readSave(value: unknown): Save | null {
@@ -81,8 +84,11 @@ export function readSave(value: unknown): Save | null {
     recentCards: Array.isArray(v.recentCards) ? v.recentCards.filter(id => typeof id === 'string' && v.collection[id]).slice(0, 100) : Object.keys(v.collection).reverse().slice(0, 100),
     pendingPack: v.pendingPack || null,
     arcade: v.arcade || freshArcade(),
+    equestria: v.equestria ?? freshEquestria(),
   };
   if (!validArcade(s.arcade)) return null;
+  if (!validEquestria(s.equestria)) return null;
+  if (!validAdventureSaves(s)) return null;
   if (
     !Array.isArray(s.petUnlocks) ||
     !Array.isArray(s.levelRewards) ||
@@ -139,7 +145,13 @@ export function readSave(value: unknown): Save | null {
         typeof r.ponyId !== 'string' ||
         typeof r.cardId !== 'string' ||
         !Number.isInteger(r.level) ||
-        r.level < 2,
+        r.level < 2 ||
+        (r.pending !== undefined && typeof r.pending !== 'boolean') ||
+        (r.petDrop != null && (
+          typeof r.petDrop.ponyId !== 'string' ||
+          typeof r.petDrop.rarity !== 'string' ||
+          !Number.isInteger(r.petDrop.tier) || r.petDrop.tier < 0 || r.petDrop.tier > 7
+        )),
     )
   )
     return null;
@@ -285,9 +297,11 @@ export function awardXP(save: Save, amount: number, catalog: Catalog, random = M
     const tier = tiers[Math.min(tiers.length - 1, Math.floor(random() * tiers.length))];
     const pool = catalog.cards.filter((c) => c.tier === tier);
     const card = pool[Math.min(pool.length - 1, Math.floor(random() * pool.length))];
-    save.collection[card.id] = (save.collection[card.id] || 0) + 1;
-    const drops = petDrops(save, [card], random);
-    save.levelRewards.push({ ponyId: save.pet.ponyId, level: n, cardId: card.id, petDrop: drops[0] || null });
+    // Reserve the roll now, without exposing the card or pet before its reveal.
+    // Include earlier reserved pets so two unopened gifts do not promise the same unlock.
+    const reservedPets = save.levelRewards.flatMap(r => r.pending && r.petDrop ? [r.petDrop] : []);
+    const drops = petDrops({ ...save, petUnlocks: [...save.petUnlocks, ...reservedPets] }, [card], random);
+    save.levelRewards.push({ ponyId: save.pet.ponyId, level: n, cardId: card.id, petDrop: drops[0] || null, pending: true });
     journal(
       save,
       `Level ${n} with ${catalog.ponies.find((p) => p.id === save.pet!.ponyId)?.name}: a ${card.rarity} card gift.`,
@@ -295,6 +309,15 @@ export function awardXP(save: Save, amount: number, catalog: Catalog, random = M
   }
   progress.rewardedLevel = level;
   return save;
+}
+export function openLevelReward(save: Save): Save {
+  if (!save.levelRewards[0]?.pending) return save;
+  const s = structuredClone(save);
+  const reward = s.levelRewards[0];
+  s.collection[reward.cardId] = (s.collection[reward.cardId] || 0) + 1;
+  if (reward.petDrop && !grantPet(s, reward.petDrop)) reward.petDrop = null;
+  reward.pending = false;
+  return s;
 }
 export function inviteNPC(save: Save, catalog: Catalog, random = Math.random, now = Date.now()): Save {
   if (now < save.npcCooldownUntil)

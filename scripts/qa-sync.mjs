@@ -16,7 +16,7 @@ await admin.doc('allowedUsers/'+uid).set({enabled:true,name:'Sync Friend'});
 await admin.doc('players/'+uid).delete();
 const root=await fs.mkdtemp(path.resolve('tmp/sync-test-'));
 const profiles=new Profiles(root,{isEncryptionAvailable:()=>true,encryptString:s=>Buffer.from(s),decryptString:b=>b.toString()},'test');await profiles.init();
-await profiles.activate({productId:'test',fingerprint:'a'.repeat(64)},'Sync Friend');
+await profiles.create('Sync Friend');
 const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe'});
 const errors=[];
 const desktopContext=await browser.newContext({viewport:{width:1440,height:1000}});
@@ -38,14 +38,15 @@ async function pack(p,index=0){
  return cards;
 }
 try {
- await a.goto(url);await a.locator('[data-starter="twilight-sparkle"]').click();await a.locator('[data-action="begin"]').click();
+ await a.goto(url);await a.locator('#login-account').fill('sync');await a.locator('#login-password').fill(password);await a.locator('[data-action="login"]').click();await a.locator('[data-starter="twilight-sparkle"]').click();await a.locator('[data-action="begin"]').click();
  console.log('Sync QA: local starter ready');
  await a.locator('[data-action="settings"]').click();await a.locator('[data-action="sync-account"]').click();
  await a.locator('#sync-account').fill('sync');await a.locator('#sync-password').fill(password);await a.locator('[data-action="connect-sync"]').click();
  await until(async()=>assert.equal((await remote()).save.pet.ponyId,'twilight-sparkle'));
  console.log('Sync QA: first upload verified');
  await b.goto(url);await b.locator('#login-account').fill('sync');await b.locator('#login-password').fill(password);await b.locator('[data-action="login"]').click();await b.locator('#meadow-scene').waitFor();
- assert.equal(await b.locator('nav [data-nav]').count(),3);
+ assert.equal(await b.locator('nav [data-nav]').count(),4);
+ assert.equal(await b.locator('nav [data-nav="blocks"]').isVisible(),true);
  assert.equal(await b.locator('[data-wallet]').innerText(),'600');
  await nav(a,'collection');
  // Leave a series preview, then acquire cards from the other offered pack.
@@ -78,6 +79,6 @@ try {
  await b.locator('[data-action="settings"]').click();await b.locator('[data-action="reset-account"]').click();await b.locator('#reset-confirm').fill('RESET');await b.locator('[data-action="confirm-reset"]').click();
  await a.locator('.starter-grid').waitFor();assert.equal((await remote()).save.coins,0);assert.equal(profiles.status().activated,true);
  await b.reload();await b.locator('.starter-grid').waitFor();
- assert.deepEqual(errors,[]);console.log('Synced reset, mobile session persistence, local activation retention, and no browser errors passed.');
+ assert.deepEqual(errors,[]);console.log('Synced reset, mobile session persistence, account session retention, and no browser errors passed.');
 } finally {await browser.close();await admin.terminate();}
 async function until(fn,timeout=18000){const end=Date.now()+timeout;let last;while(Date.now()<end){try{await fn();return;}catch(e){last=e;}await new Promise(r=>setTimeout(r,200));}throw last;}

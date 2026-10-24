@@ -4,6 +4,7 @@ import { spawn } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import dgram from 'node:dgram';
 import { readFileSync } from 'node:fs';
+import { NativeProgress } from './native-progress.mjs';
 
 export const PONIES = {
   adventure: ['twilight','applejack','fluttershy','rarity','derpy','luna','trixie'],
@@ -13,7 +14,10 @@ export const COLOURS = {twilight:'Dusk',applejack:'Tangerine',fluttershy:'Lemona
 export function controls(game) {
   const bindings = game==='adventure' ? {forward:['w'],backward:['s'],strafeleft:['a'],straferight:['d'],turnleft:['LEFT ARROW'],turnright:['RIGHT ARROW'],jump:['SPACE','JOY1'],spin:['x','JOY2']} :
     {accelerate:['w','UP ARROW'],brake:['s','DOWN ARROW'],turnleft:['a','LEFT ARROW'],turnright:['d','RIGHT ARROW'],drift:['SPACE','JOY11'],fire:['x','JOY10']};
-  return Object.entries(bindings).map(([action,keys])=>`setcontrol "${action}" ${keys.map((key)=>`"${key}"`).join(' ')}`).join('\n')+'\nuse_mouse 0\nshowhud 1\nchasecam 1\n';
+  // Reverse-gravity courses need the chase camera to follow the pony's up axis.
+  // Reapply at launch so existing profiles with the old default are fixed too.
+  const gravityCamera = game==='adventure' ? 'flipcam 1\nflipcam2 1\n' : '';
+  return Object.entries(bindings).map(([action,keys])=>`setcontrol "${action}" ${keys.map((key)=>`"${key}"`).join(' ')}`).join('\n')+'\nuse_mouse 0\nshowhud 1\nchasecam 1\n'+gravityCamera;
 }
 // Levels are explicit: no command strings or arbitrary addon paths enter IPC.
 const courses=JSON.parse(readFileSync(new URL('./courses.json',import.meta.url),'utf8'));
@@ -45,10 +49,13 @@ export class NativeGames {
     const folder = path.join(this.profileRoot,'profiles',profile.id,game);
     const configFolder=path.join(folder,game==='adventure'?'srb2':'srb2kart');
     await fs.mkdir(path.join(configFolder,'screenshots'),{recursive:true});
-    await fs.writeFile(path.join(configFolder,'autoexec.cfg'),controls(game));
-    const session = randomUUID(), progress = path.join(folder,'progress-'+session+'.json');
+    // Kart reads kartexec.cfg, while Adventure reads autoexec.cfg. Reapply the
+    // UI mappings after each engine's saved config, including existing profiles.
+    const startupConfig=game==='ponykart'?'kartexec.cfg':'autoexec.cfg';
+    await fs.writeFile(path.join(configFolder,startupConfig),controls(game));
+    const session = randomUUID();
     const port = mode === 'join' ? options.port : await availablePort();
-    const args = ['-home',folder,'-skipintro','-bindaddr','127.0.0.1','-bindaddr6','::1','-ph-progress',progress,'-ph-session',session,
+    const args = ['-home',folder,'-skipintro','-bindaddr','127.0.0.1','-bindaddr6','::1','-ph-progress-stdio','-ph-session',session,
       '-ph-pastel',String(pastel),'-width','1280','-height','800',fullscreen ? '-fullscreen' : '-win',
       '+name',profile.name.replace(/[^a-zA-Z0-9 _.-]/g,'').slice(0,21) || 'Friend',
       '+skin',pony,'+use_mouse','0','+showhud','1'];
@@ -59,49 +66,52 @@ export class NativeGames {
     args.push('-file',path.join(this.root,game,'ponyhaven.pk3'));
     if(addon)args.push(addon);
     const child = spawn(path.join(this.root,game,game+'.exe'), args, {
-      cwd:path.join(this.root,game), windowsHide:true, stdio:['ignore','pipe','pipe'],
+      // These are interactive GUI games. windowsHide also hides their SDL window.
+      cwd:path.join(this.root,game), windowsHide:false, stdio:['ignore','pipe','pipe'],
     });
     let readyResolve,readyReject;
     const ready=new Promise((resolve,reject)=>{readyResolve=resolve;readyReject=reject;});
-    const running = { child, game, session, port, progress, pack:options.pack, timer:null, last:'', stopped:false, stderr:'', readyResolve, readyReject };
+    const running = { child, game, session, port, pack:options.pack, stopped:false, ready:false, failed:false, stderr:'', snapshot:null, readyResolve, readyReject };
+    running.closed=new Promise(resolve=>{running.closedResolve=resolve;});
     this.running = running;
-    const record=(b)=>{running.stderr=(running.stderr+b.toString()).slice(-12000);};
-    child.stderr.on('data',record);child.stdout.on('data',record);
-    child.once('error', () => {readyReject(new Error('The game could not start.')); this.send({ type:'error',game,session,message:'The game could not start.' }); this.cleanup(running); });
-    child.once('exit', async (code) => {
-      await fs.writeFile(path.join(folder,'last-session.log'),running.stderr).catch(()=>{});
-      await this.poll(running);
-      readyReject(new Error('The game closed before its course was ready. See last-session.log in this profile.'));
-      this.send({ type: code && !running.stopped ? 'error':'ended',game,session,
-        ...(code && !running.stopped ? {message:'The game closed unexpectedly. Your saved rewards are safe.'} : {}) });
-      this.cleanup(running);
+    const progress = new NativeProgress(session, snapshot => {
+      running.snapshot=snapshot;
+      if (!running.ready) {
+        running.ready=true;
+        this.send({type:'started',game,session});
+        readyResolve();
+      }
+      this.send({...snapshot,pack:running.pack,game,type:'progress'});
     });
-    running.timer = setInterval(() => void this.poll(running),500);
-    this.send({type:'started',game,session});
+    const record=(b)=>{running.stderr=(running.stderr+b.toString()).slice(-12000);};
+    child.stdout.setEncoding('utf8');
+    child.stderr.on('data',record);
+    child.stdout.on('data',chunk=>{record(chunk);progress.push(chunk);});
+    child.once('error', () => {running.failed=true;readyReject(new Error('The game could not start.')); this.send({ type:'error',game,session,message:'The game could not start.' }); this.cleanup(running); });
+    // close, unlike exit, waits for stdout to drain, including final rewards.
+    child.once('close', async (code) => {
+      progress.end();
+      await fs.writeFile(path.join(folder,'last-session.log'),running.stderr).catch(()=>{});
+      readyReject(new Error('The game closed before its course was ready. See last-session.log in this profile.'));
+      if(!running.failed)this.send({ type: code !== 0 && !running.stopped ? 'error':'ended',game,session,
+        ...(code !== 0 && !running.stopped ? {message:'The game closed unexpectedly. Your saved rewards are safe.'} : {}) });
+      this.cleanup(running);
+      running.closedResolve();
+    });
+    this.send({type:'loading',game,session});
     const deadline=setTimeout(()=>readyReject(new Error('The game did not finish loading. See last-session.log in this profile.')),30000);
     try {await ready;}catch(error){await this.stop();throw error;}finally{clearTimeout(deadline);}
     return {session,port};
   }
-  async poll(r) {
-    try {
-      const text = await fs.readFile(r.progress,'utf8');
-      if (text === r.last || text.length > 2000) return;
-      const d = JSON.parse(text);
-      if (d.session !== r.session || !['rings','score','map','elapsed','laps'].every((k)=>Number.isInteger(d[k]) && d[k]>=0 && d[k]<=1e9)) return;
-      r.last=text;
-      r.readyResolve();
-      this.send({ ...d, pack:r.pack, game:r.game, type:'progress', finished:d.finished===true });
-    } catch {}
-  }
-  cleanup(r) { clearInterval(r.timer); if(this.running===r) this.running=null; }
+  cleanup(r) { if(this.running===r) this.running=null; }
   async stop() {
     const r=this.running;
     if (!r) return;
-    await this.poll(r);
     r.stopped=true;
-    const exited=new Promise(resolve=>r.child.once('exit',resolve));
-    r.child.kill();
-    await Promise.race([exited,new Promise(resolve=>setTimeout(resolve,3000))]);
+    if(r.child.exitCode===null)r.child.kill();
+    let timeout;
+    await Promise.race([r.closed,new Promise(resolve=>{timeout=setTimeout(resolve,3000);})]);
+    clearTimeout(timeout);
     this.cleanup(r);
   }
 }

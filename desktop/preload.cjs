@@ -6,7 +6,7 @@ const listen = (channel) => (callback) => {
   return () => ipcRenderer.removeListener('ponyhaven:' + channel, listener);
 };
 contextBridge.exposeInMainWorld('ponyDesktop', {
-  status: call('status'), activate: call('activate'),
+  status: call('status'),
   load: call('load'), save: call('save'), rename: call('rename'),
   linkCloud: call('link-cloud'),
   createProfile: call('create-profile'), selectProfile: call('select-profile'),
@@ -14,6 +14,8 @@ contextBridge.exposeInMainWorld('ponyDesktop', {
   engines: call('engines'), launch: call('launch'), stopGame: call('stop-game'),
   levels: call('levels'), importLevel: call('import-level'), removeLevel: call('remove-level'),
   onGame: listen('game'),
+  equestriaStatus: call('equestria-status'), equestriaLaunch: call('equestria-launch'), equestriaInput: call('equestria-input'),
+  equestriaInvite: call('equestria-invite'), equestriaRevoke: call('equestria-revoke'), equestriaAck: call('equestria-ack'), onEquestria: listen('equestria'),
   relayOpen: call('relay-open'), relayClose: call('relay-close'),
   relaySend: call('relay-send'), onPacket: listen('packet'),
   fullscreen: call('fullscreen'),

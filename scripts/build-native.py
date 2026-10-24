@@ -1,5 +1,5 @@
 """Reproducible, local MSVC build of the two GPL engines; no system installation."""
-import pathlib, re, subprocess, argparse, shutil
+import pathlib, re, subprocess, argparse, shutil, hashlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SOURCES = {
@@ -7,9 +7,18 @@ SOURCES = {
     'ponykart': ROOT/'tmp/arcade/kart-native-source/Kart-Public-1.6',
 }
 
-def configure(game):
+def configure(game,clean=False,build_root='tmp/native-build'):
     src = SOURCES[game]
-    dest = ROOT/'tmp/native-build'/game
+    revision='SRB2_release_2.2.15' if game=='adventure' else 'v1.6'
+    # The upstream batch normally creates this. Keep standalone source builds
+    # reproducible without a Git checkout or a separately run batch file.
+    (src/'src/comptime.h').write_text(
+        'const char* compbranch = "Ponyhaven";\n'
+        f'const char* comprevision = "{revision}";\n'
+        'const char* compnote = "Ponyhaven native build";\n')
+    dest = (ROOT/build_root/game).resolve()
+    if not dest.is_relative_to((ROOT/'tmp').resolve()):
+        raise ValueError('Build output must stay inside this workspace tmp directory.')
     dest.mkdir(parents=True, exist_ok=True)
     # Recreate MSVC-compatible import libraries from the bundled DLL exports.
     # The old MinGW import archives do not carry SafeSEH metadata.
@@ -25,7 +34,7 @@ def configure(game):
         subprocess.run([str(tools/'lib.exe'),'/nologo','/machine:x86','/def:'+str(definition),'/out:'+str(dest/(library+'.lib'))],check=True,stdout=subprocess.DEVNULL)
     s = src.as_posix()
     mixer='"${CMAKE_CURRENT_SOURCE_DIR}/SDL2_mixer_ext.lib"' if game=='adventure' else '"${ENGINE}/libs/SDL2_mixer/lib/x86/SDL2_mixer.lib" "${CMAKE_CURRENT_SOURCE_DIR}/libgme.lib"'
-    audio_definitions='HAVE_MIXERX' if game=='adventure' else 'HAVE_LIBGME'
+    audio_definitions='HAVE_MIXERX' if game=='adventure' else 'HAVE_LIBGME PONYHAVEN_KART'
     # Source lists are taken from the matching upstream project, avoiding obsolete
     # Visual Studio project files which omit newer source files.
     if game == 'adventure':
@@ -73,7 +82,7 @@ target_link_libraries({game} PRIVATE "${{CMAKE_CURRENT_SOURCE_DIR}}/exchndl.lib"
 endif()
 ''')
     subprocess.run(['cmake','-S',str(dest),'-B',str(dest/'out-clang'),'-G','Visual Studio 17 2022','-A','Win32','-T','ClangCL'],check=True)
-    subprocess.run(['cmake','--build',str(dest/'out-clang'),'--config','Release','--parallel','8'],check=True)
+    subprocess.run(['cmake','--build',str(dest/'out-clang'),'--config','Release','--parallel','8']+(['--clean-first'] if clean else []),check=True)
     target=ROOT/'native'/game
     target.mkdir(parents=True,exist_ok=True)
     shutil.copy2(dest/'out-clang/Release'/ (game+'.exe'),target/(game+'.exe'))
@@ -81,7 +90,23 @@ endif()
     # Use the release's tested DLL set, including its music decoders. Mixing the
     # SDK's older mixer binary with release data breaks native music playback.
     for dll in runtime.glob('*.dll'):shutil.copy2(dll,target/dll.name)
+    if game=='adventure':
+        # Earlier builds used the optional SDL_mixer SDK. The release uses
+        # Mixer X instead. Retire only verified SDK leftovers from our output.
+        superseded=['libFLAC-8.dll','libmodplug-1.dll','libmpg123-0.dll','libogg-0.dll',
+                    'libopus-0.dll','libopusfile-0.dll','libvorbis-0.dll',
+                    'libvorbisfile-3.dll','SDL2_mixer.dll']
+        retired=ROOT/'tmp/retired-adventure-runtime-022'
+        for name in superseded:
+            old=target/name
+            if not old.exists() or (runtime/name).exists():continue
+            original=src/'libs/SDL2_mixer/lib/x86'/name
+            if not original.exists() or hashlib.sha256(old.read_bytes()).digest()!=hashlib.sha256(original.read_bytes()).digest():
+                raise RuntimeError('Unexpected leftover DLL; review before packaging: '+str(old))
+            retired.mkdir(parents=True,exist_ok=True)
+            shutil.copy2(old,retired/name)
+            old.unlink()
     print('Built',target/(game+'.exe'))
 
 if __name__ == '__main__':
-    p=argparse.ArgumentParser();p.add_argument('game',choices=SOURCES);args=p.parse_args();configure(args.game)
+    p=argparse.ArgumentParser();p.add_argument('game',choices=SOURCES);p.add_argument('--clean',action='store_true');p.add_argument('--build-root',default='tmp/native-build');args=p.parse_args();configure(args.game,args.clean,args.build_root)

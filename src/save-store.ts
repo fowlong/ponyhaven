@@ -26,9 +26,21 @@ export class SaveStore {
   async load():Promise<Save|null> {
     this.stopWatch();
     let disk:Save|null=null;
+    if(auth)await auth.authStateReady();
+    if(desktop && cloudConfigured && !auth?.currentUser)return null;
+    const accessName=desktop && auth?.currentUser ? await invitation(auth.currentUser.uid) : '';
     if (desktop) {
-      const status=await refreshDesktop();
-      if (!status?.activated || !status.profile) return null;
+      let status=await refreshDesktop();
+      if(!status?.profile && auth?.currentUser){
+        const uid=auth.currentUser.uid,name=accessName;
+        const linked=status?.profiles.find(p=>p.cloudUid===uid);
+        if(linked)await desktop.selectProfile(linked.id);
+        else {await desktop.createProfile(name);await desktop.linkCloud(auth.currentUser.uid);}
+        status=await refreshDesktop();
+      }
+      if (!status?.profile) return null;
+      // Existing unlinked profiles keep their progress when the licence gate is removed.
+      // Firebase still validates access; linking their save remains an explicit sync action.
       this.uid=status.profile.id; this.name=status.profile.name; this.cloudUid=status.profile.cloudUid||'';
       const data=await desktop.load();
       disk=data===null?freshSave(this.name):readSave(data);
@@ -49,7 +61,7 @@ export class SaveStore {
     if (!this.linked) {this.setStatus(desktop?'Saved to your local profile':'Saved on this device');return this.latest;}
     if (!this.canSync) {this.setStatus('Sync paused · reconnect this profile in settings');return this.latest;}
     try {
-      this.name=await invitation(this.cloudUid);
+      this.name=accessName||await invitation(this.cloudUid);
       const remote=await getDocFromServer(doc(db!,'players',this.cloudUid));
       const revision=remote.exists()?remote.data().revision:0;
       if (this.pending && this.revision!==revision) {

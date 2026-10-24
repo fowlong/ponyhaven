@@ -1,0 +1,22 @@
+.adventure-world-tabs{display:inline-flex;gap:5px;padding:5px;background:#eee9f4;border:1px solid #e1d9ea;border-radius:16px;margin:4px 0 24px}
+.adventure-world-tabs button{display:flex;align-items:center;gap:8px;padding:11px 22px;border:0;border-radius:11px;background:transparent;color:#776b88;font:inherit;font-weight:700;cursor:pointer}
+.adventure-world-tabs button.selected{background:white;color:#655180;box-shadow:0 2px 7px #48345a12}
+.adventure-world-tabs svg{width:17px;height:17px}
+.equestria-hero{position:relative;overflow:hidden;min-height:580px;border:1px solid #d8dfce;border-radius:26px;padding:42px;background:radial-gradient(ellipse at 85% 64%,#dfebc9 0%,transparent 38%),linear-gradient(155deg,#f3f1dd,#e5efdf 58%,#dceacb);color:#45594d}
+.equestria-hero .eyebrow{color:#6e866d;font-size:11px;letter-spacing:.14em}
+.equestria-hero h2{font-size:clamp(32px,3.5vw,49px);line-height:1.12;margin:26px 0 20px;letter-spacing:-.035em}
+.equestria-hero h2 em{color:#758b5c;font-weight:500}
+.equestria-hero>p:not(.eyebrow){max-width:290px;line-height:1.7;color:#75816f}
+.equestria-hero>img{position:absolute;right:11%;bottom:134px;width:148px;max-height:210px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 12px 8px #72865b20)}
+.equestria-stars{position:absolute;right:29px;top:24px;color:#b0bc89;font-size:25px;letter-spacing:6px}
+.equestria-towns{display:flex;gap:8px;flex-wrap:wrap;max-width:280px;margin-top:28px}
+.equestria-towns span{border:1px solid #cdd8c3;border-radius:999px;padding:7px 12px;font-size:12px;background:#fafff166}
+.equestria-treasure{position:absolute;left:32px;right:32px;bottom:28px;display:flex;align-items:center;gap:20px;background:#ffffffb3;border:1px solid #fff;border-radius:17px;padding:20px 23px}
+.equestria-treasure>strong{font-size:30px;letter-spacing:-.05em;color:#718656;white-space:nowrap}
+.equestria-treasure span{font-size:14px;line-height:1.6}.equestria-treasure small{color:#87907d;font-size:11px}
+.equestria-credit{font-size:11px;color:#9b92a5;line-height:1.7;margin:25px 4px 12px;max-width:900px}.equestria-credit a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.equestria-setup{padding:20px;border-radius:14px;background:#f5f2f8;margin:18px 0}.equestria-setup p{font-size:13px;color:#867992;line-height:1.6}.equestria-setup .button{margin-top:16px}
+.equestria-import-progress{padding:20px;background:#f1f6e9;border-radius:14px;margin:18px 0;font-size:13px;color:#708259}.equestria-import-progress progress{width:100%;margin:16px 0 0;accent-color:#829768}
+.adventure-save-buttons{display:flex;gap:10px;margin:18px 0 10px}.adventure-save-buttons .button{flex:1;padding:10px}.adventure-current-save{font-size:13px;color:#766884;overflow-wrap:anywhere}.adventure-save-menu{padding:18px;background:#f5f1f8;border:1px solid #e0d5e9;border-radius:14px;margin:14px 0}.adventure-save-menu h3{margin-top:0}.adventure-save-menu label{display:block;font-size:13px;margin-bottom:7px}.adventure-save-menu input{box-sizing:border-box;width:100%;padding:10px;border:1px solid #d2c5dd;border-radius:8px;font:inherit}.adventure-save-row{padding:13px 0;border-top:1px solid #ded4e7;overflow-wrap:anywhere}.adventure-save-row>strong,.adventure-save-row>small{display:block;margin-bottom:8px}.adventure-save-row>small{color:#81718d;font-size:11px}.adventure-save-row p{font-size:13px}.controller-help{font-size:12px;margin-top:14px}.controller-help summary{cursor:pointer;font-weight:700}
+@media(max-width:850px){.equestria-hero{min-height:520px;padding:28px}.equestria-hero>img{right:9%;width:116px;bottom:125px}.equestria-treasure{left:20px;right:20px;gap:14px;padding:17px}.equestria-hero>p:not(.eyebrow){max-width:240px}}
+@media(max-width:500px){.adventure-world-tabs{display:flex}.adventure-world-tabs button{flex:1;justify-content:center;padding:10px;font-size:13px}.equestria-hero{min-height:555px}.equestria-stars{display:none}.equestria-hero>img{bottom:120px;right:12%}.equestria-towns{max-width:200px}.equestria-treasure>strong{font-size:26px}.equestria-treasure span{font-size:12px}}

@@ -1,3 +1,6 @@
+import type { EquestriaProgress } from './equestria-state';
+import type { AdventureSave } from './equestria-saves';
+
 export interface Behavior {
   name: string;
   chance: number;
@@ -8,6 +11,10 @@ export interface Behavior {
   left: string;
   previewRight?: string;
   previewLeft?: string;
+  sizeRight?: [number, number];
+  sizeLeft?: [number, number];
+  /** False when the composited GIF includes tiny/empty pony frames. */
+  scaleSafe?: boolean;
   movement: string;
   next: string | null;
   skip: boolean;
@@ -38,6 +45,7 @@ export interface PonyInteraction {
   cooldown: number;
 }
 export interface Pony {
+  spriteSize?: [number, number];
   id: string;
   name: string;
   folder: string;
@@ -105,6 +113,8 @@ export interface LevelReward {
   level: number;
   cardId: string;
   petDrop: PetChoice | null;
+  /** Absent in older saves, whose queued rewards were already granted. */
+  pending?: boolean;
 }
 export interface Background {
   id: string;
@@ -166,6 +176,9 @@ export interface Save {
   npc: { ponyId: string; invitedAt: number; expiresAt: number } | null;
   npcCooldownUntil: number;
   arcade: ArcadeProgress;
+  equestria: EquestriaProgress;
+  equestriaSaves?: AdventureSave[];
+  equestriaActive?: string;
 }
 export interface ArcadeRecord {
   bestScore: number;

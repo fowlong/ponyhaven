@@ -2,9 +2,9 @@
 
 For a single copy-and-paste text file with the full rules and Console settings, open [FIREBASE_CONSOLE_SETUP.txt](FIREBASE_CONSOLE_SETUP.txt).
 
-Ponyhaven can share one profile between the Windows app and a mobile website on GitHub Pages. The phone has **Meadow, Little shop, and Collection**. Adventure, Ponykart and Magic Blocks stay in the desktop app. Your phone works while the desktop app is closed.
+Ponyhaven can share one profile between the Windows app and a mobile website on GitHub Pages. The phone has **Meadow, Magic Blocks, Little shop, and Collection**. Adventure and Ponykart stay in the desktop app. Your phone works while the desktop app is closed, including earning bits and pony XP in Magic Blocks.
 
-Use one **Firebase Spark (no billing)** project, Email/Password Authentication, and Cloud Firestore. No private GitHub repository, server, Cloud Functions, paid storage, or Google sign-in is required. Gumroad still activates the desktop installation once. Firebase accounts are separate invitations you create for friends; no public registration is provided.
+Use one **Firebase Spark (no billing)** project, Email/Password Authentication, and Cloud Firestore. No private GitHub repository, server, Cloud Functions, paid storage, or Google sign-in is required. Both desktop and mobile use Firebase accounts you create for friends; no public registration is provided.
 
 ## 1. Create the free Firebase project
 
@@ -21,7 +21,7 @@ Use one **Firebase Spark (no billing)** project, Email/Password Authentication, 
    VITE_REQUIRE_AUTH=true
    ```
 
-   These are public app identifiers, not Admin credentials. Never put a service-account JSON or a Gumroad key in these variables, the website, or GitHub.
+   These are public app identifiers, not Admin credentials. Never put a service-account JSON or an account password in these variables, the website, or GitHub.
 
    Recommended: in Firestore **Indexes → Single field → Add exemption**, use collection group `players`, field `save`, and disable ascending, descending and array indexes. Saves are read by account ID and never searched. This avoids indexing every card and pony. The same exemption is in `firestore.indexes.json` for CLI deployment with `firebase deploy --only firestore`.
 
@@ -39,12 +39,12 @@ For repeated administration, [FIREBASE_SETUP.md](FIREBASE_SETUP.md) describes th
 ## 3. Connect a desktop profile
 
 1. Build the desktop app with the same Firebase values: `npm run desktop:package`. During development, use `npm run desktop`.
-2. Activate the installation with the Gumroad invitation key in the app, then choose/create your local profile and starter pony.
-3. Open **Account and settings → Connect mobile sync**. Enter the invited Firebase email/username and password.
+2. Sign in with your invited Firebase account. A new installation creates and links your profile automatically.
+3. For an existing unlinked local profile, open **Account and settings → Connect mobile sync** and enter the invited account to connect that save.
 4. If the account has no cloud save, the current local profile uploads. If it already has a save, that save loads here and a local backup is kept first. A sync account can be linked to only one local profile in an installation.
 5. Wait for **Cloud saved** before switching devices. This status also appears in settings and the page footer.
 
-You enter your license key only in the desktop activation screen. The mobile site uses your invited Firebase account, not the license key. Resetting progress keeps both the desktop activation and the sync link.
+No licence key is required. Both clients use your invited Firebase account. Resetting progress keeps your account and sync link.
 
 ## 4. Publish the mobile companion
 
@@ -64,7 +64,7 @@ Uploaded backgrounds, selected scenery, sound/motion preferences, and imported n
 
 Both clients listen for cloud changes, including while the binder is open. A purchase is saved before its reveal animation. Prefer playing on one device at a time. If two devices change progress from the same revision, the second upload is rejected rather than silently replacing the first. The affected device displays **Load synced progress** and **Export device backup**. Loading the synced save keeps the competing device copy for recovery; it does not merge currency or duplicate purchases.
 
-The activated desktop can still play offline. It queues its save for the next connection. Phone offline cold-start and background uploads are not guaranteed; reconnect and wait for **Cloud saved** before closing the browser. No purchase requires real money.
+The configured desktop validates account access online at startup. If connectivity drops during play, it queues progress locally for the next connection. Phone offline cold-start and background uploads are not guaranteed; reconnect and wait for **Cloud saved** before closing the browser. No purchase requires real money.
 
 ## Costs and checks
 
